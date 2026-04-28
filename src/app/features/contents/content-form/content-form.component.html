@@ -20,7 +20,7 @@
         <h2 id="form-title" class="text-white font-semibold text-base leading-none">
           Nuevo contenido
         </h2>
-        <p class="text-slate-500 text-xs mt-1">Completá los campos para agregar un asset.</p>
+        <p class="text-slate-400 text-xs mt-1">Completá los campos para agregar un asset.</p>
       </div>
       <button
         type="button"
@@ -52,10 +52,9 @@
           autocomplete="off"
           class="w-full px-3 py-2 text-sm bg-slate-900/60 border rounded-lg text-white
                  placeholder-slate-600 focus:outline-none focus:ring-2 transition-all"
-          [class.border-slate-700]="!(contentForm.name().touched() && contentForm.name().errors().length)"
-          [class.focus:ring-brand-500]="!(contentForm.name().touched() && contentForm.name().errors().length)"
-          [class.border-red-500/70]="contentForm.name().touched() && contentForm.name().errors().length"
-          [class.focus:ring-red-500/50]="contentForm.name().touched() && contentForm.name().errors().length"
+          [class]="(contentForm.name().touched() && contentForm.name().errors().length)
+            ? 'border-red-500/70 focus:ring-red-500'
+            : 'border-slate-700 focus:ring-brand-500'"
         />
         @if (contentForm.name().touched() && contentForm.name().errors().length) {
           <p class="text-xs text-red-400 flex items-center gap-1">
@@ -80,10 +79,9 @@
           autocomplete="off"
           class="w-full px-3 py-2 text-sm bg-slate-900/60 border rounded-lg text-white
                  placeholder-slate-600 focus:outline-none focus:ring-2 transition-all"
-          [class.border-slate-700]="!(contentForm.url().touched() && contentForm.url().errors().length)"
-          [class.focus:ring-brand-500]="!(contentForm.url().touched() && contentForm.url().errors().length)"
-          [class.border-red-500/70]="contentForm.url().touched() && contentForm.url().errors().length"
-          [class.focus:ring-red-500/50]="contentForm.url().touched() && contentForm.url().errors().length"
+          [class]="(contentForm.url().touched() && contentForm.url().errors().length)
+            ? 'border-red-500/70 focus:ring-red-500'
+            : 'border-slate-700 focus:ring-brand-500'"
         />
         @if (contentForm.url().touched() && contentForm.url().errors().length) {
           <p class="text-xs text-red-400 flex items-center gap-1">
@@ -104,20 +102,26 @@
           <label class="block text-xs font-medium text-slate-400">
             Tipo <span class="text-red-500">*</span>
           </label>
-          <select
-            [formField]="contentForm.type"
-            (change)="onTypeChange($any($event.target).value)"
-            class="w-full px-3 py-2 text-sm bg-slate-900/60 border rounded-lg text-white
-                   focus:outline-none focus:ring-2 transition-all appearance-none"
-            [class.border-slate-700]="!(contentForm.type().touched() && contentForm.type().errors().length)"
-            [class.focus:ring-brand-500]="!(contentForm.type().touched() && contentForm.type().errors().length)"
-            [class.border-red-500/70]="contentForm.type().touched() && contentForm.type().errors().length"
-            [class.text-slate-600]="!model().type"
-          >
-            <option value="" disabled>Seleccionar...</option>
-            <option value="image">Imagen</option>
-            <option value="video">Video</option>
-          </select>
+          <div class="relative">
+            <select
+              [formField]="contentForm.type"
+              (change)="onTypeChange($any($event.target).value)"
+              class="w-full pl-3 pr-8 py-2 text-sm bg-slate-900/60 border rounded-lg
+                     focus:outline-none focus:ring-2 transition-all appearance-none"
+              [class]="(contentForm.type().touched() && contentForm.type().errors().length)
+                ? 'border-red-500/70 focus:ring-red-500 text-white'
+                : 'border-slate-700 focus:ring-brand-500'"
+              [class.text-slate-500]="!model().type"
+              [class.text-white]="!!model().type"
+            >
+              <option value="" disabled>Seleccionar...</option>
+              <option value="image">Imagen</option>
+              <option value="video">Video</option>
+            </select>
+            <svg class="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+            </svg>
+          </div>
           @if (contentForm.type().touched() && contentForm.type().errors().length) {
             <p class="text-xs text-red-400">{{ contentForm.type().errors()[0].message }}</p>
           }
@@ -126,34 +130,44 @@
         <!-- Category -->
         <div class="space-y-1.5">
           <label class="block text-xs font-medium text-slate-400">Categoría</label>
-          <select
-            class="w-full px-3 py-2 text-sm bg-slate-900/60 border border-slate-700 rounded-lg text-white
-                   focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all appearance-none"
-            [value]="model().category_id ?? ''"
-            (change)="model.update(m => ({ ...m, category_id: $any($event.target).value ? +$any($event.target).value : null }))"
-          >
-            <option value="">Sin categoría</option>
-            @for (cat of categories(); track cat.id) {
-              <option [value]="cat.id">{{ cat.name }}</option>
-            }
-          </select>
+          <div class="relative">
+            <select
+              class="w-full pl-3 pr-8 py-2 text-sm bg-slate-900/60 border border-slate-700 rounded-lg text-white
+                     focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all appearance-none"
+              [value]="model().category_id ?? ''"
+              (change)="model.update(m => ({ ...m, category_id: $any($event.target).value ? +$any($event.target).value : null }))"
+            >
+              <option value="">Sin categoría</option>
+              @for (cat of categories(); track cat.id) {
+                <option [value]="cat.id">{{ cat.name }}</option>
+              }
+            </select>
+            <svg class="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+            </svg>
+          </div>
         </div>
       </div>
 
       <!-- Folder -->
       <div class="space-y-1.5">
         <label class="block text-xs font-medium text-slate-400">Carpeta</label>
-        <select
-          class="w-full px-3 py-2 text-sm bg-slate-900/60 border border-slate-700 rounded-lg text-white
-                 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all appearance-none"
-          [value]="model().folder_id ?? ''"
-          (change)="model.update(m => ({ ...m, folder_id: $any($event.target).value ? +$any($event.target).value : null }))"
-        >
-          <option value="">Sin carpeta (raíz)</option>
-          @for (folder of folders(); track folder.id) {
-            <option [value]="folder.id">{{ folder.name }}</option>
-          }
-        </select>
+        <div class="relative">
+          <select
+            class="w-full pl-3 pr-8 py-2 text-sm bg-slate-900/60 border border-slate-700 rounded-lg text-white
+                   focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all appearance-none"
+            [value]="model().folder_id ?? ''"
+            (change)="model.update(m => ({ ...m, folder_id: $any($event.target).value ? +$any($event.target).value : null }))"
+          >
+            <option value="">Sin carpeta (raíz)</option>
+            @for (folder of folders(); track folder.id) {
+              <option [value]="folder.id">{{ folder.name }}</option>
+            }
+          </select>
+          <svg class="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+          </svg>
+        </div>
       </div>
 
       <!-- Has audio (video only) -->

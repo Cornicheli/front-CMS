@@ -3,14 +3,12 @@
   <button
     type="button"
     (click)="onSelect()"
-    class="group w-full flex items-center gap-2 px-3 py-1.5 rounded-md text-sm transition-all duration-150 text-left"
-    [class.bg-brand-500]="isSelected"
-    [class.text-white]="isSelected"
-    [class.font-medium]="isSelected"
-    [class.text-slate-400]="!isSelected"
-    [class.hover:bg-slate-800]="!isSelected"
-    [class.hover:text-slate-200]="!isSelected"
+    class="w-full flex items-center gap-2 py-1.5 rounded-md text-sm transition-all duration-150 text-left"
+    [class]="isSelected
+      ? 'bg-brand-500 text-white font-medium'
+      : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'"
     [style.padding-left.px]="12 + depth() * 14"
+    [style.padding-right.px]="12"
   >
     <!-- Expand/collapse toggle -->
     @if (node().children.length > 0) {
@@ -40,10 +38,9 @@
     <span class="flex-1 truncate text-xs">{{ node().name }}</span>
 
     @if (node().children.length > 0) {
-      <span
-        class="flex-shrink-0 text-xs tabular-nums opacity-40"
-        [class.opacity-60]="isSelected"
-      >{{ node().children.length }}</span>
+      <span class="flex-shrink-0 text-xs tabular-nums opacity-40">
+        {{ node().children.length }}
+      </span>
     }
   </button>
 
