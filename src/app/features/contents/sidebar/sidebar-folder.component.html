@@ -17,7 +17,7 @@
       <span
         (click)="toggleExpand($event)"
         class="flex-shrink-0 w-3.5 h-3.5 flex items-center justify-center opacity-60 hover:opacity-100 transition-transform duration-150"
-        [class.rotate-90]="isExpanded"
+        [class.rotate-90]="isExpanded()"
       >
         <svg viewBox="0 0 6 10" fill="currentColor" class="w-2 h-2.5">
           <path d="M1 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
@@ -48,7 +48,7 @@
   </button>
 
   <!-- Children (recursive) -->
-  @if (node().children.length > 0 && isExpanded) {
+  @if (node().children.length > 0 && isExpanded()) {
     <div class="relative">
       <!-- Tree connector line -->
       <div

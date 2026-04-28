@@ -1,4 +1,5 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '@features/auth/services/auth.service';
 import { ContentService } from '@features/contents/services/content.service';
 import { SidebarComponent } from '@features/contents/sidebar/sidebar.component';
@@ -13,15 +14,15 @@ import { ContentFormComponent } from '@features/contents/content-form/content-fo
   imports: [SidebarComponent, FilterBarComponent, ContentGridComponent, ContentFormComponent],
   templateUrl: './layout.component.html',
 })
-export class LayoutComponent implements OnInit {
+export class LayoutComponent {
   protected readonly auth = inject(AuthService);
   protected readonly contentService = inject(ContentService);
 
   readonly sidebarCollapsed = signal(false);
   readonly isFormOpen = signal(false);
 
-  ngOnInit(): void {
-    this.contentService.loadMockData().subscribe();
+  constructor() {
+    this.contentService.loadMockData().pipe(takeUntilDestroyed()).subscribe();
   }
 
   onFolderSelected(id: number | null): void {

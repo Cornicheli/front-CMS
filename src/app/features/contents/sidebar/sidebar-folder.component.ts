@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, signal } from '@angular/core';
 import { FolderNode } from '@models/folder.model';
 
 @Component({
@@ -14,7 +14,7 @@ export class SidebarFolderComponent {
 
   readonly select = output<number>();
 
-  isExpanded = true;
+  readonly isExpanded = signal(true);
 
   get isSelected(): boolean {
     return this.selectedId() === this.node().id;
@@ -30,6 +30,6 @@ export class SidebarFolderComponent {
 
   toggleExpand(event: MouseEvent): void {
     event.stopPropagation();
-    this.isExpanded = !this.isExpanded;
+    this.isExpanded.update((v) => !v);
   }
 }
