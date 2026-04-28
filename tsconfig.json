@@ -3,6 +3,13 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": {
+      "@core/*":     ["app/core/*"],
+      "@shared/*":   ["app/shared/*"],
+      "@features/*": ["app/features/*"],
+      "@models/*":   ["app/models/*"]
+    },
     "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
