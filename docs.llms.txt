@@ -1,0 +1,20 @@
+# REFERENCIA OFICIAL
+Para las mejores prácticas y sintaxis de Angular, utiliza siempre esta referencia:
+https://angular.dev/llms.txt
+
+---
+
+# CONTEXTO DEL PROYECTO: LatinAd DOOH CMS Challenge
+Estamos construyendo un CMS para pantallas de publicidad (DOOH).
+Consumiremos una API Mock (db.json) que ya está corriendo localmente.
+
+REQUERIMIENTOS CLAVE:
+1. AuthService: Login (admin/admin123) y guardar JWT en LocalStorage. HttpInterceptor para adjuntar el Bearer token.
+2. ContentService: Manejar peticiones de carpetas, categorías y contenidos con filtros. Usar Angular Signals para el estado.
+3. Sidebar Recursivo: Renderizar un árbol de carpetas basado en una lista plana con `id` y `parent_id`.
+4. Grilla de Contenidos: Mostrar items, permitir selección múltiple (checkbox) y tener un botón para archivar.
+5. UI/UX: Estilo limpio de panel SaaS usando Tailwind CSS moderno. Evitar diseños genéricos.
+
+REGLAS DE TRABAJO (CRÍTICO):
+- Usa estrictamente Standalone Components y el nuevo Control Flow (@if, @for).
+- Limítate a cumplir la fase actual que el usuario te solicite. No te adelantes a escribir código de fases futuras.
