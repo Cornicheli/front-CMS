@@ -17,6 +17,7 @@ export class LayoutComponent implements OnInit {
   protected readonly contentService = inject(ContentService);
 
   readonly sidebarCollapsed = signal(false);
+  readonly isFormOpen = signal(false);
 
   ngOnInit(): void {
     this.contentService.loadMockData().subscribe();
@@ -29,6 +30,9 @@ export class LayoutComponent implements OnInit {
   onFiltersChanged(filters: ContentFilters): void {
     this.contentService.updateFilters(filters);
   }
+
+  openForm(): void { this.isFormOpen.set(true); }
+  closeForm(): void { this.isFormOpen.set(false); }
 
   toggleSidebar(): void {
     this.sidebarCollapsed.update((v) => !v);
