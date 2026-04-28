@@ -1,0 +1,121 @@
+<div class="flex h-screen overflow-hidden bg-[#0a0f1c]">
+
+  <!-- ══════════════════════════════════════════════════════
+       SIDEBAR
+  ══════════════════════════════════════════════════════ -->
+  <aside
+    class="flex flex-col bg-[#0d1424] border-r border-slate-800/60 transition-all duration-200 ease-in-out"
+    [class.w-56]="!sidebarCollapsed()"
+    [class.w-0]="sidebarCollapsed()"
+    [class.overflow-hidden]="sidebarCollapsed()"
+  >
+    <!-- Brand -->
+    <div class="flex items-center gap-2.5 h-14 px-4 border-b border-slate-800/60 flex-shrink-0">
+      <div class="w-7 h-7 rounded-lg bg-brand-500 flex items-center justify-center flex-shrink-0">
+        <svg class="w-3.5 h-3.5 text-white" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793V2z"/>
+        </svg>
+      </div>
+      <span class="text-white font-semibold text-sm tracking-tight truncate">LatinAd CMS</span>
+    </div>
+
+    <!-- Folder tree -->
+    <div class="flex-1 overflow-y-auto py-2 scrollbar-thin">
+      <app-sidebar
+        [folders]="contentService.folders()"
+        (folderSelected)="onFolderSelected($event)"
+      />
+    </div>
+
+    <!-- User footer -->
+    <div class="flex-shrink-0 border-t border-slate-800/60 px-3 py-3">
+      <div class="flex items-center gap-2.5">
+        <div class="w-7 h-7 rounded-full bg-brand-500/20 ring-1 ring-brand-500/30 flex items-center justify-center flex-shrink-0">
+          <span class="text-brand-400 text-xs font-bold">{{ userInitial }}</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-slate-200 text-xs font-medium truncate">{{ username }}</p>
+          <p class="text-slate-600 text-[10px] capitalize tracking-wide">{{ userRole }}</p>
+        </div>
+        <button
+          type="button"
+          (click)="logout()"
+          title="Cerrar sesión"
+          class="flex-shrink-0 p-1.5 rounded-md text-slate-600 hover:text-slate-300 hover:bg-slate-800 transition-colors"
+        >
+          <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+            <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ══════════════════════════════════════════════════════
+       MAIN CONTENT
+  ══════════════════════════════════════════════════════ -->
+  <div class="flex-1 flex flex-col overflow-hidden bg-slate-50">
+
+    <!-- Topbar -->
+    <header class="flex-shrink-0 h-14 flex items-center justify-between px-5 bg-white border-b border-slate-200 shadow-sm">
+      <div class="flex items-center gap-3">
+        <!-- Sidebar toggle -->
+        <button
+          type="button"
+          (click)="toggleSidebar()"
+          class="p-1.5 rounded-md text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+          title="Toggle sidebar"
+        >
+          <svg class="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
+            <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+          </svg>
+        </button>
+
+        <div>
+          <h1 class="text-sm font-semibold text-slate-800 leading-none">Contenidos</h1>
+          <p class="text-[11px] text-slate-400 mt-0.5 leading-none">
+            @if (contentService.isLoading()) {
+              Cargando...
+            } @else {
+              {{ contentService.filteredContents().length }} elemento(s)
+            }
+          </p>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex items-center gap-2">
+        <!-- Loading spinner -->
+        @if (contentService.isLoading()) {
+          <svg class="animate-spin w-4 h-4 text-brand-500" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+          </svg>
+        }
+
+        <!-- New content button (placeholder — wired up in HITO 6) -->
+        <button
+          type="button"
+          class="flex items-center gap-1.5 px-3 py-1.5 bg-brand-500 hover:bg-brand-600 text-white text-xs font-medium rounded-lg transition-colors"
+        >
+          <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+          </svg>
+          Nuevo contenido
+        </button>
+      </div>
+    </header>
+
+    <!-- Filter bar -->
+    <app-filter-bar
+      [categories]="contentService.categories()"
+      (filtersChanged)="onFiltersChanged($event)"
+    />
+
+    <!-- Content area -->
+    <main class="flex-1 overflow-y-auto p-5">
+      <app-content-grid />
+    </main>
+  </div>
+</div>

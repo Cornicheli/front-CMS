@@ -1,0 +1,68 @@
+<div class="select-none">
+  <!-- Folder row -->
+  <button
+    type="button"
+    (click)="onSelect()"
+    class="group w-full flex items-center gap-2 px-3 py-1.5 rounded-md text-sm transition-all duration-150 text-left"
+    [class.bg-brand-500]="isSelected"
+    [class.text-white]="isSelected"
+    [class.font-medium]="isSelected"
+    [class.text-slate-400]="!isSelected"
+    [class.hover:bg-slate-800]="!isSelected"
+    [class.hover:text-slate-200]="!isSelected"
+    [style.padding-left.px]="12 + depth() * 14"
+  >
+    <!-- Expand/collapse toggle -->
+    @if (node().children.length > 0) {
+      <span
+        (click)="toggleExpand($event)"
+        class="flex-shrink-0 w-3.5 h-3.5 flex items-center justify-center opacity-60 hover:opacity-100 transition-transform duration-150"
+        [class.rotate-90]="isExpanded"
+      >
+        <svg viewBox="0 0 6 10" fill="currentColor" class="w-2 h-2.5">
+          <path d="M1 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+    } @else {
+      <span class="flex-shrink-0 w-3.5 h-3.5"></span>
+    }
+
+    <!-- Folder icon -->
+    <svg
+      class="flex-shrink-0 w-3.5 h-3.5"
+      [class.text-brand-300]="isSelected"
+      [class.text-slate-500]="!isSelected"
+      viewBox="0 0 16 16" fill="currentColor"
+    >
+      <path d="M1.75 1A1.75 1.75 0 0 0 0 2.75v10.5C0 14.216.784 15 1.75 15h12.5A1.75 1.75 0 0 0 16 13.25v-8.5A1.75 1.75 0 0 0 14.25 3H7.5a.25.25 0 0 1-.2-.1l-.9-1.2C6.07 1.26 5.55 1 5 1H1.75Z"/>
+    </svg>
+
+    <span class="flex-1 truncate text-xs">{{ node().name }}</span>
+
+    @if (node().children.length > 0) {
+      <span
+        class="flex-shrink-0 text-xs tabular-nums opacity-40"
+        [class.opacity-60]="isSelected"
+      >{{ node().children.length }}</span>
+    }
+  </button>
+
+  <!-- Children (recursive) -->
+  @if (node().children.length > 0 && isExpanded) {
+    <div class="relative">
+      <!-- Tree connector line -->
+      <div
+        class="absolute left-0 top-0 bottom-0 w-px bg-slate-700/60"
+        [style.margin-left.px]="18 + depth() * 14"
+      ></div>
+      @for (child of node().children; track child.id) {
+        <app-sidebar-folder
+          [node]="child"
+          [selectedId]="selectedId()"
+          [depth]="depth() + 1"
+          (select)="onChildSelect($event)"
+        />
+      }
+    </div>
+  }
+</div>
