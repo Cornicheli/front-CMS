@@ -120,3 +120,12 @@
     </main>
   </div>
 </div>
+
+<!-- Content form modal -->
+@if (isFormOpen()) {
+  <app-content-form
+    [categories]="contentService.categories()"
+    [folders]="contentService.folders()"
+    (closed)="closeForm()"
+  />
+}

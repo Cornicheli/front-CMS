@@ -5,11 +5,12 @@ import { SidebarComponent } from '@features/contents/sidebar/sidebar.component';
 import { FilterBarComponent } from '@features/contents/filter-bar/filter-bar.component';
 import { ContentGridComponent } from '@features/contents/content-grid/content-grid.component';
 import { ContentFilters } from '@models/filters.model';
+import { ContentFormComponent } from '@features/contents/content-form/content-form.component';
 
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [SidebarComponent, FilterBarComponent, ContentGridComponent],
+  imports: [SidebarComponent, FilterBarComponent, ContentGridComponent, ContentFormComponent],
   templateUrl: './layout.component.html',
 })
 export class LayoutComponent implements OnInit {
