@@ -3,9 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
 import { LoginRequest, LoginResponse, JwtPayload } from '@models/auth.model';
+import { API_BASE_URL } from '@core/constants/api.constants';
 
 const TOKEN_KEY = 'cms_token';
-const API_URL = 'http://localhost:3001';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -31,7 +31,7 @@ export class AuthService {
 
   login(credentials: LoginRequest) {
     return this.http
-      .post<LoginResponse>(`${API_URL}/auth/login`, credentials)
+      .post<LoginResponse>(`${API_BASE_URL}/auth/login`, credentials)
       .pipe(
         tap((response) => {
           this._token.set(response.token);
