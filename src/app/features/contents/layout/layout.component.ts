@@ -1,5 +1,6 @@
 import { Component, inject, signal, computed } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '@features/auth/services/auth.service';
 import { ContentService } from '@features/contents/services/content.service';
@@ -9,16 +10,18 @@ import { ContentGridComponent } from '@features/contents/content-grid/content-gr
 import { ContentFilters } from '@models/filters.model';
 import { ContentFormComponent } from '@features/contents/content-form/content-form.component';
 import { Content } from '@models/content.model';
+import { MonitorScreenService } from '@features/monitor/monitor-screen.service';
 
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [SidebarComponent, FilterBarComponent, ContentGridComponent, ContentFormComponent, DecimalPipe],
+  imports: [SidebarComponent, FilterBarComponent, ContentGridComponent, ContentFormComponent, DecimalPipe, RouterLink],
   templateUrl: './layout.component.html',
 })
 export class LayoutComponent {
   protected readonly auth = inject(AuthService);
   protected readonly contentService = inject(ContentService);
+  protected readonly screenService = inject(MonitorScreenService);
 
   readonly sidebarCollapsed = signal(false);
   readonly isFormOpen       = signal(false);

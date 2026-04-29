@@ -1,0 +1,310 @@
+<!-- Section header -->
+<div class="flex items-center gap-3 mb-3">
+  <h2 class="text-[10px] font-semibold tracking-widest text-slate-500 uppercase">Inventario</h2>
+  <div class="flex-1 h-px bg-slate-800/60"></div>
+  <span class="text-[10px] text-slate-600">{{ contents().length }} contenidos</span>
+</div>
+
+<!-- Empty state -->
+@if (contents().length === 0) {
+  <div class="flex flex-col items-center justify-center py-16 text-center">
+    <div class="w-14 h-14 rounded-full bg-slate-800/60 flex items-center justify-center mb-3">
+      <svg class="w-6 h-6 text-slate-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="2" y="3" width="20" height="14" rx="2"/>
+        <path d="M8 21h8M12 17v4"/>
+      </svg>
+    </div>
+    <p class="text-sm text-slate-500">No hay contenidos en esta zona</p>
+    <p class="text-xs text-slate-600 mt-1">Seleccioná otra zona o limpiá el filtro</p>
+  </div>
+}
+
+<!-- ══════════ GRID VIEW ══════════ -->
+@if (contents().length > 0 && viewMode() === 'grid') {
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+    @for (item of contents(); track item.id) {
+      <div
+        class="group relative bg-[#0d1424] border rounded-xl overflow-hidden cursor-pointer
+               transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.3)]"
+        [class]="isSelected(item.id)
+          ? 'border-brand-500/50 shadow-[0_0_0_2px_rgba(79,110,247,0.18)]'
+          : 'border-slate-800/60 hover:border-slate-700/60'"
+        (click)="toggleSelect(item.id)"
+      >
+        <!-- Thumbnail -->
+        <div class="relative h-40 overflow-hidden bg-slate-900">
+          @if (item.type === 'image') {
+            <img
+              [src]="item.url"
+              [alt]="item.name"
+              class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+              loading="lazy"
+            />
+          } @else {
+            <video
+              [src]="item.url"
+              class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+              muted
+              playsinline
+              preload="metadata"
+              (mouseenter)="$any($event.target).play()"
+              (mouseleave)="$any($event.target).pause(); $any($event.target).currentTime = 0"
+            ></video>
+          }
+
+          <!-- Checkbox top-left -->
+          <div
+            class="absolute top-2 left-2 w-5 h-5 rounded-md flex items-center justify-center transition-all duration-150"
+            [class]="isSelected(item.id)
+              ? 'bg-brand-500 opacity-100'
+              : 'bg-white opacity-0 group-hover:opacity-100'"
+            (click)="$event.stopPropagation(); toggleSelect(item.id)"
+          >
+            @if (isSelected(item.id)) {
+              <svg class="w-3 h-3 text-white" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="2,6 5,9 10,3"/>
+              </svg>
+            }
+          </div>
+
+          <!-- Status badge top-right -->
+          <span
+            class="absolute top-2 right-2 flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full"
+            [class]="statusClass(item.id)"
+          >
+            <span class="w-1.5 h-1.5 rounded-full flex-shrink-0" [class]="statusDotClass(item.id)"></span>
+            {{ statusLabel(item.id) }}
+          </span>
+
+          <!-- Type badge bottom-left -->
+          <span
+            class="absolute bottom-2 left-2 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider"
+            [class]="item.type === 'image'
+              ? 'bg-sky-500/80 text-white'
+              : 'bg-violet-500/80 text-white'"
+          >
+            {{ item.type === 'image' ? 'IMG' : 'VID' }}
+          </span>
+
+          <!-- Audio badge -->
+          @if (item.type === 'video' && item.has_audio) {
+            <span class="absolute bottom-2 right-2 bg-black/60 backdrop-blur-sm text-white text-[9px] px-1.5 py-0.5 rounded-full flex items-center gap-1">
+              <svg class="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+              </svg>
+              Audio
+            </span>
+          }
+        </div>
+
+        <!-- Card body -->
+        <div class="px-3 py-2.5">
+          <p class="text-sm font-semibold text-slate-100 truncate" [title]="item.name">{{ item.name }}</p>
+          <div class="flex items-center justify-between mt-1">
+            @if (categoryName(item.category_id)) {
+              <span class="text-[10px] px-1.5 py-0.5 rounded bg-brand-500/10 text-brand-300 truncate max-w-[60%]">
+                {{ categoryName(item.category_id) }}
+              </span>
+            } @else {
+              <span></span>
+            }
+            <span class="text-[10px] text-slate-500">{{ item.created_at | date:'d MMM y' }}</span>
+          </div>
+        </div>
+
+        <!-- Metrics row -->
+        <div class="grid grid-cols-3 border-t border-slate-800/50 text-center">
+          <div class="px-2 py-2">
+            <div class="text-xs font-bold text-slate-300">{{ formatReach(metrics(item.id).reach) }}</div>
+            <div class="text-[9px] text-slate-600 uppercase tracking-wider">Reach</div>
+          </div>
+          <div class="px-2 py-2 border-x border-slate-800/50">
+            <div class="text-xs font-bold text-slate-300">${{ metrics(item.id).revenue }}</div>
+            <div class="text-[9px] text-slate-600 uppercase tracking-wider">Rev.</div>
+          </div>
+          <div class="px-2 py-2">
+            <div class="text-xs font-bold text-slate-300">{{ metrics(item.id).ctr }}%</div>
+            <div class="text-[9px] text-slate-600 uppercase tracking-wider">CTR</div>
+          </div>
+        </div>
+
+        <!-- Smart Trigger badge -->
+        @if (showTriggerBadge(item.id)) {
+          <div class="px-3 pb-2">
+            <span class="text-[9px] px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-300 border border-amber-500/15 font-medium">
+              {{ triggerLabel(item.id) }}
+            </span>
+          </div>
+        }
+
+        <!-- View Logs button -->
+        <button
+          type="button"
+          (click)="$event.stopPropagation(); openPoP(item.id, item.name)"
+          class="w-full flex items-center justify-center gap-1 py-1.5 text-[10px] text-slate-500 hover:text-brand-300 border-t border-slate-800/50 transition-colors"
+        >
+          <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+          View Logs
+        </button>
+      </div>
+    }
+  </div>
+}
+
+<!-- ══════════ LIST VIEW ══════════ -->
+@if (contents().length > 0 && viewMode() === 'list') {
+  <div class="flex flex-col gap-1.5">
+    @for (item of contents(); track item.id) {
+      <div
+        class="group flex items-center gap-3 bg-[#0d1424] border rounded-xl px-4 py-2.5 cursor-pointer
+               transition-all duration-150 hover:border-slate-700/60"
+        [class]="isSelected(item.id)
+          ? 'border-brand-500/40 bg-brand-500/5'
+          : 'border-slate-800/60'"
+        (click)="toggleSelect(item.id)"
+      >
+        <!-- Checkbox -->
+        <div
+          class="w-4 h-4 rounded flex-shrink-0 flex items-center justify-center border transition-all"
+          [class]="isSelected(item.id)
+            ? 'bg-brand-500 border-brand-500'
+            : 'border-slate-700 group-hover:border-slate-500'"
+        >
+          @if (isSelected(item.id)) {
+            <svg class="w-2.5 h-2.5 text-white" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="2,6 5,9 10,3"/>
+            </svg>
+          }
+        </div>
+
+        <!-- Thumb -->
+        <div class="w-12 h-9 rounded-md overflow-hidden flex-shrink-0 bg-slate-900">
+          @if (item.type === 'image') {
+            <img [src]="item.url" [alt]="item.name" class="w-full h-full object-cover"/>
+          } @else {
+            <video [src]="item.url" class="w-full h-full object-cover" muted preload="metadata"></video>
+          }
+        </div>
+
+        <!-- Name -->
+        <span class="flex-1 min-w-0 text-sm font-medium text-slate-200 truncate">{{ item.name }}</span>
+
+        <!-- Type badge -->
+        <span
+          class="text-[9px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider flex-shrink-0"
+          [class]="item.type === 'image' ? 'bg-sky-500/80 text-white' : 'bg-violet-500/80 text-white'"
+        >
+          {{ item.type === 'image' ? 'IMG' : 'VID' }}
+        </span>
+
+        <!-- Status -->
+        <span
+          class="flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full flex-shrink-0"
+          [class]="statusClass(item.id)"
+        >
+          <span class="w-1.5 h-1.5 rounded-full" [class]="statusDotClass(item.id)"></span>
+          {{ statusLabel(item.id) }}
+        </span>
+
+        <!-- Reach -->
+        <span class="text-xs font-semibold text-slate-400 flex-shrink-0 min-w-[72px] text-right">
+          {{ formatReach(metrics(item.id).reach) }} reach
+        </span>
+
+        <!-- Date -->
+        <span class="text-[10px] text-slate-500 flex-shrink-0 min-w-[80px] text-right">
+          {{ item.created_at | date:'d MMM y' }}
+        </span>
+
+        <!-- View Logs button (list) -->
+        <button
+          type="button"
+          (click)="$event.stopPropagation(); openPoP(item.id, item.name)"
+          class="flex-shrink-0 flex items-center gap-1 px-2 py-1 text-[10px] text-slate-500 hover:text-brand-300 border border-slate-800/60 hover:border-brand-500/30 rounded-lg transition-colors"
+        >
+          <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+          </svg>
+          Logs
+        </button>
+      </div>
+    }
+  </div>
+}
+
+<!-- Proof of Play Modal -->
+@if (popTargetId() !== null) {
+  <app-proof-of-play-modal
+    [contentName]="popTargetName()"
+    (closed)="closePoP()"
+  />
+}
+
+<!-- ══════════ FLOATING ACTION BAR ══════════ -->
+@if (hasSelection()) {
+  <div class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50
+              flex items-center gap-2.5
+              bg-slate-900/95 border border-slate-700/60 rounded-2xl px-4 py-2.5
+              shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_0_1px_rgba(79,110,247,0.12)]
+              backdrop-blur-md
+              animate-[slideUpFab_0.2s_ease-out]">
+
+    <!-- Count -->
+    <span class="text-sm font-bold text-brand-300 px-3 py-1.5 bg-brand-500/10 border border-brand-500/20 rounded-lg">
+      {{ selectionCount() }} seleccionado{{ selectionCount() !== 1 ? 's' : '' }}
+    </span>
+
+    <div class="w-px h-6 bg-slate-700/60"></div>
+
+    <!-- Archive -->
+    <button
+      type="button"
+      (click)="archiveSelected()"
+      class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold
+             bg-amber-500/10 text-amber-400 border border-amber-500/20
+             hover:bg-amber-500/20 transition-colors"
+    >
+      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="21 8 21 21 3 21 3 8"/>
+        <rect x="1" y="3" width="22" height="5"/>
+        <line x1="10" y1="12" x2="14" y2="12"/>
+      </svg>
+      Archivar
+    </button>
+
+    <!-- Delete -->
+    <button
+      type="button"
+      (click)="deleteSelected()"
+      class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold
+             bg-red-500/10 text-red-400 border border-red-500/20
+             hover:bg-red-500/20 transition-colors"
+    >
+      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="3 6 5 6 21 6"/>
+        <path d="M19 6l-1 14H6L5 6"/>
+        <path d="M10 11v6M14 11v6"/>
+      </svg>
+      Eliminar
+    </button>
+
+    <div class="w-px h-6 bg-slate-700/60"></div>
+
+    <!-- Cancel -->
+    <button
+      type="button"
+      (click)="clearSelection()"
+      class="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium
+             text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition-colors"
+    >
+      ✕ Cancelar
+    </button>
+  </div>
+}

@@ -91,4 +91,6 @@ export class ContentGridComponent {
   cancelDelete(): void { this.confirmDeleteId.set(null); }
 
   readonly skeletonItems = [1, 2, 3, 4, 5, 6, 7, 8];
+
+  showTriggerBadge(id: number): boolean { return id % 3 === 0; }
 }

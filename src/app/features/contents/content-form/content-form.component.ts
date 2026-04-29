@@ -20,7 +20,7 @@ import {
 import { ContentService } from '@features/contents/services/content.service';
 import { Category } from '@models/category.model';
 import { Folder } from '@models/folder.model';
-import { Content, ContentType, UpdateContentRequest } from '@models/content.model';
+import { Content, ContentType, UpdateContentRequest, IAB_CATEGORIES, IabCategory, CONTENT_DURATIONS, ContentDuration } from '@models/content.model';
 
 @Component({
   selector: 'app-content-form',
@@ -49,6 +49,8 @@ export class ContentFormComponent {
     category_id: number | null;
     folder_id: number | null;
     has_audio: boolean;
+    iab_category: IabCategory | null;
+    duration: ContentDuration | null;
   }>({
     name: '',
     url: '',
@@ -56,6 +58,8 @@ export class ContentFormComponent {
     category_id: null,
     folder_id: null,
     has_audio: false,
+    iab_category: null,
+    duration: null,
   });
 
   readonly contentForm = form(this.model, (s) => {
@@ -71,6 +75,17 @@ export class ContentFormComponent {
   /** Show has_audio only for videos */
   readonly showAudio = computed(() => this.model().type === 'video');
 
+  readonly iabOpen = signal(false);
+  readonly selectedIabName = computed(() => this.model().iab_category ?? 'Seleccionar categoría IAB...');
+
+  readonly iabCategories = IAB_CATEGORIES;
+  readonly durations = CONTENT_DURATIONS;
+
+  selectIab(value: IabCategory | null): void {
+    this.model.update(m => ({ ...m, iab_category: value }));
+    this.iabOpen.set(false);
+  }
+
   /** Populate form when editing — untracked prevents model becoming a dependency of this effect */
   private readonly _populateEffect = effect(() => {
     const c = this.initialContent();
@@ -82,6 +97,8 @@ export class ContentFormComponent {
         category_id: c.category_id,
         folder_id:   c.folder_id,
         has_audio:   c.has_audio,
+        iab_category: c.iab_category ?? null,
+        duration:    c.duration ?? null,
       }));
     }
   });
@@ -110,6 +127,8 @@ export class ContentFormComponent {
               category_id: m.category_id,
               folder_id:   m.folder_id,
               has_audio:   m.has_audio,
+              iab_category: m.iab_category,
+              duration:    m.duration,
             } as UpdateContentRequest),
           );
         } else {
@@ -121,6 +140,8 @@ export class ContentFormComponent {
               category_id: m.category_id,
               folder_id:   m.folder_id,
               has_audio:   m.has_audio,
+              iab_category: m.iab_category,
+              duration:    m.duration,
             }),
           );
         }

@@ -1,5 +1,14 @@
 // Verified against GET /api/mock-data and GET /api/contents — 2026-04-28
 
+export const IAB_CATEGORIES = [
+  'Automotriz', 'Finanzas', 'Tecnología', 'Retail',
+  'Gastronomía', 'Entretenimiento', 'Salud', 'Viajes',
+] as const;
+export type IabCategory = typeof IAB_CATEGORIES[number];
+
+export const CONTENT_DURATIONS = [10, 15, 30] as const;
+export type ContentDuration = typeof CONTENT_DURATIONS[number];
+
 export type ContentType = 'image' | 'video';
 
 export interface Content {
@@ -15,6 +24,8 @@ export interface Content {
   archived: boolean;
   /** ISO date string: "YYYY-MM-DD" */
   created_at: string;
+  iab_category?: IabCategory | null;
+  duration?: ContentDuration | null;
 }
 
 export interface UpdateContentRequest {
@@ -24,6 +35,8 @@ export interface UpdateContentRequest {
   category_id?: number | null;
   folder_id?: number | null;
   has_audio?: boolean;
+  iab_category?: IabCategory | null;
+  duration?: ContentDuration | null;
 }
 
 export interface CreateContentRequest {
@@ -33,4 +46,6 @@ export interface CreateContentRequest {
   category_id?: number | null;
   folder_id?: number | null;
   has_audio?: boolean;
+  iab_category?: IabCategory | null;
+  duration?: ContentDuration | null;
 }
