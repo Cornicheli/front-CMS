@@ -20,6 +20,25 @@
       <span class="text-white font-semibold text-sm tracking-tight truncate">LatinAd CMS</span>
     </div>
 
+    <!-- Nav links -->
+    <div class="px-3 py-2 border-b border-slate-800/60 flex-shrink-0">
+      <a
+        routerLink="/monitor"
+        class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition-colors"
+      >
+        <svg class="w-3.5 h-3.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+        Centro de Monitoreo
+        @if (screenService.alertCount() > 0) {
+          <span class="ml-auto flex-shrink-0 w-4 h-4 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center">
+            {{ screenService.alertCount() }}
+          </span>
+        }
+      </a>
+    </div>
+
     <!-- Folder tree -->
     <div class="flex-1 overflow-y-auto py-2 scrollbar-thin">
       <app-sidebar
@@ -143,59 +162,59 @@
     </header>
 
     <!-- KPI row -->
-    <div class="grid grid-cols-4 gap-4 px-5 py-4 bg-[#0d1424] border-b border-slate-800/60 flex-shrink-0">
+    <div class="grid grid-cols-4 gap-4 px-5 py-4 bg-white border-b border-slate-200 flex-shrink-0">
       <!-- Total -->
-      <div class="flex items-center gap-3 bg-slate-800/40 border border-slate-700/40 rounded-xl px-4 py-3">
-        <div class="w-8 h-8 rounded-lg bg-slate-700/60 flex items-center justify-center flex-shrink-0">
+      <div class="flex items-center gap-3 bg-white border border-slate-200 shadow-sm rounded-xl px-4 py-3">
+        <div class="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center flex-shrink-0">
           <svg class="w-4 h-4 text-slate-400" viewBox="0 0 16 16" fill="currentColor">
             <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
             <path d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2zM14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1zM2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1h-10z"/>
           </svg>
         </div>
         <div>
-          <p class="text-xl font-bold text-white leading-none">{{ contentService.kpiTotal() }}</p>
+          <p class="text-xl font-bold text-slate-700 leading-none">{{ contentService.kpiTotal() }}</p>
           <p class="text-[10px] uppercase tracking-widest text-slate-500 mt-0.5">Total</p>
         </div>
       </div>
 
       <!-- Activos -->
-      <div class="flex items-center gap-3 bg-emerald-950/30 border border-emerald-800/30 rounded-xl px-4 py-3">
-        <div class="w-8 h-8 rounded-lg bg-emerald-900/40 flex items-center justify-center flex-shrink-0">
-          <svg class="w-4 h-4 text-emerald-400" viewBox="0 0 16 16" fill="currentColor">
+      <div class="flex items-center gap-3 bg-emerald-50 border border-emerald-200 shadow-sm rounded-xl px-4 py-3">
+        <div class="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center flex-shrink-0">
+          <svg class="w-4 h-4 text-emerald-500" viewBox="0 0 16 16" fill="currentColor">
             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
             <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
           </svg>
         </div>
         <div>
-          <p class="text-xl font-bold text-emerald-400 leading-none">{{ contentService.kpiActive() }}</p>
-          <p class="text-[10px] uppercase tracking-widest text-emerald-700 mt-0.5">Activos</p>
+          <p class="text-xl font-bold text-emerald-600 leading-none">{{ contentService.kpiActive() }}</p>
+          <p class="text-[10px] uppercase tracking-widest text-emerald-600 mt-0.5">Activos</p>
         </div>
       </div>
 
       <!-- Archivados -->
-      <div class="flex items-center gap-3 bg-amber-950/30 border border-amber-800/30 rounded-xl px-4 py-3">
-        <div class="w-8 h-8 rounded-lg bg-amber-900/40 flex items-center justify-center flex-shrink-0">
-          <svg class="w-4 h-4 text-amber-400" viewBox="0 0 16 16" fill="currentColor">
+      <div class="flex items-center gap-3 bg-amber-50 border border-amber-200 shadow-sm rounded-xl px-4 py-3">
+        <div class="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center flex-shrink-0">
+          <svg class="w-4 h-4 text-amber-500" viewBox="0 0 16 16" fill="currentColor">
             <path d="M0 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 12.5V5a1 1 0 0 1-1-1V2zm2 3v7.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V5H2zm13-3H1v1h14V2zM5 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
           </svg>
         </div>
         <div>
-          <p class="text-xl font-bold text-amber-400 leading-none">{{ contentService.kpiArchived() }}</p>
-          <p class="text-[10px] uppercase tracking-widest text-amber-700 mt-0.5">Archivados</p>
+          <p class="text-xl font-bold text-amber-600 leading-none">{{ contentService.kpiArchived() }}</p>
+          <p class="text-[10px] uppercase tracking-widest text-amber-600 mt-0.5">Archivados</p>
         </div>
       </div>
 
       <!-- Vistas -->
-      <div class="flex items-center gap-3 bg-violet-950/30 border border-violet-800/30 rounded-xl px-4 py-3">
-        <div class="w-8 h-8 rounded-lg bg-violet-900/40 flex items-center justify-center flex-shrink-0">
-          <svg class="w-4 h-4 text-violet-400" viewBox="0 0 16 16" fill="currentColor">
+      <div class="flex items-center gap-3 bg-violet-50 border border-violet-200 shadow-sm rounded-xl px-4 py-3">
+        <div class="w-8 h-8 rounded-lg bg-violet-100 flex items-center justify-center flex-shrink-0">
+          <svg class="w-4 h-4 text-violet-500" viewBox="0 0 16 16" fill="currentColor">
             <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
             <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
           </svg>
         </div>
         <div>
-          <p class="text-xl font-bold text-violet-400 leading-none">{{ contentService.kpiViews() | number }}</p>
-          <p class="text-[10px] uppercase tracking-widest text-violet-700 mt-0.5">Vistas</p>
+          <p class="text-xl font-bold text-violet-600 leading-none">{{ contentService.kpiViews() | number }}</p>
+          <p class="text-[10px] uppercase tracking-widest text-violet-600 mt-0.5">Vistas</p>
         </div>
       </div>
     </div>
