@@ -106,6 +106,15 @@ export class ContentService {
     );
   }
 
+  /** PATCH /api/contents/:id — toggle archived state; update local signal and trigger KPI computeds. */
+  toggleArchive(id: number) {
+    return this.http.patch<Content>(`${API_URL}/contents/${id}`, {}).pipe(
+      tap((updated) => {
+        this.contents.update((list) => list.map((c) => (c.id === updated.id ? updated : c)));
+      }),
+    );
+  }
+
   /** PATCH /api/contents/archive — mark items archived in local state. */
   archiveContents(ids: number[]) {
     const body: ArchiveRequest = { ids };

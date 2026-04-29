@@ -63,7 +63,7 @@ export class FilterBarComponent implements OnInit, OnDestroy {
   clearFilters(): void {
     this.form.reset({ search: '', type: '', category_id: '' });
     this.showArchived.set(false);
-    this.filtersChanged.emit({});
+    this.emit(); // ← must call emit() so showArchived: undefined reaches the service
   }
 
   private emit(): void {

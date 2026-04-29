@@ -140,6 +140,16 @@
               </button>
               <button
                 type="button"
+                (click)="onToggleArchive(item, $event)"
+                class="w-full flex items-center gap-2 px-3 py-2 text-xs text-amber-400 hover:bg-slate-700 transition-colors"
+              >
+                <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="currentColor">
+                  <path d="M0 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 12.5V5a1 1 0 0 1-1-1V2zm2 3v7.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V5H2zm13-3H1v1h14V2zM5 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
+                </svg>
+                {{ item.archived ? 'Desarchivar' : 'Archivar' }}
+              </button>
+              <button
+                type="button"
                 (click)="requestDelete(item.id)"
                 class="w-full flex items-center gap-2 px-3 py-2 text-xs text-red-400 hover:bg-slate-700 transition-colors"
               >

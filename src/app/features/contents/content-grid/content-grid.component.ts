@@ -62,6 +62,12 @@ export class ContentGridComponent {
 
   closeMenu(): void { this.activeMenuId.set(null); }
 
+  onToggleArchive(item: Content, event: MouseEvent): void {
+    event.stopPropagation();
+    this.activeMenuId.set(null);
+    this.contentService.toggleArchive(item.id).subscribe();
+  }
+
   onEditClick(item: Content, event: MouseEvent): void {
     event.stopPropagation();
     this.activeMenuId.set(null);
