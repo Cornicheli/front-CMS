@@ -1,4 +1,6 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { Injectable, computed, signal, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { API_URL } from '@core/constants/api.constants';
 
 export type ScreenStatus = 'live' | 'idle' | 'disconnected';
 
@@ -44,6 +46,28 @@ const INITIAL_SCREENS: Screen[] = [
 
 @Injectable({ providedIn: 'root' })
 export class MonitorScreenService {
+  private readonly http = inject(HttpClient);
+
+  // Per-content online/offline status (separate from physical screen status)
+  private readonly _offlineContents = signal<Set<number>>(new Set());
+  readonly offlineContents = this._offlineContents.asReadonly();
+
+  isContentOffline(contentId: number): boolean {
+    return this._offlineContents().has(contentId);
+  }
+
+  setContentStatus(contentId: number, status: 'online' | 'offline'): void {
+    // Optimistic update
+    this._offlineContents.update(set => {
+      const next = new Set(set);
+      if (status === 'offline') next.add(contentId);
+      else next.delete(contentId);
+      return next;
+    });
+    // Persist to backend
+    this.http.patch(`${API_URL}/contents/${contentId}/screen-status`, { screen_status: status }).subscribe();
+  }
+
   private readonly _screens = signal<Screen[]>(INITIAL_SCREENS);
 
   readonly screens = this._screens.asReadonly();

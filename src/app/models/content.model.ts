@@ -26,6 +26,7 @@ export interface Content {
   created_at: string;
   iab_category?: IabCategory | null;
   duration?: ContentDuration | null;
+  screen_status?: 'online' | 'offline';
 }
 
 export interface UpdateContentRequest {

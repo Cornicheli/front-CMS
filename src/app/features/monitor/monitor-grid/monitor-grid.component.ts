@@ -5,6 +5,7 @@ import { Content } from '@models/content.model';
 import { Category } from '@models/category.model';
 import { getStatusForContent, getMetrics } from '@models/zone.model';
 import { ProofOfPlayModalComponent } from '../proof-of-play-modal/proof-of-play-modal.component';
+import { MonitorScreenService } from '../monitor-screen.service';
 
 @Component({
   selector: 'app-monitor-grid',
@@ -14,6 +15,7 @@ import { ProofOfPlayModalComponent } from '../proof-of-play-modal/proof-of-play-
 })
 export class MonitorGridComponent {
   private readonly contentService = inject(ContentService);
+  readonly screenService = inject(MonitorScreenService);
 
   readonly contents       = input<Content[]>([]);
   readonly viewMode       = input<'grid' | 'list'>('grid');
@@ -72,8 +74,24 @@ export class MonitorGridComponent {
     });
   }
 
+  readonly detailContent = signal<import('@models/content.model').Content | null>(null);
+
+  openDetail(item: import('@models/content.model').Content, event: MouseEvent): void {
+    event.stopPropagation();
+    this.detailContent.set(item);
+  }
+
+  closeDetail(): void { this.detailContent.set(null); }
+
+  toggleContentStatus(contentId: number): void {
+    const current = this.screenService.isContentOffline(contentId) ? 'offline' : 'online';
+    const next = current === 'online' ? 'offline' : 'online';
+    this.screenService.setContentStatus(contentId, next);
+  }
+
   /* ── Helpers (used in template) ── */
   statusClass(id: number): string {
+    if (this.screenService.isContentOffline(id)) return 'bg-red-500/15 text-red-400 border border-red-500/20';
     const s = getStatusForContent(id);
     if (s === 'live')      return 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/20';
     if (s === 'scheduled') return 'bg-amber-500/15 text-amber-400 border border-amber-500/20';
@@ -81,6 +99,7 @@ export class MonitorGridComponent {
   }
 
   statusLabel(id: number): string {
+    if (this.screenService.isContentOffline(id)) return 'Disconnected';
     const s = getStatusForContent(id);
     if (s === 'live')      return 'Live';
     if (s === 'scheduled') return 'Scheduled';
@@ -88,6 +107,7 @@ export class MonitorGridComponent {
   }
 
   statusDotClass(id: number): string {
+    if (this.screenService.isContentOffline(id)) return 'bg-red-400';
     const s = getStatusForContent(id);
     if (s === 'live')      return 'bg-emerald-400 animate-pulse';
     if (s === 'scheduled') return 'bg-amber-400';

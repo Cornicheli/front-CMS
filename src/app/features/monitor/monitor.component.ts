@@ -1,5 +1,6 @@
 import { Component, inject, signal, computed } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { RouterLink } from '@angular/router';
 import { ContentService } from '@features/contents/services/content.service';
 import { ZONES, getZoneForContent, getMetrics } from '@models/zone.model';
 import { MonitorSidebarComponent } from './monitor-sidebar/monitor-sidebar.component';
@@ -10,7 +11,7 @@ import { MonitorScreenService } from './monitor-screen.service';
 @Component({
   selector: 'app-monitor',
   standalone: true,
-  imports: [MonitorSidebarComponent, MonitorMapComponent, MonitorGridComponent],
+  imports: [MonitorSidebarComponent, MonitorMapComponent, MonitorGridComponent, RouterLink],
   templateUrl: './monitor.component.html',
 })
 export class MonitorComponent {

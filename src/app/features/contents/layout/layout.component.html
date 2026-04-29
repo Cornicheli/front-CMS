@@ -21,7 +21,18 @@
     </div>
 
     <!-- Nav links -->
-    <div class="px-2 pt-2 pb-1 border-b border-slate-800/40 flex-shrink-0">
+    <div class="px-2 pt-2 pb-1 border-b border-slate-800/40 flex-shrink-0 space-y-0.5">
+      <a
+        routerLink="/dashboard"
+        class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs bg-brand-500/15 text-brand-400 font-medium"
+      >
+        <svg class="w-3.5 h-3.5 flex-shrink-0" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+          <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
+          <path d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2zM14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1zM2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1h-10z"/>
+        </svg>
+        Dashboard
+      </a>
       <a
         routerLink="/monitor"
         class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 transition-all duration-150"
