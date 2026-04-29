@@ -5,4 +5,5 @@ export interface ContentFilters {
   type?: ContentType | '';
   category_id?: number | '';
   folder_id?: number | '';
+  showArchived?: boolean;
 }

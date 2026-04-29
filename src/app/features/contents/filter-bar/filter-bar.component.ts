@@ -5,6 +5,7 @@ import {
   inject,
   input,
   output,
+  signal,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Subject, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
@@ -22,8 +23,10 @@ export class FilterBarComponent implements OnInit, OnDestroy {
   private readonly fb = inject(FormBuilder);
   private readonly destroy$ = new Subject<void>();
 
-  readonly categories = input<Category[]>([]);
+  readonly categories    = input<Category[]>([]);
   readonly filtersChanged = output<ContentFilters>();
+
+  readonly showArchived = signal<boolean>(false);
 
   readonly form = this.fb.nonNullable.group({
     search:      [''],
@@ -52,17 +55,24 @@ export class FilterBarComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  toggleArchived(): void {
+    this.showArchived.update(v => !v);
+    this.emit();
+  }
+
   clearFilters(): void {
     this.form.reset({ search: '', type: '', category_id: '' });
+    this.showArchived.set(false);
     this.filtersChanged.emit({});
   }
 
   private emit(): void {
     const { search, type, category_id } = this.form.getRawValue();
     this.filtersChanged.emit({
-      search:      search || undefined,
-      type:        type || undefined,
-      category_id: category_id || undefined,
+      search:       search || undefined,
+      type:         type || undefined,
+      category_id:  category_id || undefined,
+      showArchived: this.showArchived() || undefined,
     });
   }
 }

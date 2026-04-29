@@ -50,5 +50,22 @@
     >
       Limpiar
     </button>
+
+    <!-- Archive toggle -->
+    <button
+      type="button"
+      (click)="toggleArchived()"
+      class="flex items-center gap-1.5 px-2.5 py-1.5 text-xs rounded-lg border transition-colors"
+      [class.bg-amber-500]="showArchived()"
+      [class.text-white]="showArchived()"
+      [class.border-amber-500]="showArchived()"
+      [class.text-slate-500]="!showArchived()"
+      [class.border-slate-200]="!showArchived()"
+    >
+      <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M0 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 12.5V5a1 1 0 0 1-1-1V2zm2 3v7.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V5H2zm13-3H1v1h14V2zM5 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
+      </svg>
+      Ver archivados
+    </button>
   </form>
 </div>

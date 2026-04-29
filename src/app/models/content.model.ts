@@ -17,6 +17,15 @@ export interface Content {
   created_at: string;
 }
 
+export interface UpdateContentRequest {
+  name: string;
+  type: ContentType;
+  url: string;
+  category_id?: number | null;
+  folder_id?: number | null;
+  has_audio?: boolean;
+}
+
 export interface CreateContentRequest {
   name: string;
   type: ContentType;

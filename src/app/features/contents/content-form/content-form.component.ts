@@ -6,6 +6,7 @@ import {
   signal,
   computed,
   effect,
+  untracked,
 } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import {
@@ -19,7 +20,7 @@ import {
 import { ContentService } from '@features/contents/services/content.service';
 import { Category } from '@models/category.model';
 import { Folder } from '@models/folder.model';
-import { ContentType } from '@models/content.model';
+import { Content, ContentType, UpdateContentRequest } from '@models/content.model';
 
 @Component({
   selector: 'app-content-form',
@@ -30,11 +31,15 @@ import { ContentType } from '@models/content.model';
 export class ContentFormComponent {
   private readonly contentService = inject(ContentService);
 
-  readonly categories = input<Category[]>([]);
-  readonly folders = input<Folder[]>([]);
-  readonly closed = output<void>();
+  readonly categories     = input<Category[]>([]);
+  readonly folders        = input<Folder[]>([]);
+  readonly initialContent = input<Content | null>(null);
+  readonly closed         = output<void>();
 
-  readonly isLoading = signal(false);
+  readonly isEditMode = computed(() => this.initialContent() !== null);
+  readonly contentId  = computed(() => this.initialContent()?.id ?? null);
+
+  readonly isLoading    = signal(false);
   readonly errorMessage = signal<string | null>(null);
 
   readonly model = signal<{
@@ -66,10 +71,18 @@ export class ContentFormComponent {
   /** Show has_audio only for videos */
   readonly showAudio = computed(() => this.model().type === 'video');
 
-  /** Reset has_audio when switching away from video */
-  private readonly _resetAudio = effect(() => {
-    if (this.model().type !== 'video') {
-      this.model.update((m) => ({ ...m, has_audio: false }));
+  /** Populate form when editing — untracked prevents model becoming a dependency of this effect */
+  private readonly _populateEffect = effect(() => {
+    const c = this.initialContent();
+    if (c) {
+      untracked(() => this.model.set({
+        name:        c.name,
+        url:         c.url,
+        type:        c.type,
+        category_id: c.category_id,
+        folder_id:   c.folder_id,
+        has_audio:   c.has_audio,
+      }));
     }
   });
 
@@ -88,19 +101,36 @@ export class ContentFormComponent {
       if (!m.type) return;
       this.isLoading.set(true);
       try {
-        await firstValueFrom(
-          this.contentService.createContent({
-            name: m.name,
-            url: m.url,
-            type: m.type,
-            category_id: m.category_id,
-            folder_id: m.folder_id,
-            has_audio: m.has_audio,
-          }),
-        );
+        if (this.isEditMode()) {
+          await firstValueFrom(
+            this.contentService.updateContent(this.contentId()!, {
+              name:        m.name,
+              url:         m.url,
+              type:        m.type,
+              category_id: m.category_id,
+              folder_id:   m.folder_id,
+              has_audio:   m.has_audio,
+            } as UpdateContentRequest),
+          );
+        } else {
+          await firstValueFrom(
+            this.contentService.createContent({
+              name:        m.name,
+              url:         m.url,
+              type:        m.type,
+              category_id: m.category_id,
+              folder_id:   m.folder_id,
+              has_audio:   m.has_audio,
+            }),
+          );
+        }
         this.closed.emit();
       } catch {
-        this.errorMessage.set('No se pudo crear el contenido. Verificá la URL e intentá de nuevo.');
+        this.errorMessage.set(
+          this.isEditMode()
+            ? 'No se pudo guardar los cambios. Verificá los datos e intentá de nuevo.'
+            : 'No se pudo crear el contenido. Verificá la URL e intentá de nuevo.',
+        );
         this.isLoading.set(false);
       }
     });
