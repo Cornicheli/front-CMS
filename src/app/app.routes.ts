@@ -14,6 +14,12 @@ export const routes: Routes = [
       import('@features/contents/layout/layout.component').then((m) => m.LayoutComponent),
   },
   {
+    path: 'monitor',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('@features/monitor/monitor.component').then((m) => m.MonitorComponent),
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full',

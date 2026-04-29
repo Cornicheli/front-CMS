@@ -34,17 +34,18 @@ export class ContentService {
   readonly filteredContents = computed(() => {
     const { search, type, category_id, folder_id, showArchived } = this.filters();
 
+    // Normalize IDs: any falsy value (null, '', undefined, 0) means "no filter"
+    const catId    = category_id ? Number(category_id) : null;
+    const folderId = folder_id   ? Number(folder_id)   : null;
+
     return this.contents().filter((c) => {
-      // archived visibility
-      if (showArchived) { if (!c.archived) return false; }
-      else              { if (c.archived)  return false; }
+      // archived visibility — explicit boolean check
+      if (showArchived === true) { if (!c.archived) return false; }
+      else                       { if (c.archived)  return false; }
 
-      if (search && !c.name.toLowerCase().includes(search.toLowerCase())) {
-        return false;
-      }
-
-      if (category_id && c.category_id !== category_id) return false;
-      if (folder_id && c.folder_id !== folder_id) return false;
+      if (search && !c.name.toLowerCase().includes(search.toLowerCase())) return false;
+      if (catId    !== null && c.category_id !== catId)    return false;
+      if (folderId !== null && c.folder_id   !== folderId) return false;
       if (type && c.type !== type) return false;
 
       return true;

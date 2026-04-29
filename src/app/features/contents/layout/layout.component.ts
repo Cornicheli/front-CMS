@@ -39,7 +39,12 @@ export class LayoutComponent {
   }
 
   onFolderSelected(id: number | null): void {
-    this.contentService.updateFilters({ folder_id: id ?? '' });
+    if (id === null) {
+      // "Todos": limpia carpeta Y filtro de archivados para mostrar todos los activos
+      this.contentService.updateFilters({ folder_id: '', showArchived: undefined });
+    } else {
+      this.contentService.updateFilters({ folder_id: id });
+    }
   }
 
   onFiltersChanged(filters: ContentFilters): void {

@@ -8,10 +8,10 @@
   <button
     type="button"
     (click)="clearSelection()"
-    class="w-full flex items-center gap-2 px-3 py-1.5 rounded-md text-xs transition-all duration-150 mb-0.5"
+    class="w-full flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs transition-all duration-150 mb-0.5"
     [class]="selectedId() === null
-      ? 'bg-brand-500 text-white font-medium'
-      : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'"
+      ? 'bg-brand-500/15 text-brand-400 font-medium shadow-[0_0_12px_-3px] shadow-brand-500/30 ring-1 ring-brand-500/20'
+      : 'text-slate-400 hover:bg-slate-800/60 hover:text-slate-200'"
   >
     <svg class="flex-shrink-0 w-3.5 h-3.5" viewBox="0 0 16 16" fill="currentColor">
       <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm8 0A1.5 1.5 0 0 1 10.5 9h3A1.5 1.5 0 0 1 15 10.5v3A1.5 1.5 0 0 1 13.5 15h-3A1.5 1.5 0 0 1 9 13.5v-3z"/>

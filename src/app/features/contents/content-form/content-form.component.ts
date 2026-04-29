@@ -42,6 +42,43 @@ export class ContentFormComponent {
   readonly isLoading    = signal(false);
   readonly errorMessage = signal<string | null>(null);
 
+  readonly categoryTouched = signal(false);
+  readonly folderTouched   = signal(false);
+  readonly typeOpen        = signal(false);
+  readonly categoryOpen    = signal(false);
+  readonly folderOpen      = signal(false);
+
+  readonly categoryError = computed(() =>
+    this.categoryTouched() && !this.model().category_id ? 'La categoría es requerida' : null
+  );
+  readonly folderError = computed(() =>
+    this.folderTouched() && !this.model().folder_id ? 'La carpeta es requerida' : null
+  );
+
+  readonly selectedCategoryName = computed(() => {
+    const id = this.model().category_id;
+    if (!id) return 'Seleccionar categoría...';
+    return this.categories().find(c => c.id === id)?.name ?? 'Seleccionar categoría...';
+  });
+
+  readonly selectedFolderName = computed(() => {
+    const id = this.model().folder_id;
+    if (!id) return 'Seleccionar carpeta...';
+    return this.folders().find(f => f.id === id)?.name ?? 'Seleccionar carpeta...';
+  });
+
+  selectCategory(id: number | null): void {
+    this.categoryTouched.set(true);
+    this.model.update(m => ({ ...m, category_id: id }));
+    this.categoryOpen.set(false);
+  }
+
+  selectFolder(id: number | null): void {
+    this.folderTouched.set(true);
+    this.model.update(m => ({ ...m, folder_id: id }));
+    this.folderOpen.set(false);
+  }
+
   readonly model = signal<{
     name: string;
     url: string;
@@ -89,18 +126,22 @@ export class ContentFormComponent {
   /** Populate form when editing — untracked prevents model becoming a dependency of this effect */
   private readonly _populateEffect = effect(() => {
     const c = this.initialContent();
-    if (c) {
-      untracked(() => this.model.set({
-        name:        c.name,
-        url:         c.url,
-        type:        c.type,
-        category_id: c.category_id,
-        folder_id:   c.folder_id,
-        has_audio:   c.has_audio,
-        iab_category: c.iab_category ?? null,
-        duration:    c.duration ?? null,
-      }));
-    }
+    untracked(() => {
+      this.categoryTouched.set(false);
+      this.folderTouched.set(false);
+      if (c) {
+        this.model.set({
+          name:        c.name,
+          url:         c.url,
+          type:        c.type,
+          category_id: c.category_id,
+          folder_id:   c.folder_id,
+          has_audio:   c.has_audio,
+          iab_category: c.iab_category ?? null,
+          duration:    c.duration ?? null,
+        });
+      }
+    });
   });
 
   onTypeChange(value: string): void {
@@ -111,11 +152,19 @@ export class ContentFormComponent {
     }));
   }
 
+  selectType(value: ContentType): void {
+    this.onTypeChange(value);
+    this.typeOpen.set(false);
+  }
+
   onSubmit(): void {
     this.errorMessage.set(null);
+    this.categoryTouched.set(true);
+    this.folderTouched.set(true);
     submit(this.contentForm, async () => {
       const m = this.model();
       if (!m.type) return;
+      if (!m.category_id || !m.folder_id) return;
       this.isLoading.set(true);
       try {
         if (this.isEditMode()) {

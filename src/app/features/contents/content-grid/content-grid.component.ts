@@ -30,6 +30,13 @@ export class ContentGridComponent {
   readonly hasSelection   = computed(() => this.selectedIds().size > 0);
   readonly selectionCount = computed(() => this.selectedIds().size);
 
+  readonly allSelectedArchived = computed(() => {
+    const ids = this.selectedIds();
+    if (ids.size === 0) return false;
+    const contents = this.contentService.contents();
+    return [...ids].every(id => contents.find(c => c.id === id)?.archived === true);
+  });
+
   toggleSelect(id: number): void {
     this.selectedIds.update((set) => {
       const next = new Set(set);
@@ -52,6 +59,22 @@ export class ContentGridComponent {
     this.contentService.archiveContents(ids).subscribe({
       next: () => this.clearSelection(),
     });
+  }
+
+  toggleSelected(): void {
+    const ids = [...this.selectedIds()];
+    if (this.allSelectedArchived()) {
+      let done = 0;
+      ids.forEach(id =>
+        this.contentService.toggleArchive(id).subscribe(() => {
+          if (++done === ids.length) this.clearSelection();
+        })
+      );
+    } else {
+      this.contentService.archiveContents(ids).subscribe({
+        next: () => this.clearSelection(),
+      });
+    }
   }
 
   openMenu(id: number, event: MouseEvent): void {

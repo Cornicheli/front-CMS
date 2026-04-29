@@ -1,7 +1,27 @@
 {
   "permissions": {
     "allow": [
-      "Bash(cd:*)"
+      "Bash(cd:*)",
+      "Bash(ls:*)",
+      "Bash(curl:*)",
+      "mcp__plugin_playwright_playwright__browser_navigate",
+      "mcp__plugin_playwright_playwright__browser_take_screenshot",
+      "mcp__plugin_playwright_playwright__browser_snapshot",
+      "mcp__plugin_playwright_playwright__browser_evaluate",
+      "mcp__plugin_playwright_playwright__browser_run_code",
+      "mcp__plugin_playwright_playwright__browser_fill_form",
+      "mcp__plugin_playwright_playwright__browser_type",
+      "mcp__plugin_playwright_playwright__browser_click",
+      "mcp__plugin_playwright_playwright__browser_console_messages",
+      "mcp__plugin_compound-engineering_pw__browser_navigate",
+      "mcp__plugin_compound-engineering_pw__browser_close",
+      "mcp__plugin_playwright_playwright__browser_close",
+      "Bash(taskkill:*)",
+      "Bash(wmic process:*)",
+      "Bash(cmd /c \"taskkill /PID 19044 /F & taskkill /PID 15620 /F & taskkill /PID 8552 /F & taskkill /PID 15240 /F & taskkill /PID 7096 /F & taskkill /PID 19240 /F & echo done\" 2>&1)",
+      "Bash(node:*)",
+      "Bash(find:*)",
+      "Bash(cp:*)"
     ]
   }
 }
