@@ -6,21 +6,19 @@
   aria-labelledby="form-title"
 >
   <!-- Overlay -->
-  <div
-    class="absolute inset-0 bg-black/60 backdrop-blur-sm"
-    (click)="close()"
-  ></div>
+  <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" (click)="close()"></div>
 
   <!-- Modal panel -->
-  <div class="relative w-full max-w-lg bg-[#0d1424] rounded-2xl border border-slate-800/80 shadow-2xl overflow-hidden">
-
+  <div
+    class="relative w-full max-w-lg bg-[#0d1424] rounded-2xl border border-slate-800/80 shadow-2xl overflow-hidden"
+  >
     <!-- Header -->
     <div class="flex items-center justify-between px-6 py-4 border-b border-slate-800/60">
       <div>
         <h2 id="form-title" class="text-white font-semibold text-base leading-none">
-          Nuevo contenido
+          {{ isEditMode() ? 'Editar contenido' : 'Nuevo contenido' }}
         </h2>
-        <p class="text-slate-400 text-xs mt-1">Completá los campos para agregar un asset.</p>
+        <p class="text-slate-400 text-xs mt-1">{{ isEditMode() ? 'Modificá los campos del asset.' : 'Completá los campos para agregar un asset.' }}</p>
       </div>
       <button
         type="button"
@@ -28,18 +26,15 @@
         class="p-1.5 rounded-lg text-slate-500 hover:text-slate-300 hover:bg-slate-800 transition-colors"
       >
         <svg class="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
-          <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+          <path
+            d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
+          />
         </svg>
       </button>
     </div>
 
     <!-- Form body -->
-    <form
-      (submit)="onSubmit(); $event.preventDefault()"
-      novalidate
-      class="px-6 py-5 space-y-4"
-    >
-
+    <form (submit)="onSubmit(); $event.preventDefault()" novalidate class="px-6 py-5 space-y-4">
       <!-- Name -->
       <div class="space-y-1.5">
         <label class="block text-xs font-medium text-slate-400">
@@ -50,17 +45,20 @@
           [formField]="contentForm.name"
           placeholder="Banner_verano_01"
           autocomplete="off"
-          class="w-full px-3 py-2 text-sm bg-slate-900/60 border rounded-lg text-white
-                 placeholder-slate-600 focus:outline-none focus:ring-2 transition-all"
-          [class]="(contentForm.name().touched() && contentForm.name().errors().length)
-            ? 'border-red-500/70 focus:ring-red-500'
-            : 'border-slate-700 focus:ring-brand-500'"
+          class="w-full px-3 py-2 text-sm bg-slate-900/60 border rounded-lg text-white placeholder-slate-600 focus:outline-none focus:ring-2 transition-all"
+          [class]="
+            contentForm.name().touched() && contentForm.name().errors().length
+              ? 'border-red-500/70 focus:ring-red-500'
+              : 'border-slate-700 focus:ring-brand-500'
+          "
         />
         @if (contentForm.name().touched() && contentForm.name().errors().length) {
           <p class="text-xs text-red-400 flex items-center gap-1">
             <svg class="w-3 h-3 flex-shrink-0" viewBox="0 0 16 16" fill="currentColor">
-              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-              <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
+              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+              <path
+                d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"
+              />
             </svg>
             {{ contentForm.name().errors()[0].message }}
           </p>
@@ -77,17 +75,20 @@
           [formField]="contentForm.url"
           placeholder="https://cdn.example.com/asset.jpg"
           autocomplete="off"
-          class="w-full px-3 py-2 text-sm bg-slate-900/60 border rounded-lg text-white
-                 placeholder-slate-600 focus:outline-none focus:ring-2 transition-all"
-          [class]="(contentForm.url().touched() && contentForm.url().errors().length)
-            ? 'border-red-500/70 focus:ring-red-500'
-            : 'border-slate-700 focus:ring-brand-500'"
+          class="w-full px-3 py-2 text-sm bg-slate-900/60 border rounded-lg text-white placeholder-slate-600 focus:outline-none focus:ring-2 transition-all"
+          [class]="
+            contentForm.url().touched() && contentForm.url().errors().length
+              ? 'border-red-500/70 focus:ring-red-500'
+              : 'border-slate-700 focus:ring-brand-500'
+          "
         />
         @if (contentForm.url().touched() && contentForm.url().errors().length) {
           <p class="text-xs text-red-400 flex items-center gap-1">
             <svg class="w-3 h-3 flex-shrink-0" viewBox="0 0 16 16" fill="currentColor">
-              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-              <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
+              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+              <path
+                d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"
+              />
             </svg>
             {{ contentForm.url().errors()[0].message }}
           </p>
@@ -96,7 +97,6 @@
 
       <!-- Type + Category row -->
       <div class="grid grid-cols-2 gap-3">
-
         <!-- Type -->
         <div class="space-y-1.5">
           <label class="block text-xs font-medium text-slate-400">
@@ -106,11 +106,12 @@
             <select
               [formField]="contentForm.type"
               (change)="onTypeChange($any($event.target).value)"
-              class="w-full pl-3 pr-8 py-2 text-sm bg-slate-900/60 border rounded-lg
-                     focus:outline-none focus:ring-2 transition-all appearance-none"
-              [class]="(contentForm.type().touched() && contentForm.type().errors().length)
-                ? 'border-red-500/70 focus:ring-red-500 text-white'
-                : 'border-slate-700 focus:ring-brand-500'"
+              class="w-full pl-3 pr-8 py-2 text-sm bg-slate-900/60 border rounded-lg focus:outline-none focus:ring-2 transition-all appearance-none"
+              [class]="
+                contentForm.type().touched() && contentForm.type().errors().length
+                  ? 'border-red-500/70 focus:ring-red-500 text-white'
+                  : 'border-slate-700 focus:ring-brand-500'
+              "
               [class.text-slate-500]="!model().type"
               [class.text-white]="!!model().type"
             >
@@ -118,8 +119,14 @@
               <option value="image">Imagen</option>
               <option value="video">Video</option>
             </select>
-            <svg class="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500" viewBox="0 0 16 16" fill="currentColor">
-              <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+            <svg
+              class="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500"
+              viewBox="0 0 16 16"
+              fill="currentColor"
+            >
+              <path
+                d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"
+              />
             </svg>
           </div>
           @if (contentForm.type().touched() && contentForm.type().errors().length) {
@@ -132,18 +139,28 @@
           <label class="block text-xs font-medium text-slate-400">Categoría</label>
           <div class="relative">
             <select
-              class="w-full pl-3 pr-8 py-2 text-sm bg-slate-900/60 border border-slate-700 rounded-lg text-white
-                     focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all appearance-none"
+              class="w-full pl-3 pr-8 py-2 text-sm bg-slate-900/60 border border-slate-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all appearance-none"
               [value]="model().category_id ?? ''"
-              (change)="model.update(m => ({ ...m, category_id: $any($event.target).value ? +$any($event.target).value : null }))"
+              (change)="
+                model.update((m) => ({
+                  ...m,
+                  category_id: $any($event.target).value ? +$any($event.target).value : null,
+                }))
+              "
             >
               <option value="">Sin categoría</option>
               @for (cat of categories(); track cat.id) {
                 <option [value]="cat.id">{{ cat.name }}</option>
               }
             </select>
-            <svg class="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500" viewBox="0 0 16 16" fill="currentColor">
-              <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+            <svg
+              class="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500"
+              viewBox="0 0 16 16"
+              fill="currentColor"
+            >
+              <path
+                d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"
+              />
             </svg>
           </div>
         </div>
@@ -154,18 +171,28 @@
         <label class="block text-xs font-medium text-slate-400">Carpeta</label>
         <div class="relative">
           <select
-            class="w-full pl-3 pr-8 py-2 text-sm bg-slate-900/60 border border-slate-700 rounded-lg text-white
-                   focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all appearance-none"
+            class="w-full pl-3 pr-8 py-2 text-sm bg-slate-900/60 border border-slate-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all appearance-none"
             [value]="model().folder_id ?? ''"
-            (change)="model.update(m => ({ ...m, folder_id: $any($event.target).value ? +$any($event.target).value : null }))"
+            (change)="
+              model.update((m) => ({
+                ...m,
+                folder_id: $any($event.target).value ? +$any($event.target).value : null,
+              }))
+            "
           >
             <option value="">Sin carpeta (raíz)</option>
             @for (folder of folders(); track folder.id) {
               <option [value]="folder.id">{{ folder.name }}</option>
             }
           </select>
-          <svg class="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+          <svg
+            class="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500"
+            viewBox="0 0 16 16"
+            fill="currentColor"
+          >
+            <path
+              d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"
+            />
           </svg>
         </div>
       </div>
@@ -177,7 +204,7 @@
             <input
               type="checkbox"
               [checked]="model().has_audio"
-              (change)="model.update(m => ({ ...m, has_audio: $any($event.target).checked }))"
+              (change)="model.update((m) => ({ ...m, has_audio: $any($event.target).checked }))"
               class="sr-only peer"
             />
             <div
@@ -188,7 +215,9 @@
             ></div>
           </div>
           <div>
-            <span class="text-sm text-slate-300 font-medium group-hover:text-white transition-colors">
+            <span
+              class="text-sm text-slate-300 font-medium group-hover:text-white transition-colors"
+            >
               Contiene audio
             </span>
             <p class="text-xs text-slate-600">Para videos con pista de sonido</p>
@@ -198,10 +227,18 @@
 
       <!-- Global error -->
       @if (errorMessage()) {
-        <div class="flex items-start gap-2 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2.5">
-          <svg class="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-            <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
+        <div
+          class="flex items-start gap-2 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2.5"
+        >
+          <svg
+            class="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5"
+            viewBox="0 0 16 16"
+            fill="currentColor"
+          >
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+            <path
+              d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"
+            />
           </svg>
           <p class="text-xs text-red-400">{{ errorMessage() }}</p>
         </div>
@@ -220,24 +257,40 @@
         <button
           type="submit"
           [disabled]="isLoading()"
-          class="flex items-center gap-1.5 px-4 py-2 bg-brand-500 hover:bg-brand-600 disabled:bg-brand-500/50
-                 text-white text-xs font-medium rounded-lg transition-colors"
+          class="flex items-center gap-1.5 px-4 py-2 bg-brand-500 hover:bg-brand-600 disabled:bg-brand-500/50 text-white text-xs font-medium rounded-lg transition-colors"
         >
           @if (isLoading()) {
             <svg class="animate-spin w-3.5 h-3.5" fill="none" viewBox="0 0 24 24">
-              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
-              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              />
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+              />
             </svg>
             Guardando...
+          } @else if (isEditMode()) {
+            <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+            </svg>
+            Guardar cambios
           } @else {
             <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="currentColor">
-              <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+              <path
+                d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"
+              />
             </svg>
             Crear contenido
           }
         </button>
       </div>
-
     </form>
   </div>
 </div>

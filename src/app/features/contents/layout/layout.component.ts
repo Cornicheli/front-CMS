@@ -1,4 +1,5 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, computed } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '@features/auth/services/auth.service';
 import { ContentService } from '@features/contents/services/content.service';
@@ -7,11 +8,12 @@ import { FilterBarComponent } from '@features/contents/filter-bar/filter-bar.com
 import { ContentGridComponent } from '@features/contents/content-grid/content-grid.component';
 import { ContentFilters } from '@models/filters.model';
 import { ContentFormComponent } from '@features/contents/content-form/content-form.component';
+import { Content } from '@models/content.model';
 
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [SidebarComponent, FilterBarComponent, ContentGridComponent, ContentFormComponent],
+  imports: [SidebarComponent, FilterBarComponent, ContentGridComponent, ContentFormComponent, DecimalPipe],
   templateUrl: './layout.component.html',
 })
 export class LayoutComponent {
@@ -19,7 +21,15 @@ export class LayoutComponent {
   protected readonly contentService = inject(ContentService);
 
   readonly sidebarCollapsed = signal(false);
-  readonly isFormOpen = signal(false);
+  readonly isFormOpen       = signal(false);
+  readonly editingContent   = signal<Content | null>(null);
+
+  /** Active folder name for breadcrumb display */
+  readonly activeFolderName = computed(() => {
+    const folderId = this.contentService.filters().folder_id;
+    if (!folderId) return null;
+    return this.contentService.folders().find((f) => f.id === folderId)?.name ?? null;
+  });
 
   constructor() {
     this.contentService.loadMockData().pipe(takeUntilDestroyed()).subscribe();
@@ -33,8 +43,10 @@ export class LayoutComponent {
     this.contentService.updateFilters(filters);
   }
 
-  openForm(): void { this.isFormOpen.set(true); }
-  closeForm(): void { this.isFormOpen.set(false); }
+  openForm():                   void { this.openNewForm(); }
+  openNewForm():                void { this.editingContent.set(null);  this.isFormOpen.set(true); }
+  openEditForm(c: Content):     void { this.editingContent.set(c);     this.isFormOpen.set(true); }
+  closeForm():                  void { this.isFormOpen.set(false); this.editingContent.set(null); }
 
   toggleSidebar(): void {
     this.sidebarCollapsed.update((v) => !v);
