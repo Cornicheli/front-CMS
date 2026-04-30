@@ -82,10 +82,33 @@ export class MonitorComponent {
     return total >= 1000 ? `${Math.round(total / 1000)}K` : `${total}`;
   });
 
+  readonly liveTime = signal(new Date().toTimeString().slice(0, 8));
+
+  readonly smartTriggers = [
+    { icon: '☂', name: 'Lluvia',     sub: 'rain > 0.5mm',  color: '#67e8f9', on: true,  hits: 14 },
+    { icon: '⏱', name: 'Hora pico',  sub: '18:00 — 21:00', color: '#fbbf24', on: true,  hits: 42 },
+    { icon: '☀', name: 'Calor',      sub: 'temp > 32°',    color: '#f87171', on: true,  hits: 8  },
+    { icon: '⚽', name: 'Match local',sub: 'event.match',   color: '#a78bfa', on: false, hits: 0  },
+  ];
+
+  readonly popActivity = [
+    { t: '03:31:33', screen: 'CABA-014', zone: 'Centro',    content: 'Banner Obelisco',   dur: 10, status: 'partial' },
+    { t: '03:31:05', screen: 'PAL-007',  zone: 'Palermo',   content: 'Spot Palermo',      dur: 15, status: 'ok' },
+    { t: '03:30:33', screen: 'RET-002',  zone: 'Retiro',    content: 'Campaña Retiro',    dur: 30, status: 'ok' },
+    { t: '03:30:05', screen: 'CABA-009', zone: 'Centro',    content: 'Banner Obelisco',   dur: 10, status: 'ok' },
+    { t: '03:29:33', screen: 'PAL-003',  zone: 'Palermo',   content: 'Spot Palermo',      dur: 15, status: 'ok' },
+    { t: '03:29:05', screen: 'PM-001',   zone: 'P. Madero', content: 'Coca Cola Mundial', dur: 30, status: 'ok' },
+    { t: '03:28:33', screen: 'CABA-014', zone: 'Centro',    content: 'Banner Obelisco',   dur: 10, status: 'ok' },
+    { t: '03:28:05', screen: 'PAL-007',  zone: 'Palermo',   content: 'Banner tecno',      dur: 15, status: 'ok' },
+    { t: '03:27:33', screen: 'TEL-002',  zone: 'San Telmo', content: 'Menu Digital',      dur: 30, status: 'partial' },
+    { t: '03:27:05', screen: 'CABA-009', zone: 'Centro',    content: 'Coca Cola',         dur: 10, status: 'ok' },
+  ];
+
   constructor() {
     if (this.contentService.contents().length === 0) {
       this.contentService.loadMockData().pipe(takeUntilDestroyed()).subscribe();
     }
+    setInterval(() => this.liveTime.set(new Date().toTimeString().slice(0, 8)), 1000);
   }
 
   onZoneSelected(id: string | null): void {

@@ -2,6 +2,7 @@ import { Component, inject, signal, computed, output } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ContentService } from '@features/contents/services/content.service';
 import { Content } from '@models/content.model';
+import { getMetrics } from '@models/zone.model';
 
 @Component({
   selector: 'app-content-grid',
@@ -116,4 +117,8 @@ export class ContentGridComponent {
   readonly skeletonItems = [1, 2, 3, 4, 5, 6, 7, 8];
 
   showTriggerBadge(id: number): boolean { return id % 3 === 0; }
+
+  metrics(id: number) { return getMetrics(id); }
+  fmtReach(n: number): string { return n >= 1000 ? (n / 1000).toFixed(1) + 'K' : String(n); }
+  fmtRev(n: number): string { return n >= 1000 ? '$' + (n / 1000).toFixed(1) + 'K' : '$' + n; }
 }

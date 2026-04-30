@@ -1,5 +1,6 @@
-<div class="flex h-screen overflow-hidden bg-slate-950">
-  <!-- ══════════════════ SIDEBAR ══════════════════ -->
+<div class="flex h-screen overflow-hidden bg-[#0a0a0e]">
+
+  <!-- ══════════ SIDEBAR ══════════ -->
   <app-monitor-sidebar
     [zones]="zones"
     [folders]="contentService.folders()"
@@ -9,66 +10,75 @@
     (folderSelected)="onFolderSelected($event)"
   />
 
-  <!-- ══════════════════ MAIN ══════════════════ -->
+  <!-- ══════════ MAIN ══════════ -->
   <div class="flex-1 flex flex-col overflow-hidden min-w-0">
 
-    <!-- TOPBAR -->
-    <header class="h-14 flex-shrink-0 flex items-center gap-3 px-5
-                   bg-slate-900/95 backdrop-blur-xl border-b border-slate-800/60
-                   shadow-[0_1px_0_0_rgba(255,255,255,0.03)]">
+    <!-- TOPBAR — AC live ticker style -->
+    <header class="flex-shrink-0 px-[22px] py-3 border-b border-white/[0.06] flex items-center gap-[18px] bg-[#0a0a0e]">
 
-      <!-- Back to Dashboard — visible, branded -->
+      <!-- Back + Title -->
       <a
         routerLink="/dashboard"
-        class="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium
-               text-slate-400 hover:text-slate-100
-               bg-slate-800/60 hover:bg-slate-700/60
-               border border-slate-700/60 hover:border-slate-600/60
-               transition-all duration-150"
+        class="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-medium text-white/55 hover:text-white/80 transition-all"
+        style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08)"
       >
         <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="currentColor">
-          <path fill-rule="evenodd"
-            d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+          <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
         </svg>
         Dashboard
       </a>
 
-      <div class="flex-1 min-w-0">
-        <h1 class="text-sm font-semibold text-slate-100 truncate tracking-tight">
-          Centro de Monitoreo
-          <span class="ml-2 text-slate-500 font-normal text-xs">{{ breadcrumb() }}</span>
-        </h1>
+      <div>
+        <div class="flex items-baseline gap-2">
+          <span class="text-[17px] font-semibold text-white/94 tracking-tight" style="letter-spacing:-0.02em">Centro de Monitoreo</span>
+          <span class="font-mono text-[11px] text-white/34">· CABA · {{ breadcrumb() }}</span>
+        </div>
+        <div class="font-mono text-[10px] text-white/34 tracking-[0.04em]">~ / Dashboard / Monitor</div>
       </div>
 
-      <!-- Theme toggle -->
-      <button
-        type="button"
-        (click)="themeService.toggle()"
-        class="flex-shrink-0 p-1.5 rounded-md text-slate-500 hover:text-slate-300 hover:bg-slate-800 transition-colors"
-        [title]="themeService.isDark() ? 'Modo claro' : 'Modo oscuro'"
-      >
-        @if (themeService.isDark()) {
-          <svg class="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8z"/>
-          </svg>
-        } @else {
-          <svg class="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
-          </svg>
-        }
-      </button>
+      <div class="flex-1"></div>
+
+      <!-- Live ticker -->
+      <div class="flex gap-[18px] font-mono text-[11px]">
+        <div class="flex items-center gap-1.5">
+          <span class="text-white/34 tracking-[0.1em]">NET</span>
+          <span class="text-[#4ade80] font-medium">{{ kpiNetworkHealth() }}</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <span class="text-white/34 tracking-[0.1em]">PLAYS</span>
+          <span class="text-[#a78bfa] font-medium">{{ kpiActivePlays() }}</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <span class="text-white/34 tracking-[0.1em]">REV/h</span>
+          <span class="text-[#fbbf24] font-medium">{{ kpiRevenue() }}</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <span class="text-white/34 tracking-[0.1em]">REACH</span>
+          <span class="text-white/55 font-medium">{{ kpiReach() }}</span>
+        </div>
+      </div>
+
+      <div class="h-[18px] w-px bg-white/[0.06]"></div>
+
+      <!-- LIVE badge -->
+      <div class="flex items-center gap-2 px-[10px] py-[5px] rounded-lg border flex-shrink-0"
+           style="background: rgba(34,197,94,0.08); border-color: rgba(34,197,94,0.25)">
+        <span class="w-1.5 h-1.5 rounded-full bg-[#4ade80] animate-pulse"
+              style="box-shadow: 0 0 8px #4ade80"></span>
+        <span class="font-mono text-[11px] text-[#4ade80] tracking-[0.06em]">LIVE · {{ liveTime() }}</span>
+      </div>
 
       <!-- Grid / List toggle -->
-      <div class="flex bg-slate-900 border border-slate-800/80 rounded-lg p-0.5 gap-0.5 flex-shrink-0">
+      <div class="flex border border-white/[0.08] rounded-lg p-0.5 gap-0.5 flex-shrink-0"
+           style="background: rgba(255,255,255,0.02)">
         <button
           type="button"
           (click)="onViewModeChange('grid')"
-          class="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-150"
-          [class]="viewMode() === 'grid'
-            ? 'bg-brand-500/20 text-brand-300'
-            : 'text-slate-500 hover:text-slate-300'"
+          class="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[11px] font-medium transition-all"
+          [class]="viewMode() === 'grid' ? 'text-[#a78bfa]' : 'text-white/34 hover:text-white/60'"
+          [style]="viewMode() === 'grid' ? 'background: rgba(167,139,250,0.12)' : ''"
         >
-          <svg class="w-3.5 h-3.5 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
             <rect x="3" y="3" width="7" height="7" rx="1.5"/>
             <rect x="14" y="3" width="7" height="7" rx="1.5"/>
             <rect x="3" y="14" width="7" height="7" rx="1.5"/>
@@ -79,12 +89,11 @@
         <button
           type="button"
           (click)="onViewModeChange('list')"
-          class="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-150"
-          [class]="viewMode() === 'list'
-            ? 'bg-brand-500/20 text-brand-300'
-            : 'text-slate-500 hover:text-slate-300'"
+          class="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[11px] font-medium transition-all"
+          [class]="viewMode() === 'list' ? 'text-[#a78bfa]' : 'text-white/34 hover:text-white/60'"
+          [style]="viewMode() === 'list' ? 'background: rgba(167,139,250,0.12)' : ''"
         >
-          <svg class="w-3.5 h-3.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <line x1="3" y1="6" x2="21" y2="6"/>
             <line x1="3" y1="12" x2="21" y2="12"/>
             <line x1="3" y1="18" x2="21" y2="18"/>
@@ -94,90 +103,156 @@
       </div>
     </header>
 
-    <!-- ── KPI ROW ── -->
-    <div class="flex-shrink-0 grid grid-cols-4 gap-3 px-5 py-4 bg-slate-950">
-
-      <!-- Network Status -->
-      <div class="relative bg-slate-900/60 backdrop-blur-sm border border-slate-700/50 rounded-2xl px-4 py-3.5 flex items-center gap-3 overflow-hidden shadow-xl">
-        <div class="absolute top-0 left-0 right-0 h-0.5 rounded-t-2xl bg-gradient-to-r from-emerald-500 to-teal-400"></div>
-        <div class="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center flex-shrink-0">
-          <svg class="w-4 h-4 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <!-- ── KPI ROW — AC style ── -->
+    <div class="flex-shrink-0 grid grid-cols-4 gap-[1px] border-b border-white/[0.06]"
+         style="background: rgba(255,255,255,0.04)">
+      <!-- Network -->
+      <div class="flex items-center gap-3 px-5 py-3.5" style="background: #0a0a0e">
+        <div class="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
+             style="background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.2)">
+          <svg class="w-3.5 h-3.5 text-[#4ade80]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="10"/>
             <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
           </svg>
         </div>
-        <div class="flex-1 min-w-0">
-          <div class="text-xl font-bold text-slate-50 leading-none tabular-nums">{{ kpiNetworkHealth() }}</div>
-          <div class="text-[10px] text-slate-500 mt-1 uppercase tracking-wider">Network Online</div>
+        <div>
+          <div class="font-mono text-[9px] text-white/34 uppercase tracking-[0.14em]">Network Online</div>
+          <div class="text-[20px] font-semibold text-white/94 leading-tight" style="letter-spacing:-0.02em">{{ kpiNetworkHealth() }}</div>
         </div>
-        <span class="flex-shrink-0 text-[10px] font-bold px-2 py-1 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center gap-1"
-              style="filter: drop-shadow(0 0 6px rgba(52,211,153,0.35))">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse inline-block"></span>
+        <span class="ml-auto font-mono text-[10px] font-bold px-2 py-1 rounded-full flex items-center gap-1 text-[#4ade80] flex-shrink-0"
+              style="background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.25); filter: drop-shadow(0 0 6px rgba(74,222,128,0.25))">
+          <span class="w-1.5 h-1.5 rounded-full bg-[#4ade80] animate-pulse"></span>
           LIVE
         </span>
       </div>
-
       <!-- Active Plays -->
-      <div class="relative bg-slate-900/60 backdrop-blur-sm border border-slate-700/50 rounded-2xl px-4 py-3.5 flex items-center gap-3 overflow-hidden shadow-xl">
-        <div class="absolute top-0 left-0 right-0 h-0.5 rounded-t-2xl bg-gradient-to-r from-brand-500 to-violet-500"></div>
-        <div class="w-9 h-9 rounded-xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center flex-shrink-0">
-          <svg class="w-4 h-4 text-brand-400" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M8 5v14l11-7z"/>
-          </svg>
+      <div class="flex items-center gap-3 px-5 py-3.5" style="background: #0a0a0e">
+        <div class="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
+             style="background: rgba(167,139,250,0.1); border: 1px solid rgba(167,139,250,0.2)">
+          <svg class="w-3.5 h-3.5 text-[#a78bfa]" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
         </div>
-        <div class="flex-1 min-w-0">
-          <div class="text-xl font-bold text-slate-50 leading-none tabular-nums">{{ kpiActivePlays() }}</div>
-          <div class="text-[10px] text-slate-500 mt-1 uppercase tracking-wider">Active Plays</div>
+        <div>
+          <div class="font-mono text-[9px] text-white/34 uppercase tracking-[0.14em]">Active Plays</div>
+          <div class="text-[20px] font-semibold text-white/94 leading-tight" style="letter-spacing:-0.02em">{{ kpiActivePlays() }}</div>
         </div>
       </div>
-
       <!-- Revenue -->
-      <div class="relative bg-slate-900/60 backdrop-blur-sm border border-slate-700/50 rounded-2xl px-4 py-3.5 flex items-center gap-3 overflow-hidden shadow-xl">
-        <div class="absolute top-0 left-0 right-0 h-0.5 rounded-t-2xl bg-gradient-to-r from-amber-500 to-orange-400"></div>
-        <div class="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center flex-shrink-0">
-          <svg class="w-4 h-4 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <div class="flex items-center gap-3 px-5 py-3.5" style="background: #0a0a0e">
+        <div class="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
+             style="background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.2)">
+          <svg class="w-3.5 h-3.5 text-[#fbbf24]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <line x1="12" y1="1" x2="12" y2="23"/>
             <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
           </svg>
         </div>
-        <div class="flex-1 min-w-0">
-          <div class="text-xl font-bold text-slate-50 leading-none tabular-nums">{{ kpiRevenue() }}</div>
-          <div class="text-[10px] text-slate-500 mt-1 uppercase tracking-wider">Revenue / Mes</div>
+        <div>
+          <div class="font-mono text-[9px] text-white/34 uppercase tracking-[0.14em]">Revenue / Mes</div>
+          <div class="text-[20px] font-semibold text-white/94 leading-tight" style="letter-spacing:-0.02em">{{ kpiRevenue() }}</div>
         </div>
-        <span class="flex-shrink-0 text-[10px] font-bold px-2 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">+12%</span>
+        <span class="ml-auto font-mono text-[10px] font-medium px-2 py-1 rounded-full text-[#fbbf24] flex-shrink-0"
+              style="background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.2)">+12%</span>
       </div>
-
-      <!-- Total Reach -->
-      <div class="relative bg-slate-900/60 backdrop-blur-sm border border-slate-700/50 rounded-2xl px-4 py-3.5 flex items-center gap-3 overflow-hidden shadow-xl">
-        <div class="absolute top-0 left-0 right-0 h-0.5 rounded-t-2xl bg-gradient-to-r from-violet-500 to-fuchsia-400"></div>
-        <div class="w-9 h-9 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center flex-shrink-0">
-          <svg class="w-4 h-4 text-violet-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <!-- Reach -->
+      <div class="flex items-center gap-3 px-5 py-3.5" style="background: #0a0a0e">
+        <div class="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
+             style="background: rgba(167,139,250,0.1); border: 1px solid rgba(167,139,250,0.2)">
+          <svg class="w-3.5 h-3.5 text-[#c4b5fd]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
             <circle cx="12" cy="12" r="3"/>
           </svg>
         </div>
-        <div class="flex-1 min-w-0">
-          <div class="text-xl font-bold text-slate-50 leading-none tabular-nums">{{ kpiReach() }}</div>
-          <div class="text-[10px] text-slate-500 mt-1 uppercase tracking-wider">Total Reach</div>
+        <div>
+          <div class="font-mono text-[9px] text-white/34 uppercase tracking-[0.14em]">Total Reach</div>
+          <div class="text-[20px] font-semibold text-white/94 leading-tight" style="letter-spacing:-0.02em">{{ kpiReach() }}</div>
         </div>
-        <span class="flex-shrink-0 text-[10px] font-bold px-2 py-1 rounded-full bg-violet-500/10 text-violet-400 border border-violet-500/20">CPM 3.8</span>
+        <span class="ml-auto font-mono text-[10px] font-medium px-2 py-1 rounded-full text-[#c4b5fd] flex-shrink-0"
+              style="background: rgba(167,139,250,0.1); border: 1px solid rgba(167,139,250,0.2)">CPM 3.8</span>
       </div>
     </div>
 
-    <!-- ── SCROLLABLE CONTENT ── -->
-    <div class="flex-1 overflow-y-auto px-5 pb-8 space-y-4 bg-slate-950 scrollbar-thin">
-      <app-monitor-map
-        [zones]="zones"
-        [activeZoneId]="activeZoneId()"
-        [contents]="contentService.contents()"
-        (zoneClicked)="onZoneSelected($event)"
-      />
-      <app-monitor-grid
-        [contents]="filteredContents()"
-        [viewMode]="viewMode()"
-        [categories]="contentService.categories()"
-        (viewModeChange)="onViewModeChange($event)"
-      />
+    <!-- ── MAIN CONTENT + RIGHT RAIL ── -->
+    <div class="flex-1 flex min-h-0">
+
+      <!-- Scrollable content -->
+      <div class="flex-1 overflow-y-auto px-5 pb-8 space-y-4 min-w-0" style="background: #0a0a0e">
+        <app-monitor-map
+          [zones]="zones"
+          [activeZoneId]="activeZoneId()"
+          [contents]="contentService.contents()"
+          (zoneClicked)="onZoneSelected($event)"
+        />
+        <app-monitor-grid
+          [contents]="filteredContents()"
+          [viewMode]="viewMode()"
+          [categories]="contentService.categories()"
+          (viewModeChange)="onViewModeChange($event)"
+        />
+      </div>
+
+      <!-- ── RIGHT RAIL (from C) ── -->
+      <aside class="flex-shrink-0 flex flex-col min-h-0" style="width: 280px; background: #13131a; border-left: 1px solid rgba(255,255,255,0.06)">
+
+        <!-- Smart Triggers -->
+        <div style="padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.06)">
+          <div class="flex items-center justify-between mb-[10px]">
+            <span class="text-[13px] font-semibold text-white/94">Smart Triggers</span>
+            <span class="font-mono text-[10px] text-white/34">3/4 active</span>
+          </div>
+          @for (t of smartTriggers; track t.name) {
+            <div class="flex items-center gap-2.5 py-2" [style.opacity]="t.on ? '1' : '0.45'">
+              <div class="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 text-[13px]"
+                   [style]="'background:' + t.color + '1a; border: 1px solid ' + t.color + '33'">
+                {{ t.icon }}
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="text-[11.5px] text-white/94 font-medium">{{ t.name }}</div>
+                <div class="font-mono text-[9.5px] text-white/34 truncate">{{ t.sub }}</div>
+              </div>
+              <div class="font-mono text-[11px] font-medium flex-shrink-0"
+                   [class]="t.on ? 'text-white/94' : 'text-white/34'">{{ t.hits }}</div>
+              <!-- Toggle pill -->
+              <div class="relative flex-shrink-0" style="width:24px; height:14px; border-radius:99px"
+                   [style.background]="t.on ? '#4ade80' : 'rgba(255,255,255,0.1)'">
+                <div class="absolute rounded-full bg-white transition-all" style="top:2px; width:10px; height:10px"
+                     [style.left]="t.on ? '12px' : '2px'"></div>
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Proof of Play stream header -->
+        <div class="flex items-center justify-between px-4 py-3" style="border-bottom: 1px solid rgba(255,255,255,0.06)">
+          <div>
+            <span class="text-[13px] font-semibold text-white/94">Proof of Play</span>
+            <div class="font-mono text-[9.5px] text-white/34 mt-0.5">auditoría en vivo · 327 eventos hoy</div>
+          </div>
+          <span class="font-mono text-[10px] text-[#4ade80] flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#4ade80] animate-pulse"
+                  style="box-shadow: 0 0 6px #4ade80"></span>
+            STREAM
+          </span>
+        </div>
+
+        <!-- PoP activity feed -->
+        <div class="flex-1 overflow-y-auto">
+          @for (a of popActivity; track a.t) {
+            <div class="grid gap-2.5 px-4 py-[9px] items-center"
+                 style="grid-template-columns: auto 1fr auto; border-bottom: 1px solid rgba(255,255,255,0.04)">
+              <span class="font-mono text-[10px] text-white/34">{{ a.t }}</span>
+              <div class="min-w-0">
+                <div class="text-[11.5px] text-white/94 truncate">{{ a.content }}</div>
+                <div class="font-mono text-[9.5px] text-white/34">{{ a.screen }} · {{ a.dur }}s · {{ a.zone }}</div>
+              </div>
+              <div class="w-[18px] h-[18px] rounded-full flex items-center justify-center flex-shrink-0 font-mono text-[10px] font-semibold"
+                   [style]="a.status === 'ok'
+                     ? 'background: rgba(74,222,128,0.15); border: 1px solid rgba(74,222,128,0.4); color: #4ade80'
+                     : 'background: rgba(251,191,36,0.15); border: 1px solid rgba(251,191,36,0.4); color: #fbbf24'">
+                {{ a.status === 'ok' ? '✓' : '!' }}
+              </div>
+            </div>
+          }
+        </div>
+      </aside>
     </div>
   </div>
 </div>

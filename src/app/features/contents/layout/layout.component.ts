@@ -1,5 +1,4 @@
 import { Component, inject, signal, computed } from '@angular/core';
-import { DecimalPipe } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '@features/auth/services/auth.service';
@@ -16,7 +15,7 @@ import { ThemeService } from '@core/services/theme.service';
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [SidebarComponent, FilterBarComponent, ContentGridComponent, ContentFormComponent, DecimalPipe, RouterLink, RouterLinkActive],
+  imports: [SidebarComponent, FilterBarComponent, ContentGridComponent, ContentFormComponent, RouterLink, RouterLinkActive],
   templateUrl: './layout.component.html',
 })
 export class LayoutComponent {
@@ -28,6 +27,7 @@ export class LayoutComponent {
   readonly sidebarCollapsed = signal(false);
   readonly isFormOpen       = signal(false);
   readonly editingContent   = signal<Content | null>(null);
+  readonly liveTime         = signal(new Date().toTimeString().slice(0, 8));
 
   /** Active folder name for breadcrumb display */
   readonly activeFolderName = computed(() => {
@@ -38,6 +38,7 @@ export class LayoutComponent {
 
   constructor() {
     this.contentService.loadMockData().pipe(takeUntilDestroyed()).subscribe();
+    setInterval(() => this.liveTime.set(new Date().toTimeString().slice(0, 8)), 1000);
   }
 
   onFolderSelected(id: number | null): void {
