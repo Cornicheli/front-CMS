@@ -1,6 +1,5 @@
-<div class="flex h-screen overflow-hidden bg-[#0a0f1c]">
-
-  <!-- ══════════════════ SIDEBAR ══════════════════ -->
+<div class="flex h-screen overflow-hidden bg-slate-50 dark:bg-[#0a0f1c]">
+  <!-- ══════════════════ SIDEBAR — always dark ══════════════════ -->
   <app-monitor-sidebar
     [zones]="zones"
     [folders]="contentService.folders()"
@@ -12,41 +11,79 @@
 
   <!-- ══════════════════ MAIN ══════════════════ -->
   <div class="flex-1 flex flex-col overflow-hidden min-w-0">
-
     <!-- TOPBAR -->
-    <header class="h-14 flex-shrink-0 flex items-center gap-3 px-5 bg-[#0d1424] border-b border-slate-800/60">
+    <header
+      class="h-14 flex-shrink-0 flex items-center gap-3 px-5
+             bg-white dark:bg-[#0d1424]
+             border-b border-slate-200 dark:border-slate-800/60"
+    >
       <!-- Back to Dashboard -->
       <a
         routerLink="/dashboard"
-        class="flex-shrink-0 flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition-all border border-slate-800/60 hover:border-slate-700"
+        class="flex-shrink-0 flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs transition-all
+               text-slate-500 dark:text-slate-400
+               hover:text-slate-700 dark:hover:text-slate-200
+               hover:bg-slate-100 dark:hover:bg-slate-800/60
+               border border-slate-200 dark:border-slate-800/60
+               hover:border-slate-300 dark:hover:border-slate-700"
       >
         <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="currentColor">
-          <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+          <path
+            fill-rule="evenodd"
+            d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
+          />
         </svg>
         Dashboard
       </a>
       <div class="flex-1 min-w-0">
-        <h1 class="text-sm font-semibold text-slate-100 truncate">
+        <h1 class="text-sm font-semibold text-slate-800 dark:text-slate-100 truncate">
           Centro de Monitoreo
-          <span class="ml-2 text-slate-500 font-normal text-xs">{{ breadcrumb() }}</span>
+          <span class="ml-2 text-slate-400 dark:text-slate-500 font-normal text-xs">{{ breadcrumb() }}</span>
         </h1>
       </div>
 
+      <!-- Theme toggle -->
+      <button
+        type="button"
+        (click)="themeService.toggle()"
+        class="flex-shrink-0 p-1.5 rounded-md transition-colors
+               text-slate-400
+               hover:text-slate-600 dark:hover:text-slate-300
+               hover:bg-slate-100 dark:hover:bg-slate-800"
+        [title]="themeService.isDark() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'"
+      >
+        @if (themeService.isDark()) {
+          <!-- Sun -->
+          <svg class="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+          </svg>
+        } @else {
+          <!-- Moon -->
+          <svg class="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
+          </svg>
+        }
+      </button>
+
       <!-- Grid / List toggle -->
-      <div class="flex bg-slate-900 border border-slate-800/60 rounded-lg p-0.5 gap-0.5 flex-shrink-0">
+      <div
+        class="flex bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800/60 rounded-lg p-0.5 gap-0.5 flex-shrink-0"
+      >
         <button
           type="button"
           (click)="onViewModeChange('grid')"
           class="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all"
-          [class]="viewMode() === 'grid'
-            ? 'bg-brand-500/20 text-brand-300'
-            : 'text-slate-500 hover:text-slate-300'"
+          [class]="
+            viewMode() === 'grid'
+              ? 'bg-brand-500/20 text-brand-400 dark:text-brand-300'
+              : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+          "
         >
           <svg class="w-3.5 h-3.5 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
-            <rect x="3" y="3" width="7" height="7" rx="1.5"/>
-            <rect x="14" y="3" width="7" height="7" rx="1.5"/>
-            <rect x="3" y="14" width="7" height="7" rx="1.5"/>
-            <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+            <rect x="3" y="3" width="7" height="7" rx="1.5" />
+            <rect x="14" y="3" width="7" height="7" rx="1.5" />
+            <rect x="3" y="14" width="7" height="7" rx="1.5" />
+            <rect x="14" y="14" width="7" height="7" rx="1.5" />
           </svg>
           Grilla
         </button>
@@ -54,14 +91,22 @@
           type="button"
           (click)="onViewModeChange('list')"
           class="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all"
-          [class]="viewMode() === 'list'
-            ? 'bg-brand-500/20 text-brand-300'
-            : 'text-slate-500 hover:text-slate-300'"
+          [class]="
+            viewMode() === 'list'
+              ? 'bg-brand-500/20 text-brand-400 dark:text-brand-300'
+              : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+          "
         >
-          <svg class="w-3.5 h-3.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <line x1="3" y1="6" x2="21" y2="6"/>
-            <line x1="3" y1="12" x2="21" y2="12"/>
-            <line x1="3" y1="18" x2="21" y2="18"/>
+          <svg
+            class="w-3.5 h-3.5 flex-shrink-0"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+          >
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <line x1="3" y1="12" x2="21" y2="12" />
+            <line x1="3" y1="18" x2="21" y2="18" />
           </svg>
           Lista
         </button>
@@ -69,77 +114,127 @@
     </header>
 
     <!-- ── KPI ROW ── -->
-    <div class="flex-shrink-0 grid grid-cols-4 gap-3 px-5 py-3 bg-[#0a0f1c]">
-
+    <div class="flex-shrink-0 grid grid-cols-4 gap-3 px-5 py-3 bg-slate-50 dark:bg-[#0a0f1c]">
       <!-- Network Status -->
-      <div class="relative bg-[#0d1424] border border-slate-800/60 rounded-xl px-4 py-3.5 flex items-center gap-3 overflow-hidden">
-        <div class="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl bg-gradient-to-r from-emerald-500 to-emerald-400"></div>
-        <div class="w-9 h-9 rounded-lg bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
-          <svg class="w-4 h-4 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"/>
-            <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+      <div
+        class="relative bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-slate-800/60 rounded-xl px-4 py-3.5 flex items-center gap-3 overflow-hidden"
+      >
+        <div
+          class="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl bg-gradient-to-r from-emerald-500 to-emerald-400"
+        ></div>
+        <div
+          class="w-9 h-9 rounded-lg bg-emerald-500/10 flex items-center justify-center flex-shrink-0"
+        >
+          <svg
+            class="w-4 h-4 text-emerald-400"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path
+              d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+            />
           </svg>
         </div>
         <div class="flex-1 min-w-0">
-          <div class="text-xl font-bold text-slate-100 leading-none">{{ kpiNetworkHealth() }}</div>
+          <div class="text-xl font-bold text-slate-700 dark:text-slate-100 leading-none">{{ kpiNetworkHealth() }}</div>
           <div class="text-[10px] text-slate-500 mt-1">Network Online</div>
         </div>
-        <span class="flex-shrink-0 text-[10px] font-bold px-2 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center gap-1">
+        <span
+          class="flex-shrink-0 text-[10px] font-bold px-2 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center gap-1"
+        >
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse inline-block"></span>
           LIVE
         </span>
       </div>
 
       <!-- Active Plays -->
-      <div class="relative bg-[#0d1424] border border-slate-800/60 rounded-xl px-4 py-3.5 flex items-center gap-3 overflow-hidden">
-        <div class="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl bg-gradient-to-r from-brand-500 to-brand-400"></div>
-        <div class="w-9 h-9 rounded-lg bg-brand-500/10 flex items-center justify-center flex-shrink-0">
+      <div
+        class="relative bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-slate-800/60 rounded-xl px-4 py-3.5 flex items-center gap-3 overflow-hidden"
+      >
+        <div
+          class="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl bg-gradient-to-r from-brand-500 to-brand-400"
+        ></div>
+        <div
+          class="w-9 h-9 rounded-lg bg-brand-500/10 flex items-center justify-center flex-shrink-0"
+        >
           <svg class="w-4 h-4 text-brand-400" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M8 5v14l11-7z"/>
+            <path d="M8 5v14l11-7z" />
           </svg>
         </div>
         <div class="flex-1 min-w-0">
-          <div class="text-xl font-bold text-slate-100 leading-none">{{ kpiActivePlays() }}</div>
+          <div class="text-xl font-bold text-slate-700 dark:text-slate-100 leading-none">{{ kpiActivePlays() }}</div>
           <div class="text-[10px] text-slate-500 mt-1">Active Plays</div>
         </div>
       </div>
 
       <!-- Revenue -->
-      <div class="relative bg-[#0d1424] border border-slate-800/60 rounded-xl px-4 py-3.5 flex items-center gap-3 overflow-hidden">
-        <div class="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl bg-gradient-to-r from-amber-500 to-amber-400"></div>
-        <div class="w-9 h-9 rounded-lg bg-amber-500/10 flex items-center justify-center flex-shrink-0">
-          <svg class="w-4 h-4 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="12" y1="1" x2="12" y2="23"/>
-            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+      <div
+        class="relative bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-slate-800/60 rounded-xl px-4 py-3.5 flex items-center gap-3 overflow-hidden"
+      >
+        <div
+          class="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl bg-gradient-to-r from-amber-500 to-amber-400"
+        ></div>
+        <div
+          class="w-9 h-9 rounded-lg bg-amber-500/10 flex items-center justify-center flex-shrink-0"
+        >
+          <svg
+            class="w-4 h-4 text-amber-400"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <line x1="12" y1="1" x2="12" y2="23" />
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
           </svg>
         </div>
         <div class="flex-1 min-w-0">
-          <div class="text-xl font-bold text-slate-100 leading-none">{{ kpiRevenue() }}</div>
+          <div class="text-xl font-bold text-slate-700 dark:text-slate-100 leading-none">{{ kpiRevenue() }}</div>
           <div class="text-[10px] text-slate-500 mt-1">Revenue / Mes</div>
         </div>
-        <span class="flex-shrink-0 text-[10px] font-bold px-2 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">+12%</span>
+        <span
+          class="flex-shrink-0 text-[10px] font-bold px-2 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20"
+          >+12%</span
+        >
       </div>
 
       <!-- Total Reach -->
-      <div class="relative bg-[#0d1424] border border-slate-800/60 rounded-xl px-4 py-3.5 flex items-center gap-3 overflow-hidden">
-        <div class="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl bg-gradient-to-r from-violet-500 to-violet-400"></div>
-        <div class="w-9 h-9 rounded-lg bg-violet-500/10 flex items-center justify-center flex-shrink-0">
-          <svg class="w-4 h-4 text-violet-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-            <circle cx="12" cy="12" r="3"/>
+      <div
+        class="relative bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-slate-800/60 rounded-xl px-4 py-3.5 flex items-center gap-3 overflow-hidden"
+      >
+        <div
+          class="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl bg-gradient-to-r from-violet-500 to-violet-400"
+        ></div>
+        <div
+          class="w-9 h-9 rounded-lg bg-violet-500/10 flex items-center justify-center flex-shrink-0"
+        >
+          <svg
+            class="w-4 h-4 text-violet-400"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+            <circle cx="12" cy="12" r="3" />
           </svg>
         </div>
         <div class="flex-1 min-w-0">
-          <div class="text-xl font-bold text-slate-100 leading-none">{{ kpiReach() }}</div>
+          <div class="text-xl font-bold text-slate-700 dark:text-slate-100 leading-none">{{ kpiReach() }}</div>
           <div class="text-[10px] text-slate-500 mt-1">Total Reach</div>
         </div>
-        <span class="flex-shrink-0 text-[10px] font-bold px-2 py-1 rounded-full bg-violet-500/10 text-violet-400 border border-violet-500/20">CPM 3.8</span>
+        <span
+          class="flex-shrink-0 text-[10px] font-bold px-2 py-1 rounded-full bg-violet-500/10 text-violet-400 border border-violet-500/20"
+          >CPM 3.8</span
+        >
       </div>
     </div>
 
     <!-- ── SCROLLABLE CONTENT ── -->
     <div class="flex-1 overflow-y-auto px-5 pb-8 space-y-4 scrollbar-thin">
-
       <!-- MAP -->
       <app-monitor-map
         [zones]="zones"
@@ -155,7 +250,6 @@
         [categories]="contentService.categories()"
         (viewModeChange)="onViewModeChange($event)"
       />
-
     </div>
   </div>
 </div>

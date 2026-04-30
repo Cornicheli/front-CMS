@@ -7,6 +7,7 @@ import { MonitorSidebarComponent } from './monitor-sidebar/monitor-sidebar.compo
 import { MonitorMapComponent } from './monitor-map/monitor-map.component';
 import { MonitorGridComponent } from './monitor-grid/monitor-grid.component';
 import { MonitorScreenService } from './monitor-screen.service';
+import { ThemeService } from '@core/services/theme.service';
 
 @Component({
   selector: 'app-monitor',
@@ -17,6 +18,7 @@ import { MonitorScreenService } from './monitor-screen.service';
 export class MonitorComponent {
   protected readonly contentService = inject(ContentService);
   private readonly screenService = inject(MonitorScreenService);
+  protected readonly themeService = inject(ThemeService);
 
   readonly zones = ZONES;
 

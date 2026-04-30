@@ -11,6 +11,7 @@ import { ContentFilters } from '@models/filters.model';
 import { ContentFormComponent } from '@features/contents/content-form/content-form.component';
 import { Content } from '@models/content.model';
 import { MonitorScreenService } from '@features/monitor/monitor-screen.service';
+import { ThemeService } from '@core/services/theme.service';
 
 @Component({
   selector: 'app-layout',
@@ -22,6 +23,7 @@ export class LayoutComponent {
   protected readonly auth = inject(AuthService);
   protected readonly contentService = inject(ContentService);
   protected readonly screenService = inject(MonitorScreenService);
+  protected readonly themeService = inject(ThemeService);
 
   readonly sidebarCollapsed = signal(false);
   readonly isFormOpen       = signal(false);

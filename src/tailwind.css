@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Class-based dark mode: add/remove `dark` on <html> */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-brand-50:  #f0f4ff;
   --color-brand-100: #dce6fe;
