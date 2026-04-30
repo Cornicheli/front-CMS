@@ -9,9 +9,15 @@
 @if (contents().length === 0) {
   <div class="flex flex-col items-center justify-center py-16 text-center">
     <div class="w-14 h-14 rounded-full bg-slate-800/60 flex items-center justify-center mb-3">
-      <svg class="w-6 h-6 text-slate-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <rect x="2" y="3" width="20" height="14" rx="2"/>
-        <path d="M8 21h8M12 17v4"/>
+      <svg
+        class="w-6 h-6 text-slate-600"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+      >
+        <rect x="2" y="3" width="20" height="14" rx="2" />
+        <path d="M8 21h8M12 17v4" />
       </svg>
     </div>
     <p class="text-sm text-slate-500">No hay contenidos en esta zona</p>
@@ -24,11 +30,12 @@
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
     @for (item of contents(); track item.id) {
       <div
-        class="group relative bg-[#0d1424] border rounded-xl overflow-hidden cursor-pointer
-               transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.3)]"
-        [class]="isSelected(item.id)
-          ? 'border-brand-500/50 shadow-[0_0_0_2px_rgba(79,110,247,0.18)]'
-          : 'border-slate-800/60 hover:border-slate-700/60'"
+        class="group relative bg-slate-900/60 backdrop-blur-sm border rounded-2xl overflow-hidden cursor-pointer transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.3)]"
+        [class]="
+          isSelected(item.id)
+            ? 'border-brand-500/50 shadow-[0_0_0_2px_rgba(79,110,247,0.18)]'
+            : 'border-slate-800/60 hover:border-slate-700/60'
+        "
         [class.grayscale]="screenService.isContentOffline(item.id)"
         [class.opacity-60]="screenService.isContentOffline(item.id)"
         (click)="toggleSelect(item.id)"
@@ -54,14 +61,21 @@
               ></video>
               <!-- Play overlay — visible on group-hover -->
               <div
-                class="absolute inset-0 flex items-center justify-center
-                       bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                (click)="$event.stopPropagation(); videoEl.paused ? videoEl.play() : videoEl.pause()"
+                class="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                (click)="
+                  $event.stopPropagation(); videoEl.paused ? videoEl.play() : videoEl.pause()
+                "
               >
-                <div class="w-9 h-9 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center">
+                <div
+                  class="w-9 h-9 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center"
+                >
                   <svg class="w-4 h-4 text-white ml-0.5" viewBox="0 0 16 16" fill="currentColor">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                    <path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z"/>
+                    <path
+                      d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
+                    />
+                    <path
+                      d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z"
+                    />
                   </svg>
                 </div>
               </div>
@@ -71,14 +85,22 @@
           <!-- Checkbox top-left -->
           <div
             class="absolute top-2 left-2 w-5 h-5 rounded-md flex items-center justify-center transition-all duration-150"
-            [class]="isSelected(item.id)
-              ? 'bg-brand-500 opacity-100'
-              : 'bg-white opacity-0 group-hover:opacity-100'"
+            [class]="
+              isSelected(item.id)
+                ? 'bg-brand-500 opacity-100'
+                : 'bg-white opacity-0 group-hover:opacity-100'
+            "
             (click)="$event.stopPropagation(); toggleSelect(item.id)"
           >
             @if (isSelected(item.id)) {
-              <svg class="w-3 h-3 text-white" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5">
-                <polyline points="2,6 5,9 10,3"/>
+              <svg
+                class="w-3 h-3 text-white"
+                viewBox="0 0 12 12"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <polyline points="2,6 5,9 10,3" />
               </svg>
             }
           </div>
@@ -88,26 +110,37 @@
             class="absolute top-2 right-2 flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full"
             [class]="statusClass(item.id)"
           >
-            <span class="w-1.5 h-1.5 rounded-full flex-shrink-0" [class]="statusDotClass(item.id)"></span>
+            <span
+              class="w-1.5 h-1.5 rounded-full flex-shrink-0"
+              [class]="statusDotClass(item.id)"
+            ></span>
             {{ statusLabel(item.id) }}
           </span>
 
           <!-- Type badge bottom-left -->
           <span
             class="absolute bottom-2 left-2 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider"
-            [class]="item.type === 'image'
-              ? 'bg-sky-500/80 text-white'
-              : 'bg-violet-500/80 text-white'"
+            [class]="
+              item.type === 'image' ? 'bg-sky-500/80 text-white' : 'bg-violet-500/80 text-white'
+            "
           >
             {{ item.type === 'image' ? 'IMG' : 'VID' }}
           </span>
 
           <!-- Audio badge -->
           @if (item.type === 'video' && item.has_audio) {
-            <span class="absolute bottom-2 right-2 bg-black/60 backdrop-blur-sm text-white text-[9px] px-1.5 py-0.5 rounded-full flex items-center gap-1">
-              <svg class="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            <span
+              class="absolute bottom-2 right-2 bg-black/60 backdrop-blur-sm text-white text-[9px] px-1.5 py-0.5 rounded-full flex items-center gap-1"
+            >
+              <svg
+                class="w-2.5 h-2.5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
               </svg>
               Audio
             </span>
@@ -116,22 +149,36 @@
 
         <!-- Card body -->
         <div class="px-3 py-2.5">
-          <p class="text-sm font-semibold text-slate-100 truncate" [title]="item.name">{{ item.name }}</p>
+          <p class="text-sm font-semibold text-slate-100 truncate" [title]="item.name">
+            {{ item.name }}
+          </p>
           <div class="flex items-center justify-between mt-1">
             @if (categoryName(item.category_id)) {
-              <span class="text-[10px] px-1.5 py-0.5 rounded bg-brand-500/10 text-brand-300 truncate max-w-[60%]">
+              <span
+                class="text-[10px] px-1.5 py-0.5 rounded bg-brand-500/10 text-brand-300 truncate max-w-[60%]"
+              >
                 {{ categoryName(item.category_id) }}
               </span>
             } @else {
               <span></span>
             }
-            <span class="text-[10px] text-slate-500">{{ item.created_at | date:'d MMM y' }}</span>
+            <span class="text-[10px] text-slate-500">{{ item.created_at | date: 'd MMM y' }}</span>
           </div>
           <!-- Trigger badge — inline en el body, no desplaza el footer -->
           @if (showTriggerBadge(item.id)) {
             <div class="mt-1.5">
-              <span class="text-[9px] px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-300 border border-amber-500/15 font-medium">
+              <span
+                class="text-[9px] px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-300 border border-amber-500/15 font-medium"
+              >
                 {{ triggerLabel(item.id) }}
+              </span>
+            </div>
+          }
+          <!-- Slot duration badge -->
+          @if (item.duration) {
+            <div class="mt-1">
+              <span class="text-[9px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700 font-mono">
+                {{ item.duration }}s
               </span>
             </div>
           }
@@ -140,7 +187,9 @@
         <!-- Metrics row -->
         <div class="grid grid-cols-3 border-t border-slate-800/50 text-center">
           <div class="px-2 py-2">
-            <div class="text-xs font-bold text-slate-300">{{ formatReach(metrics(item.id).reach) }}</div>
+            <div class="text-xs font-bold text-slate-300">
+              {{ formatReach(metrics(item.id).reach) }}
+            </div>
             <div class="text-[9px] text-slate-600 uppercase tracking-wider">Reach</div>
           </div>
           <div class="px-2 py-2 border-x border-slate-800/50">
@@ -159,12 +208,20 @@
             type="button"
             (click)="$event.stopPropagation(); openDetail(item, $event)"
             class="flex-1 flex items-center justify-center gap-1 py-1.5 text-[10px] transition-colors"
-            [class]="screenService.isContentOffline(item.id)
-              ? 'text-red-400 hover:text-red-300'
-              : 'text-emerald-400 hover:text-emerald-300'"
+            [class]="
+              screenService.isContentOffline(item.id)
+                ? 'text-red-400 hover:text-red-300'
+                : 'text-emerald-400 hover:text-emerald-300'
+            "
           >
-            <span class="w-1.5 h-1.5 rounded-full flex-shrink-0"
-              [class]="screenService.isContentOffline(item.id) ? 'bg-red-400' : 'bg-emerald-400 animate-pulse'">
+            <span
+              class="w-1.5 h-1.5 rounded-full flex-shrink-0"
+              [class]="
+                screenService.isContentOffline(item.id)
+                  ? 'bg-red-400'
+                  : 'bg-emerald-400 animate-pulse'
+              "
+            >
             </span>
             {{ screenService.isContentOffline(item.id) ? 'Offline' : 'Online' }}
           </button>
@@ -174,11 +231,17 @@
             (click)="$event.stopPropagation(); openPoP(item.id, item.name)"
             class="flex-1 flex items-center justify-center gap-1 py-1.5 text-[10px] text-slate-500 hover:text-brand-300 transition-colors"
           >
-            <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-              <polyline points="14 2 14 8 20 8"/>
-              <line x1="16" y1="13" x2="8" y2="13"/>
-              <line x1="16" y1="17" x2="8" y2="17"/>
+            <svg
+              class="w-3 h-3"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+              <line x1="16" y1="13" x2="8" y2="13" />
+              <line x1="16" y1="17" x2="8" y2="17" />
             </svg>
             View Logs
           </button>
@@ -193,23 +256,28 @@
   <div class="flex flex-col gap-1.5">
     @for (item of contents(); track item.id) {
       <div
-        class="group flex items-center gap-3 bg-[#0d1424] border rounded-xl px-4 py-2.5 cursor-pointer
-               transition-all duration-150 hover:border-slate-700/60"
-        [class]="isSelected(item.id)
-          ? 'border-brand-500/40 bg-brand-500/5'
-          : 'border-slate-800/60'"
+        class="group flex items-center gap-3 bg-slate-900/60 backdrop-blur-sm border rounded-xl px-4 py-2.5 cursor-pointer transition-all duration-150 hover:border-slate-700/60"
+        [class]="isSelected(item.id) ? 'border-brand-500/40 bg-brand-500/5' : 'border-slate-800/60'"
         (click)="toggleSelect(item.id)"
       >
         <!-- Checkbox -->
         <div
           class="w-4 h-4 rounded flex-shrink-0 flex items-center justify-center border transition-all"
-          [class]="isSelected(item.id)
-            ? 'bg-brand-500 border-brand-500'
-            : 'border-slate-700 group-hover:border-slate-500'"
+          [class]="
+            isSelected(item.id)
+              ? 'bg-brand-500 border-brand-500'
+              : 'border-slate-700 group-hover:border-slate-500'
+          "
         >
           @if (isSelected(item.id)) {
-            <svg class="w-2.5 h-2.5 text-white" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5">
-              <polyline points="2,6 5,9 10,3"/>
+            <svg
+              class="w-2.5 h-2.5 text-white"
+              viewBox="0 0 12 12"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+            >
+              <polyline points="2,6 5,9 10,3" />
             </svg>
           }
         </div>
@@ -217,19 +285,28 @@
         <!-- Thumb -->
         <div class="w-12 h-9 rounded-md overflow-hidden flex-shrink-0 bg-slate-900">
           @if (item.type === 'image') {
-            <img [src]="item.url" [alt]="item.name" class="w-full h-full object-cover"/>
+            <img [src]="item.url" [alt]="item.name" class="w-full h-full object-cover" />
           } @else {
-            <video [src]="item.url" class="w-full h-full object-cover" muted preload="metadata"></video>
+            <video
+              [src]="item.url"
+              class="w-full h-full object-cover"
+              muted
+              preload="metadata"
+            ></video>
           }
         </div>
 
         <!-- Name -->
-        <span class="flex-1 min-w-0 text-sm font-medium text-slate-200 truncate">{{ item.name }}</span>
+        <span class="flex-1 min-w-0 text-sm font-medium text-slate-200 truncate">{{
+          item.name
+        }}</span>
 
         <!-- Type badge -->
         <span
           class="text-[9px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider flex-shrink-0"
-          [class]="item.type === 'image' ? 'bg-sky-500/80 text-white' : 'bg-violet-500/80 text-white'"
+          [class]="
+            item.type === 'image' ? 'bg-sky-500/80 text-white' : 'bg-violet-500/80 text-white'
+          "
         >
           {{ item.type === 'image' ? 'IMG' : 'VID' }}
         </span>
@@ -250,7 +327,7 @@
 
         <!-- Date -->
         <span class="text-[10px] text-slate-500 flex-shrink-0 min-w-[80px] text-right">
-          {{ item.created_at | date:'d MMM y' }}
+          {{ item.created_at | date: 'd MMM y' }}
         </span>
 
         <!-- View Logs button (list) -->
@@ -259,9 +336,15 @@
           (click)="$event.stopPropagation(); openPoP(item.id, item.name)"
           class="flex-shrink-0 flex items-center gap-1 px-2 py-1 text-[10px] text-slate-500 hover:text-brand-300 border border-slate-800/60 hover:border-brand-500/30 rounded-lg transition-colors"
         >
-          <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-            <polyline points="14 2 14 8 20 8"/>
+          <svg
+            class="w-3 h-3"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
           </svg>
           Logs
         </button>
@@ -272,26 +355,45 @@
 
 <!-- Proof of Play Modal -->
 @if (popTargetId() !== null) {
-  <app-proof-of-play-modal
-    [contentName]="popTargetName()"
-    (closed)="closePoP()"
-  />
+  <app-proof-of-play-modal [contentName]="popTargetName()" (closed)="closePoP()" />
 }
 
 <!-- Content Status Modal -->
 @if (detailContent() !== null) {
-  <div class="fixed inset-0 z-[300] flex items-center justify-center p-4" role="dialog" aria-modal="true">
+  <div
+    class="fixed inset-0 z-[300] flex items-center justify-center p-4"
+    role="dialog"
+    aria-modal="true"
+  >
     <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" (click)="closeDetail()"></div>
-    <div class="relative w-full max-w-sm bg-[#0d1424] rounded-2xl border border-slate-800/80 shadow-2xl overflow-hidden">
+    <div
+      class="relative w-full max-w-sm bg-slate-950 rounded-2xl border border-slate-700/50 shadow-[0_24px_48px_rgba(0,0,0,0.6)] overflow-hidden"
+    >
+      <!-- Accent top bar — color depends on online/offline state -->
+      <div
+        class="h-0.5 w-full transition-all duration-300"
+        [class]="screenService.isContentOffline(detailContent()!.id)
+          ? 'bg-gradient-to-r from-red-500 to-rose-400'
+          : 'bg-gradient-to-r from-emerald-400 to-teal-400'"
+      ></div>
+
       <!-- Header -->
-      <div class="flex items-center justify-between px-5 py-4 border-b border-slate-800/60">
+      <div class="flex items-center justify-between px-5 py-4 border-b border-slate-800/50">
         <div>
-          <h2 class="text-white font-semibold text-sm leading-none truncate max-w-[220px]">{{ detailContent()!.name }}</h2>
-          <p class="text-slate-500 text-[10px] mt-1">Control operacional</p>
+          <h2 class="text-white font-semibold text-sm leading-none truncate max-w-[220px]">
+            {{ detailContent()!.name }}
+          </h2>
+          <p class="text-slate-500 text-[10px] mt-1 uppercase tracking-wider">Control operacional</p>
         </div>
-        <button type="button" (click)="closeDetail()" class="p-1.5 rounded-lg text-slate-500 hover:text-slate-300 hover:bg-slate-800 transition-colors">
+        <button
+          type="button"
+          (click)="closeDetail()"
+          class="p-1.5 rounded-lg text-slate-500 hover:text-slate-300 hover:bg-slate-800/60 transition-colors"
+        >
           <svg class="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+            <path
+              d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
+            />
           </svg>
         </button>
       </div>
@@ -303,19 +405,27 @@
           <div
             class="w-16 h-16 rounded-full flex items-center justify-center transition-all duration-300"
             [class]="screenService.isContentOffline(detailContent()!.id)
-              ? 'bg-red-500/15 ring-2 ring-red-500/30'
-              : 'bg-emerald-500/15 ring-2 ring-emerald-500/30'"
+              ? 'bg-red-500/10 ring-2 ring-red-500/25'
+              : 'bg-emerald-500/10 ring-2 ring-emerald-500/25'"
+            [style]="screenService.isContentOffline(detailContent()!.id)
+              ? 'box-shadow: 0 0 24px rgba(239,68,68,0.2)'
+              : 'box-shadow: 0 0 24px rgba(52,211,153,0.2)'"
           >
             <div
               class="w-8 h-8 rounded-full transition-all duration-300"
               [class]="screenService.isContentOffline(detailContent()!.id)
                 ? 'bg-red-500'
-                : 'bg-emerald-500 animate-pulse'"
+                : 'bg-emerald-400 animate-pulse'"
             ></div>
           </div>
           <span
-            class="text-sm font-bold transition-all duration-300"
-            [class]="screenService.isContentOffline(detailContent()!.id) ? 'text-red-400' : 'text-emerald-400'"
+            class="text-sm font-bold tracking-widest transition-all duration-300"
+            [class]="screenService.isContentOffline(detailContent()!.id)
+              ? 'text-red-400'
+              : 'text-emerald-400'"
+            [style]="screenService.isContentOffline(detailContent()!.id)
+              ? ''
+              : 'text-shadow: 0 0 12px rgba(52,211,153,0.6)'"
           >
             {{ screenService.isContentOffline(detailContent()!.id) ? 'OFFLINE' : 'ONLINE' }}
           </span>
@@ -326,16 +436,22 @@
           type="button"
           (click)="toggleContentStatus(detailContent()!.id)"
           class="relative w-24 h-12 rounded-full border-2 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900"
-          [class]="screenService.isContentOffline(detailContent()!.id)
-            ? 'bg-red-900/40 border-red-500/40 focus:ring-red-500'
-            : 'bg-emerald-900/40 border-emerald-500/40 focus:ring-emerald-500'"
-          [title]="screenService.isContentOffline(detailContent()!.id) ? 'Poner Online' : 'Poner Offline'"
+          [class]="
+            screenService.isContentOffline(detailContent()!.id)
+              ? 'bg-red-900/40 border-red-500/40 focus:ring-red-500'
+              : 'bg-emerald-900/40 border-emerald-500/40 focus:ring-emerald-500'
+          "
+          [title]="
+            screenService.isContentOffline(detailContent()!.id) ? 'Poner Online' : 'Poner Offline'
+          "
         >
           <span
             class="absolute top-1 w-8 h-8 rounded-full shadow-lg transition-all duration-300 flex items-center justify-center"
-            [class]="screenService.isContentOffline(detailContent()!.id)
-              ? 'left-1 bg-red-500'
-              : 'left-[calc(100%-2.25rem)] bg-emerald-500'"
+            [class]="
+              screenService.isContentOffline(detailContent()!.id)
+                ? 'left-1 bg-red-500'
+                : 'left-[calc(100%-2.25rem)] bg-emerald-500'
+            "
           >
             <svg
               class="w-4 h-4 text-white"
@@ -345,34 +461,38 @@
               stroke-width="2.5"
             >
               @if (screenService.isContentOffline(detailContent()!.id)) {
-                <line x1="18" y1="6" x2="6" y2="18"/>
-                <line x1="6" y1="6" x2="18" y2="18"/>
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
               } @else {
-                <polyline points="20 6 9 17 4 12"/>
+                <polyline points="20 6 9 17 4 12" />
               }
             </svg>
           </span>
         </button>
 
         <p class="text-[10px] text-slate-500 text-center">
-          {{ screenService.isContentOffline(detailContent()!.id)
-            ? 'La pantalla está desconectada. Deslizá para reconectar.'
-            : 'La pantalla está transmitiendo. Deslizá para desconectar.' }}
+          {{
+            screenService.isContentOffline(detailContent()!.id)
+              ? 'La pantalla está desconectada. Deslizá para reconectar.'
+              : 'La pantalla está transmitiendo. Deslizá para desconectar.'
+          }}
         </p>
       </div>
 
       <!-- Meta info -->
-      <div class="px-5 pb-4 grid grid-cols-2 gap-2">
+      <div class="px-5 pb-5 grid grid-cols-2 gap-2">
         @if (detailContent()!.iab_category) {
-          <div class="bg-slate-800/60 rounded-lg px-3 py-2">
-            <p class="text-[9px] text-slate-500 uppercase tracking-wider">IAB</p>
-            <p class="text-xs text-slate-300 mt-0.5 truncate">{{ detailContent()!.iab_category }}</p>
+          <div class="bg-slate-900 border border-slate-800/60 rounded-xl px-3 py-2.5">
+            <p class="text-[9px] text-slate-500 uppercase tracking-wider font-semibold">IAB</p>
+            <p class="text-xs text-slate-200 mt-1 truncate font-medium">
+              {{ detailContent()!.iab_category }}
+            </p>
           </div>
         }
         @if (detailContent()!.duration) {
-          <div class="bg-slate-800/60 rounded-lg px-3 py-2">
-            <p class="text-[9px] text-slate-500 uppercase tracking-wider">Slot</p>
-            <p class="text-xs text-slate-300 mt-0.5">{{ detailContent()!.duration }}s</p>
+          <div class="bg-slate-900 border border-slate-800/60 rounded-xl px-3 py-2.5">
+            <p class="text-[9px] text-slate-500 uppercase tracking-wider font-semibold">Slot</p>
+            <p class="text-xs text-slate-200 mt-1 font-mono font-medium">{{ detailContent()!.duration }}s</p>
           </div>
         }
       </div>
@@ -382,15 +502,13 @@
 
 <!-- ══════════ FLOATING ACTION BAR ══════════ -->
 @if (hasSelection()) {
-  <div class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50
-              flex items-center gap-2.5
-              bg-slate-900/95 border border-slate-700/60 rounded-2xl px-4 py-2.5
-              shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_0_1px_rgba(79,110,247,0.12)]
-              backdrop-blur-md
-              animate-[slideUpFab_0.2s_ease-out]">
-
+  <div
+    class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2.5 bg-slate-900/95 border border-slate-700/60 rounded-2xl px-4 py-2.5 shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_0_1px_rgba(79,110,247,0.12)] backdrop-blur-md animate-[slideUpFab_0.2s_ease-out]"
+  >
     <!-- Count -->
-    <span class="text-sm font-bold text-brand-300 px-3 py-1.5 bg-brand-500/10 border border-brand-500/20 rounded-lg">
+    <span
+      class="text-sm font-bold text-brand-300 px-3 py-1.5 bg-brand-500/10 border border-brand-500/20 rounded-lg"
+    >
       {{ selectionCount() }} seleccionado{{ selectionCount() !== 1 ? 's' : '' }}
     </span>
 
@@ -400,14 +518,18 @@
     <button
       type="button"
       (click)="archiveSelected()"
-      class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold
-             bg-amber-500/10 text-amber-400 border border-amber-500/20
-             hover:bg-amber-500/20 transition-colors"
+      class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20 hover:bg-amber-500/20 transition-colors"
     >
-      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <polyline points="21 8 21 21 3 21 3 8"/>
-        <rect x="1" y="3" width="22" height="5"/>
-        <line x1="10" y1="12" x2="14" y2="12"/>
+      <svg
+        class="w-3.5 h-3.5"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <polyline points="21 8 21 21 3 21 3 8" />
+        <rect x="1" y="3" width="22" height="5" />
+        <line x1="10" y1="12" x2="14" y2="12" />
       </svg>
       Archivar
     </button>
@@ -416,14 +538,18 @@
     <button
       type="button"
       (click)="deleteSelected()"
-      class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold
-             bg-red-500/10 text-red-400 border border-red-500/20
-             hover:bg-red-500/20 transition-colors"
+      class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20 transition-colors"
     >
-      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <polyline points="3 6 5 6 21 6"/>
-        <path d="M19 6l-1 14H6L5 6"/>
-        <path d="M10 11v6M14 11v6"/>
+      <svg
+        class="w-3.5 h-3.5"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <polyline points="3 6 5 6 21 6" />
+        <path d="M19 6l-1 14H6L5 6" />
+        <path d="M10 11v6M14 11v6" />
       </svg>
       Eliminar
     </button>
@@ -434,8 +560,7 @@
     <button
       type="button"
       (click)="clearSelection()"
-      class="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium
-             text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition-colors"
+      class="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition-colors"
     >
       ✕ Cancelar
     </button>

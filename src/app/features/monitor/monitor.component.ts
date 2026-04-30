@@ -17,7 +17,7 @@ import { ThemeService } from '@core/services/theme.service';
 })
 export class MonitorComponent {
   protected readonly contentService = inject(ContentService);
-  private readonly screenService = inject(MonitorScreenService);
+  protected readonly screenService = inject(MonitorScreenService);
   protected readonly themeService = inject(ThemeService);
 
   readonly zones = ZONES;
@@ -59,24 +59,26 @@ export class MonitorComponent {
     return '/ Todas las zonas';
   });
 
-  /** Global active plays — total non-archived across the whole network */
+  /** Active plays — non-archived AND online contents across the network */
   readonly kpiActivePlays = computed(() =>
-    this.contentService.contents().filter(c => !c.archived).length
+    this.contentService.contents().filter(
+      c => !c.archived && !this.screenService.isContentOffline(c.id)
+    ).length
   );
 
-  /** Revenue scoped to current filter view */
+  /** Revenue — only online contents in current filter view */
   readonly kpiRevenue = computed(() => {
-    const total = this.filteredContents().reduce(
-      (acc, c) => acc + getMetrics(c.id).revenue, 0
-    );
+    const total = this.filteredContents()
+      .filter(c => !this.screenService.isContentOffline(c.id))
+      .reduce((acc, c) => acc + getMetrics(c.id).revenue, 0);
     return total >= 1000 ? `$${(total / 1000).toFixed(1)}K` : `$${total}`;
   });
 
-  /** Reach scoped to current filter view */
+  /** Reach — only online contents in current filter view */
   readonly kpiReach = computed(() => {
-    const total = this.filteredContents().reduce(
-      (acc, c) => acc + getMetrics(c.id).reach, 0
-    );
+    const total = this.filteredContents()
+      .filter(c => !this.screenService.isContentOffline(c.id))
+      .reduce((acc, c) => acc + getMetrics(c.id).reach, 0);
     return total >= 1000 ? `${Math.round(total / 1000)}K` : `${total}`;
   });
 

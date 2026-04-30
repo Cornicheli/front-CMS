@@ -1,6 +1,6 @@
 import { Component, inject, signal, computed } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '@features/auth/services/auth.service';
 import { ContentService } from '@features/contents/services/content.service';
@@ -16,7 +16,7 @@ import { ThemeService } from '@core/services/theme.service';
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [SidebarComponent, FilterBarComponent, ContentGridComponent, ContentFormComponent, DecimalPipe, RouterLink],
+  imports: [SidebarComponent, FilterBarComponent, ContentGridComponent, ContentFormComponent, DecimalPipe, RouterLink, RouterLinkActive],
   templateUrl: './layout.component.html',
 })
 export class LayoutComponent {
