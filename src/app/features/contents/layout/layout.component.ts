@@ -1,5 +1,4 @@
 import { Component, inject, signal, computed } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '@features/auth/services/auth.service';
 import { ContentService } from '@features/contents/services/content.service';
@@ -12,11 +11,12 @@ import { Content } from '@models/content.model';
 import { MonitorScreenService } from '@features/monitor/monitor-screen.service';
 import { ThemeService } from '@core/services/theme.service';
 import { getMetrics } from '@models/zone.model';
+import { AppSidebarComponent } from '@shared/app-sidebar/app-sidebar.component';
 
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [SidebarComponent, FilterBarComponent, ContentGridComponent, ContentFormComponent, RouterLink, RouterLinkActive],
+  imports: [SidebarComponent, FilterBarComponent, ContentGridComponent, ContentFormComponent, AppSidebarComponent],
   templateUrl: './layout.component.html',
 })
 export class LayoutComponent {
@@ -24,8 +24,6 @@ export class LayoutComponent {
   protected readonly contentService = inject(ContentService);
   protected readonly screenService = inject(MonitorScreenService);
   protected readonly themeService = inject(ThemeService);
-
-  readonly sidebarCollapsed = signal(false);
   readonly isFormOpen       = signal(false);
   readonly editingContent   = signal<Content | null>(null);
   readonly liveTime         = signal(new Date().toTimeString().slice(0, 8));
@@ -87,23 +85,4 @@ export class LayoutComponent {
   openEditForm(c: Content):     void { this.editingContent.set(c);     this.isFormOpen.set(true); }
   closeForm():                  void { this.isFormOpen.set(false); this.editingContent.set(null); }
 
-  toggleSidebar(): void {
-    this.sidebarCollapsed.update((v) => !v);
-  }
-
-  logout(): void {
-    this.auth.logout();
-  }
-
-  get username(): string {
-    return this.auth.currentUser()?.username ?? 'Usuario';
-  }
-
-  get userInitial(): string {
-    return this.username.charAt(0).toUpperCase();
-  }
-
-  get userRole(): string {
-    return this.auth.currentUser()?.role ?? '';
-  }
 }
