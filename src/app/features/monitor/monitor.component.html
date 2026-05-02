@@ -3,28 +3,29 @@
   <!-- ══════════ SIDEBAR ══════════ -->
   <app-shared-sidebar #sidebar>
     <p class="px-3 pb-2 font-mono text-[9px] text-white/34 tracking-[0.16em] uppercase">Zonas</p>
-    @for (zone of zones; track zone.id) {
-      <button
-        type="button"
-        (click)="activeZoneId() === zone.id ? onZoneSelected(null) : onZoneSelected(zone.id)"
-        class="w-full flex items-center gap-2.5 px-3 py-[9px] rounded-lg text-[13px] transition-all duration-150"
-        style="width: calc(100% - 20px); margin-left: 10px"
-        [style.background-color]="activeZoneId() === zone.id ? zone.color + '18' : ''"
-        [style.box-shadow]="activeZoneId() === zone.id ? '0 0 14px -4px ' + zone.color + '60' : ''"
-        [class]="activeZoneId() === zone.id
-          ? 'font-semibold text-white border border-white/[0.1]'
-          : 'text-white/55 hover:text-white/80 border border-transparent hover:bg-white/[0.04]'"
-      >
-        <span class="w-[7px] h-[7px] rounded-full flex-shrink-0"
-              [style.background-color]="zone.color"
-              [style.box-shadow]="activeZoneId() === zone.id ? '0 0 6px 1px ' + zone.color : 'none'"></span>
-        <span class="flex-1 text-left truncate">{{ zone.name }}</span>
-        <span class="font-mono text-[10px]"
-              [class]="activeZoneId() === zone.id ? 'text-white/55' : 'text-white/34 bg-white/[0.04] px-1.5 py-0.5 rounded'">
-          {{ zone.screenCount }}
-        </span>
-      </button>
-    }
+    <div class="px-2.5 space-y-0.5">
+      @for (zone of zones; track zone.id) {
+        <button
+          type="button"
+          (click)="activeZoneId() === zone.id ? onZoneSelected(null) : onZoneSelected(zone.id)"
+          class="w-full flex items-center gap-2.5 px-3 py-[9px] rounded-lg text-[13px] transition-all duration-150"
+          [style.background-color]="activeZoneId() === zone.id ? zone.color + '18' : ''"
+          [style.box-shadow]="activeZoneId() === zone.id ? '0 0 14px -4px ' + zone.color + '60' : ''"
+          [class]="activeZoneId() === zone.id
+            ? 'font-semibold text-white border border-white/[0.1]'
+            : 'text-white/55 hover:text-white/80 border border-transparent hover:bg-white/[0.04]'"
+        >
+          <span class="w-[7px] h-[7px] rounded-full flex-shrink-0"
+                [style.background-color]="zone.color"
+                [style.box-shadow]="activeZoneId() === zone.id ? '0 0 6px 1px ' + zone.color : 'none'"></span>
+          <span class="flex-1 text-left truncate">{{ zone.name }}</span>
+          <span class="font-mono text-[10px]"
+                [class]="activeZoneId() === zone.id ? 'text-white/55' : 'text-white/34 bg-white/[0.04] px-1.5 py-0.5 rounded'">
+            {{ zone.screenCount }}
+          </span>
+        </button>
+      }
+    </div>
   </app-shared-sidebar>
 
   <!-- ══════════ MAIN ══════════ -->

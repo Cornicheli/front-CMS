@@ -9,6 +9,7 @@ import { MonitorScreenService } from '@features/monitor/monitor-screen.service';
   standalone: true,
   imports: [RouterLink, RouterLinkActive],
   templateUrl: './app-sidebar.component.html',
+  host: { class: 'flex-shrink-0 flex' },
 })
 export class AppSidebarComponent {
   readonly contentService = inject(ContentService);
