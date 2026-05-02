@@ -1,9 +1,9 @@
 import { Component, inject, signal, computed } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { ContentService } from '@features/contents/services/content.service';
+import { AuthService } from '@features/auth/services/auth.service';
 import { ZONES, getZoneForContent, getMetrics } from '@models/zone.model';
-import { MonitorSidebarComponent } from './monitor-sidebar/monitor-sidebar.component';
 import { MonitorMapComponent } from './monitor-map/monitor-map.component';
 import { MonitorGridComponent } from './monitor-grid/monitor-grid.component';
 import { MonitorScreenService } from './monitor-screen.service';
@@ -12,13 +12,24 @@ import { ThemeService } from '@core/services/theme.service';
 @Component({
   selector: 'app-monitor',
   standalone: true,
-  imports: [MonitorSidebarComponent, MonitorMapComponent, MonitorGridComponent, RouterLink],
+  imports: [MonitorMapComponent, MonitorGridComponent, RouterLink, RouterLinkActive],
   templateUrl: './monitor.component.html',
 })
 export class MonitorComponent {
   protected readonly contentService = inject(ContentService);
   protected readonly screenService = inject(MonitorScreenService);
   protected readonly themeService = inject(ThemeService);
+  private readonly auth = inject(AuthService);
+
+  readonly sidebarCollapsed = signal(false);
+
+  toggleSidebar(): void { this.sidebarCollapsed.update(v => !v); }
+
+  get username(): string { return this.auth.currentUser()?.username ?? 'Usuario'; }
+  get userInitial(): string { return this.username.charAt(0).toUpperCase(); }
+  get userRole(): string { return this.auth.currentUser()?.role ?? ''; }
+
+  logout(): void { this.auth.logout(); }
 
   readonly zones = ZONES;
 
