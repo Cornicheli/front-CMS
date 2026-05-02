@@ -82,6 +82,25 @@ export class MonitorComponent {
     return total >= 1000 ? `${Math.round(total / 1000)}K` : `${total}`;
   });
 
+  /** Error / disconnected screen count */
+  readonly kpiErrors = computed(() => this.screenService.alertCount());
+
+  /** 24h timeline bar chart data */
+  readonly timeline24h = computed(() => {
+    const hours = Array.from({ length: 24 }, (_, i) => i);
+    const plays = hours.map(h =>
+      30 + Math.round(Math.sin((h / 24) * Math.PI * 2 - 1) * 20 + ((h * 7) % 9))
+    );
+    const max = Math.max(...plays);
+    const now = new Date().getHours();
+    return hours.map(h => ({
+      h,
+      pct: (plays[h] / max) * 68,
+      trigPct: ((h * 3) % 7 > 4) ? (plays[h] / max) * 28 : 0,
+      isNow: h === now,
+    }));
+  });
+
   readonly liveTime = signal(new Date().toTimeString().slice(0, 8));
 
   readonly smartTriggers = [
@@ -123,5 +142,11 @@ export class MonitorComponent {
 
   onViewModeChange(mode: 'grid' | 'list'): void {
     this.viewMode.set(mode);
+  }
+
+  activeZoneName(): string {
+    const id = this.activeZoneId();
+    if (!id) return '';
+    return this.zones.find(z => z.id === id)?.name ?? '';
   }
 }

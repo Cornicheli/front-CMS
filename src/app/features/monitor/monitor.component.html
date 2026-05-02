@@ -13,7 +13,7 @@
   <!-- ══════════ MAIN ══════════ -->
   <div class="flex-1 flex flex-col overflow-hidden min-w-0">
 
-    <!-- TOPBAR — AC live ticker style -->
+    <!-- TOPBAR -->
     <header class="flex-shrink-0 px-[22px] py-3 border-b border-white/[0.06] flex items-center gap-[18px] bg-[#0a0a0e]">
 
       <!-- Back + Title -->
@@ -39,22 +39,22 @@
       <div class="flex-1"></div>
 
       <!-- Live ticker -->
-      <div class="flex gap-[18px] font-mono text-[11px]">
-        <div class="flex items-center gap-1.5">
-          <span class="text-white/34 tracking-[0.1em]">NET</span>
-          <span class="text-[#4ade80] font-medium">{{ kpiNetworkHealth() }}</span>
+      <div class="flex gap-[20px] font-mono text-[11px]">
+        <div class="flex items-center gap-[5px]">
+          <span class="text-white/34 tracking-[0.1em]" style="font-size: 9.5px">NET</span>
+          <span class="text-[#4ade80] font-semibold">{{ kpiNetworkHealth() }}</span>
         </div>
-        <div class="flex items-center gap-1.5">
-          <span class="text-white/34 tracking-[0.1em]">PLAYS</span>
-          <span class="text-[#a78bfa] font-medium">{{ kpiActivePlays() }}</span>
+        <div class="flex items-center gap-[5px]">
+          <span class="text-white/34 tracking-[0.1em]" style="font-size: 9.5px">PLAYS</span>
+          <span class="text-[#a78bfa] font-semibold">{{ kpiActivePlays() }}</span>
         </div>
-        <div class="flex items-center gap-1.5">
-          <span class="text-white/34 tracking-[0.1em]">REV/h</span>
-          <span class="text-[#fbbf24] font-medium">{{ kpiRevenue() }}</span>
+        <div class="flex items-center gap-[5px]">
+          <span class="text-white/34 tracking-[0.1em]" style="font-size: 9.5px">REV/h</span>
+          <span class="text-[#fbbf24] font-semibold">{{ kpiRevenue() }}</span>
         </div>
-        <div class="flex items-center gap-1.5">
-          <span class="text-white/34 tracking-[0.1em]">REACH</span>
-          <span class="text-white/55 font-medium">{{ kpiReach() }}</span>
+        <div class="flex items-center gap-[5px]">
+          <span class="text-white/34 tracking-[0.1em]" style="font-size: 9.5px">ERR</span>
+          <span class="text-white/55 font-semibold">{{ kpiErrors() }}</span>
         </div>
       </div>
 
@@ -62,191 +62,162 @@
 
       <!-- LIVE badge -->
       <div class="flex items-center gap-2 px-[10px] py-[5px] rounded-lg border flex-shrink-0"
-           style="background: rgba(34,197,94,0.08); border-color: rgba(34,197,94,0.25)">
+           style="background: rgba(34,197,94,0.08); border-color: rgba(34,197,94,0.22)">
         <span class="w-1.5 h-1.5 rounded-full bg-[#4ade80] animate-pulse"
               style="box-shadow: 0 0 8px #4ade80"></span>
         <span class="font-mono text-[11px] text-[#4ade80] tracking-[0.06em]">LIVE · {{ liveTime() }}</span>
       </div>
-
-      <!-- Grid / List toggle -->
-      <div class="flex border border-white/[0.08] rounded-lg p-0.5 gap-0.5 flex-shrink-0"
-           style="background: rgba(255,255,255,0.02)">
-        <button
-          type="button"
-          (click)="onViewModeChange('grid')"
-          class="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[11px] font-medium transition-all"
-          [class]="viewMode() === 'grid' ? 'text-[#a78bfa]' : 'text-white/34 hover:text-white/60'"
-          [style]="viewMode() === 'grid' ? 'background: rgba(167,139,250,0.12)' : ''"
-        >
-          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
-            <rect x="3" y="3" width="7" height="7" rx="1.5"/>
-            <rect x="14" y="3" width="7" height="7" rx="1.5"/>
-            <rect x="3" y="14" width="7" height="7" rx="1.5"/>
-            <rect x="14" y="14" width="7" height="7" rx="1.5"/>
-          </svg>
-          Grilla
-        </button>
-        <button
-          type="button"
-          (click)="onViewModeChange('list')"
-          class="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[11px] font-medium transition-all"
-          [class]="viewMode() === 'list' ? 'text-[#a78bfa]' : 'text-white/34 hover:text-white/60'"
-          [style]="viewMode() === 'list' ? 'background: rgba(167,139,250,0.12)' : ''"
-        >
-          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <line x1="3" y1="6" x2="21" y2="6"/>
-            <line x1="3" y1="12" x2="21" y2="12"/>
-            <line x1="3" y1="18" x2="21" y2="18"/>
-          </svg>
-          Lista
-        </button>
-      </div>
     </header>
-
-    <!-- ── KPI ROW — AC style ── -->
-    <div class="flex-shrink-0 grid grid-cols-4 gap-[1px] border-b border-white/[0.06]"
-         style="background: rgba(255,255,255,0.04)">
-      <!-- Network -->
-      <div class="flex items-center gap-3 px-5 py-3.5" style="background: #0a0a0e">
-        <div class="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
-             style="background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.2)">
-          <svg class="w-3.5 h-3.5 text-[#4ade80]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"/>
-            <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-          </svg>
-        </div>
-        <div>
-          <div class="font-mono text-[9px] text-white/34 uppercase tracking-[0.14em]">Network Online</div>
-          <div class="text-[20px] font-semibold text-white/94 leading-tight" style="letter-spacing:-0.02em">{{ kpiNetworkHealth() }}</div>
-        </div>
-        <span class="ml-auto font-mono text-[10px] font-bold px-2 py-1 rounded-full flex items-center gap-1 text-[#4ade80] flex-shrink-0"
-              style="background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.25); filter: drop-shadow(0 0 6px rgba(74,222,128,0.25))">
-          <span class="w-1.5 h-1.5 rounded-full bg-[#4ade80] animate-pulse"></span>
-          LIVE
-        </span>
-      </div>
-      <!-- Active Plays -->
-      <div class="flex items-center gap-3 px-5 py-3.5" style="background: #0a0a0e">
-        <div class="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
-             style="background: rgba(167,139,250,0.1); border: 1px solid rgba(167,139,250,0.2)">
-          <svg class="w-3.5 h-3.5 text-[#a78bfa]" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        </div>
-        <div>
-          <div class="font-mono text-[9px] text-white/34 uppercase tracking-[0.14em]">Active Plays</div>
-          <div class="text-[20px] font-semibold text-white/94 leading-tight" style="letter-spacing:-0.02em">{{ kpiActivePlays() }}</div>
-        </div>
-      </div>
-      <!-- Revenue -->
-      <div class="flex items-center gap-3 px-5 py-3.5" style="background: #0a0a0e">
-        <div class="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
-             style="background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.2)">
-          <svg class="w-3.5 h-3.5 text-[#fbbf24]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="12" y1="1" x2="12" y2="23"/>
-            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-          </svg>
-        </div>
-        <div>
-          <div class="font-mono text-[9px] text-white/34 uppercase tracking-[0.14em]">Revenue / Mes</div>
-          <div class="text-[20px] font-semibold text-white/94 leading-tight" style="letter-spacing:-0.02em">{{ kpiRevenue() }}</div>
-        </div>
-        <span class="ml-auto font-mono text-[10px] font-medium px-2 py-1 rounded-full text-[#fbbf24] flex-shrink-0"
-              style="background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.2)">+12%</span>
-      </div>
-      <!-- Reach -->
-      <div class="flex items-center gap-3 px-5 py-3.5" style="background: #0a0a0e">
-        <div class="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
-             style="background: rgba(167,139,250,0.1); border: 1px solid rgba(167,139,250,0.2)">
-          <svg class="w-3.5 h-3.5 text-[#c4b5fd]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-            <circle cx="12" cy="12" r="3"/>
-          </svg>
-        </div>
-        <div>
-          <div class="font-mono text-[9px] text-white/34 uppercase tracking-[0.14em]">Total Reach</div>
-          <div class="text-[20px] font-semibold text-white/94 leading-tight" style="letter-spacing:-0.02em">{{ kpiReach() }}</div>
-        </div>
-        <span class="ml-auto font-mono text-[10px] font-medium px-2 py-1 rounded-full text-[#c4b5fd] flex-shrink-0"
-              style="background: rgba(167,139,250,0.1); border: 1px solid rgba(167,139,250,0.2)">CPM 3.8</span>
-      </div>
-    </div>
 
     <!-- ── MAIN CONTENT + RIGHT RAIL ── -->
     <div class="flex-1 flex min-h-0">
 
       <!-- Scrollable content -->
-      <div class="flex-1 overflow-y-auto px-5 pb-8 space-y-4 min-w-0" style="background: #0a0a0e">
+      <main class="flex-1 overflow-y-auto min-w-0 flex flex-col gap-[14px]"
+            style="padding: 18px 22px 30px; background: #0a0a0e">
+
+        <!-- Map card -->
         <app-monitor-map
           [zones]="zones"
           [activeZoneId]="activeZoneId()"
           [contents]="contentService.contents()"
           (zoneClicked)="onZoneSelected($event)"
         />
-        <app-monitor-grid
-          [contents]="filteredContents()"
-          [viewMode]="viewMode()"
-          [categories]="contentService.categories()"
-          (viewModeChange)="onViewModeChange($event)"
-        />
-      </div>
 
-      <!-- ── RIGHT RAIL (from C) ── -->
-      <aside class="flex-shrink-0 flex flex-col min-h-0" style="width: 280px; background: #13131a; border-left: 1px solid rgba(255,255,255,0.06)">
+        <!-- Timeline 24h -->
+        <div style="background: #13131a; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 14px">
+          <div class="flex items-start justify-between" style="margin-bottom: 12px">
+            <div>
+              <div class="font-mono uppercase tracking-[0.14em]"
+                   style="font-size: 9px; color: rgba(255,255,255,0.30)">
+                Plays · últimas 24h
+              </div>
+              <div style="font-family: Geist, system-ui, sans-serif; font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.94); margin-top: 3px; letter-spacing: -0.01em">
+                728 reproducciones · pico 19:00
+              </div>
+            </div>
+            <div class="flex gap-[14px] font-mono text-[10px]">
+              <span style="color: rgba(255,255,255,0.30)">
+                ● <span style="color: #a78bfa">plays</span>
+              </span>
+              <span style="color: rgba(255,255,255,0.30)">
+                ● <span style="color: #fbbf24">triggers</span>
+              </span>
+            </div>
+          </div>
+          <div class="flex items-end gap-[3px]" style="height: 72px">
+            @for (bar of timeline24h(); track bar.h) {
+              <div class="flex-1 flex flex-col items-center gap-[2px] justify-end h-full">
+                @if (bar.trigPct > 0) {
+                  <div class="w-full rounded-t-[2px]"
+                       [style.height.%]="bar.trigPct"
+                       style="background: rgba(251,191,36,0.5)"></div>
+                }
+                <div class="w-full rounded-t-[2px] transition-all duration-300"
+                     [style.height.%]="bar.pct"
+                     [style.background]="bar.isNow ? '#a78bfa' : 'rgba(167,139,250,0.5)'"
+                     [style.box-shadow]="bar.isNow ? '0 0 12px rgba(167,139,250,0.7)' : 'none'">
+                </div>
+              </div>
+            }
+          </div>
+          <div class="flex font-mono text-[8.5px] text-white/30 mt-[5px]">
+            <div class="flex-1">00:00</div>
+            <div class="flex-1">04:00</div>
+            <div class="flex-1">08:00</div>
+            <div class="flex-1">12:00</div>
+            <div class="flex-1">16:00</div>
+            <div class="flex-1">20:00</div>
+            <span>23:59</span>
+          </div>
+        </div>
+
+        <!-- Inventario en rotación -->
+        <div>
+          <div class="flex items-center justify-between" style="margin-bottom: 10px">
+            <div class="font-mono uppercase tracking-[0.14em]"
+                 style="font-size: 9px; color: rgba(255,255,255,0.30)">
+              Inventario en rotación
+            </div>
+            <span class="font-mono text-[10px] text-white/30">
+              {{ filteredContents().length }} contenidos
+              @if (activeZoneId()) {· {{ activeZoneName() }}}
+            </span>
+          </div>
+          <app-monitor-grid
+            [contents]="filteredContents()"
+            [viewMode]="'grid'"
+            [categories]="contentService.categories()"
+            (viewModeChange)="onViewModeChange($event)"
+          />
+        </div>
+      </main>
+
+      <!-- ── RIGHT RAIL ── -->
+      <aside class="flex-shrink-0 flex flex-col min-h-0"
+             style="width: 280px; background: #13131a; border-left: 1px solid rgba(255,255,255,0.06)">
 
         <!-- Smart Triggers -->
-        <div style="padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.06)">
-          <div class="flex items-center justify-between mb-[10px]">
-            <span class="text-[13px] font-semibold text-white/94">Smart Triggers</span>
-            <span class="font-mono text-[10px] text-white/34">3/4 active</span>
+        <div style="padding: 13px 15px; border-bottom: 1px solid rgba(255,255,255,0.06)">
+          <div class="flex items-center justify-between" style="margin-bottom: 10px">
+            <span style="font-family: Geist, system-ui, sans-serif; font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.94)">Smart Triggers</span>
+            <span class="font-mono text-[10px] text-white/30">3/4 activos</span>
           </div>
           @for (t of smartTriggers; track t.name) {
-            <div class="flex items-center gap-2.5 py-2" [style.opacity]="t.on ? '1' : '0.45'">
+            <div class="flex items-center gap-[9px] py-[7px]" [style.opacity]="t.on ? '1' : '0.45'">
               <div class="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 text-[13px]"
-                   [style]="'background:' + t.color + '1a; border: 1px solid ' + t.color + '33'">
+                   [style]="'background:' + t.color + '18; border: 1px solid ' + t.color + '30'">
                 {{ t.icon }}
               </div>
               <div class="flex-1 min-w-0">
-                <div class="text-[11.5px] text-white/94 font-medium">{{ t.name }}</div>
-                <div class="font-mono text-[9.5px] text-white/34 truncate">{{ t.sub }}</div>
+                <div style="font-family: Geist, system-ui, sans-serif; font-size: 11.5px; color: rgba(255,255,255,0.94); font-weight: 500">{{ t.name }}</div>
+                <div class="font-mono truncate" style="font-size: 9.5px; color: rgba(255,255,255,0.30)">{{ t.sub }}</div>
               </div>
-              <div class="font-mono text-[11px] font-medium flex-shrink-0"
-                   [class]="t.on ? 'text-white/94' : 'text-white/34'">{{ t.hits }}</div>
+              <span class="font-mono font-semibold flex-shrink-0"
+                    style="font-size: 11px"
+                    [style.color]="t.on ? 'rgba(255,255,255,0.94)' : 'rgba(255,255,255,0.30)'">{{ t.hits }}</span>
               <!-- Toggle pill -->
-              <div class="relative flex-shrink-0" style="width:24px; height:14px; border-radius:99px"
-                   [style.background]="t.on ? '#4ade80' : 'rgba(255,255,255,0.1)'">
-                <div class="absolute rounded-full bg-white transition-all" style="top:2px; width:10px; height:10px"
+              <div class="relative flex-shrink-0"
+                   style="width:24px; height:14px; border-radius:99px; transition:background .2s"
+                   [style.background]="t.on ? '#4ade80' : 'rgba(255,255,255,0.09)'">
+                <div class="absolute rounded-full bg-white transition-all"
+                     style="top:2px; width:10px; height:10px; box-shadow:0 1px 3px rgba(0,0,0,0.4)"
                      [style.left]="t.on ? '12px' : '2px'"></div>
               </div>
             </div>
           }
         </div>
 
-        <!-- Proof of Play stream header -->
-        <div class="flex items-center justify-between px-4 py-3" style="border-bottom: 1px solid rgba(255,255,255,0.06)">
-          <div>
-            <span class="text-[13px] font-semibold text-white/94">Proof of Play</span>
-            <div class="font-mono text-[9.5px] text-white/34 mt-0.5">auditoría en vivo · 327 eventos hoy</div>
+        <!-- Proof of Play header -->
+        <div style="padding: 11px 15px 10px; border-bottom: 1px solid rgba(255,255,255,0.06)">
+          <div class="flex items-center justify-between">
+            <span style="font-family: Geist, system-ui, sans-serif; font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.94)">
+              Proof of Play
+            </span>
+            <span class="font-mono text-[9.5px] text-[#4ade80] flex items-center gap-[5px]">
+              <span class="w-[5px] h-[5px] rounded-full bg-[#4ade80] animate-pulse"
+                    style="box-shadow: 0 0 6px #4ade80"></span>
+              STREAM
+            </span>
           </div>
-          <span class="font-mono text-[10px] text-[#4ade80] flex items-center gap-1.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-[#4ade80] animate-pulse"
-                  style="box-shadow: 0 0 6px #4ade80"></span>
-            STREAM
-          </span>
+          <div class="font-mono text-[9px] text-white/30 mt-0.5">auditoría en vivo · 327 eventos hoy</div>
         </div>
 
         <!-- PoP activity feed -->
         <div class="flex-1 overflow-y-auto">
           @for (a of popActivity; track a.t) {
-            <div class="grid gap-2.5 px-4 py-[9px] items-center"
-                 style="grid-template-columns: auto 1fr auto; border-bottom: 1px solid rgba(255,255,255,0.04)">
-              <span class="font-mono text-[10px] text-white/34">{{ a.t }}</span>
+            <div class="grid gap-[9px] items-center"
+                 style="grid-template-columns: auto 1fr auto; padding: 8px 15px; border-bottom: 1px solid rgba(255,255,255,0.04)">
+              <span class="font-mono text-[9.5px] text-white/30 flex-shrink-0">{{ a.t }}</span>
               <div class="min-w-0">
-                <div class="text-[11.5px] text-white/94 truncate">{{ a.content }}</div>
-                <div class="font-mono text-[9.5px] text-white/34">{{ a.screen }} · {{ a.dur }}s · {{ a.zone }}</div>
+                <div class="text-[11px] text-white/94 truncate"
+                     style="font-family: Geist, system-ui, sans-serif">{{ a.content }}</div>
+                <div class="font-mono text-[9px] text-white/30">{{ a.screen }} · {{ a.dur }}s · {{ a.zone }}</div>
               </div>
-              <div class="w-[18px] h-[18px] rounded-full flex items-center justify-center flex-shrink-0 font-mono text-[10px] font-semibold"
+              <div class="w-[18px] h-[18px] rounded-full flex items-center justify-center flex-shrink-0 font-mono text-[10px] font-bold"
                    [style]="a.status === 'ok'
-                     ? 'background: rgba(74,222,128,0.15); border: 1px solid rgba(74,222,128,0.4); color: #4ade80'
-                     : 'background: rgba(251,191,36,0.15); border: 1px solid rgba(251,191,36,0.4); color: #fbbf24'">
+                     ? 'background: rgba(74,222,128,0.12); border: 1px solid rgba(74,222,128,0.35); color: #4ade80'
+                     : 'background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.35); color: #fbbf24'">
                 {{ a.status === 'ok' ? '✓' : '!' }}
               </div>
             </div>

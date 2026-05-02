@@ -1,90 +1,79 @@
-<div class="flex-shrink-0 bg-white dark:bg-[#0d1424] border-b border-slate-200 dark:border-slate-800/60 px-5 py-2.5">
-  <form [formGroup]="form" class="flex items-center gap-2.5 flex-wrap">
+<form [formGroup]="form"
+      class="flex items-center gap-2"
+      style="background: #13131a; border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 9px 12px; margin-bottom: 18px">
 
-    <!-- Search -->
-    <div class="relative flex-1 min-w-40">
-      <svg
-        class="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none"
-        viewBox="0 0 16 16" fill="currentColor"
-      >
-        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.099zm-5.242 1.656a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11z"/>
-      </svg>
-      <input
-        type="search"
-        formControlName="search"
-        placeholder="Buscar por nombre..."
-        class="w-full pl-8 pr-3 py-1.5 text-xs
-               border border-slate-200 dark:border-slate-700
-               rounded-lg
-               bg-slate-50 dark:bg-slate-800/60
-               text-slate-700 dark:text-slate-200
-               placeholder-slate-400 dark:placeholder-slate-500
-               focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent
-               transition-all"
-      />
-    </div>
+  <!-- Search icon -->
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.30)" stroke-width="1.8" style="flex-shrink:0">
+    <circle cx="11" cy="11" r="7"/>
+    <path d="m20 20-3.5-3.5" stroke-linecap="round"/>
+  </svg>
 
-    <!-- Type -->
+  <!-- Search input -->
+  <input
+    type="search"
+    formControlName="search"
+    placeholder="Buscar por nombre, categoría..."
+    style="flex:1; background:transparent; border:none; outline:none; color:rgba(255,255,255,0.94); font-family:Geist,system-ui,sans-serif; font-size:12.5px;"
+  />
+
+  <!-- Type select -->
+  <div class="relative flex-shrink-0">
     <select
       formControlName="type"
-      class="px-2.5 py-1.5 text-xs
-             border border-slate-200 dark:border-slate-700
-             rounded-lg
-             bg-slate-50 dark:bg-slate-800/60
-             text-slate-700 dark:text-slate-200
-             focus:outline-none focus:ring-2 focus:ring-brand-500"
+      style="appearance:none; -webkit-appearance:none; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:6px; padding:5px 28px 5px 11px; color:rgba(255,255,255,0.55); font-family:Geist,system-ui,sans-serif; font-size:11px; cursor:pointer; outline:none; transition:border-color .12s"
+      (mouseenter)="$any($event.target).style.borderColor='rgba(255,255,255,0.11)'"
+      (mouseleave)="$any($event.target).style.borderColor='rgba(255,255,255,0.06)'"
     >
-      <option value="">Todos los tipos</option>
-      <option value="image">Imagen</option>
-      <option value="video">Video</option>
+      <option value="" style="background:#13131a">Todos los tipos</option>
+      <option value="image" style="background:#13131a">Imagen</option>
+      <option value="video" style="background:#13131a">Video</option>
     </select>
+    <svg class="absolute pointer-events-none" style="right:8px; top:50%; transform:translateY(-50%)" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.30)" stroke-width="2">
+      <path d="m6 9 6 6 6-6"/>
+    </svg>
+  </div>
 
-    <!-- Category -->
+  <!-- Category select -->
+  <div class="relative flex-shrink-0">
     <select
       formControlName="category_id"
-      class="px-2.5 py-1.5 text-xs
-             border border-slate-200 dark:border-slate-700
-             rounded-lg
-             bg-slate-50 dark:bg-slate-800/60
-             text-slate-700 dark:text-slate-200
-             focus:outline-none focus:ring-2 focus:ring-brand-500"
+      style="appearance:none; -webkit-appearance:none; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:6px; padding:5px 28px 5px 11px; color:rgba(255,255,255,0.55); font-family:Geist,system-ui,sans-serif; font-size:11px; cursor:pointer; outline:none; transition:border-color .12s"
+      (mouseenter)="$any($event.target).style.borderColor='rgba(255,255,255,0.11)'"
+      (mouseleave)="$any($event.target).style.borderColor='rgba(255,255,255,0.06)'"
     >
-      <option value="">Todas las categorías</option>
+      <option value="" style="background:#13131a">Todas las categorías</option>
       @for (cat of categories(); track cat.id) {
-        <option [value]="cat.id">{{ cat.name }}</option>
+        <option [value]="cat.id" style="background:#13131a">{{ cat.name }}</option>
       }
     </select>
+    <svg class="absolute pointer-events-none" style="right:8px; top:50%; transform:translateY(-50%)" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.30)" stroke-width="2">
+      <path d="m6 9 6 6 6-6"/>
+    </svg>
+  </div>
 
-    <!-- Clear -->
+  <!-- Archive toggle -->
+  <button
+    type="button"
+    (click)="toggleArchived()"
+    class="flex items-center gap-1.5 flex-shrink-0 transition-all"
+    style="padding:5px 11px; border-radius:6px; font-family:Geist,system-ui,sans-serif; font-size:11px; cursor:pointer"
+    [style.background]="showArchived() ? 'rgba(251,191,36,0.12)' : 'rgba(255,255,255,0.03)'"
+    [style.border]="showArchived() ? '1px solid rgba(251,191,36,0.28)' : '1px solid rgba(255,255,255,0.06)'"
+    [style.color]="showArchived() ? '#fbbf24' : 'rgba(255,255,255,0.55)'"
+  >
+    Archivados
+  </button>
+
+  <!-- Clear -->
+  @if (form.value.search || form.value.type || form.value.category_id || showArchived()) {
     <button
       type="button"
       (click)="clearFilters()"
-      class="px-2.5 py-1.5 text-xs
-             text-slate-500 dark:text-slate-400
-             hover:text-slate-700 dark:hover:text-slate-200
-             hover:bg-slate-100 dark:hover:bg-slate-800
-             rounded-lg transition-colors"
+      style="flex-shrink:0; padding:5px 11px; border-radius:6px; background:transparent; border:1px solid transparent; color:rgba(255,255,255,0.34); font-family:Geist,system-ui,sans-serif; font-size:11px; cursor:pointer; transition:color .12s"
+      (mouseenter)="$any($event.target).style.color='rgba(255,255,255,0.60)'"
+      (mouseleave)="$any($event.target).style.color='rgba(255,255,255,0.34)'"
     >
       Limpiar
     </button>
-
-    <!-- Archive toggle -->
-    <button
-      type="button"
-      (click)="toggleArchived()"
-      class="flex items-center gap-1.5 px-2.5 py-1.5 text-xs rounded-lg border transition-colors"
-      [class.bg-amber-500]="showArchived()"
-      [class.text-white]="showArchived()"
-      [class.border-amber-500]="showArchived()"
-      [class.text-slate-500]="!showArchived()"
-      [class.border-slate-200]="!showArchived()"
-      [class.dark:border-slate-700]="!showArchived()"
-      [class.dark:text-slate-400]="!showArchived()"
-    >
-      <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="currentColor">
-        <path d="M0 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 12.5V5a1 1 0 0 1-1-1V2zm2 3v7.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V5H2zm13-3H1v1h14V2zM5 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
-      </svg>
-      Ver archivados
-    </button>
-  </form>
-</div>
+  }
+</form>

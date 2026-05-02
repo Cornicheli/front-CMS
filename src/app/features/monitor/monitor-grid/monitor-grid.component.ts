@@ -140,7 +140,32 @@ export class MonitorGridComponent {
   showTriggerBadge(id: number): boolean { return id % 3 === 0; }
 
   triggerLabel(id: number): string {
-    const labels = ['🌦 Clima', '⏰ Hora pico', '📍 Ubicación'];
+    const labels = ['Clima', 'Hora pico', 'Ubicación'];
     return labels[id % 3];
+  }
+
+  // ── Sparkline helpers ──────────────────────────────────────────
+  private genSpark(seed: number): number[] {
+    const arr: number[] = [];
+    let v = 50 + ((seed * 7) % 30);
+    for (let i = 0; i < 16; i++) {
+      v += Math.sin(i * 0.6 + seed) * 8 + ((seed * i) % 5) - 2;
+      arr.push(Math.max(10, Math.min(90, v)));
+    }
+    return arr;
+  }
+
+  sparklinePts(id: number): string {
+    const data = this.genSpark(id);
+    const w = 46, h = 15;
+    const max = Math.max(...data), min = Math.min(...data), range = max - min || 1;
+    return data.map((v, i) =>
+      `${(i / (data.length - 1)) * w},${h - ((v - min) / range) * (h - 2) - 1}`
+    ).join(' ');
+  }
+
+  sparklineArea(id: number): string {
+    const pts = this.sparklinePts(id);
+    return `0,15 ${pts} 46,15`;
   }
 }
