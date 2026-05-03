@@ -1,5 +1,4 @@
 <div class="flex h-screen overflow-hidden bg-[#0a0a0e]">
-
   <!-- ══════════ SIDEBAR ══════════ -->
   <app-shared-sidebar #sidebar>
     <p class="px-3 pb-2 font-mono text-[9px] text-white/34 tracking-[0.16em] uppercase">Zonas</p>
@@ -10,17 +9,29 @@
           (click)="activeZoneId() === zone.id ? onZoneSelected(null) : onZoneSelected(zone.id)"
           class="w-full flex items-center gap-2.5 px-3 py-[9px] rounded-lg text-[13px] transition-all duration-150"
           [style.background-color]="activeZoneId() === zone.id ? zone.color + '18' : ''"
-          [style.box-shadow]="activeZoneId() === zone.id ? '0 0 14px -4px ' + zone.color + '60' : ''"
-          [class]="activeZoneId() === zone.id
-            ? 'font-semibold text-white border border-white/[0.1]'
-            : 'text-white/55 hover:text-white/80 border border-transparent hover:bg-white/[0.04]'"
+          [style.box-shadow]="
+            activeZoneId() === zone.id ? '0 0 14px -4px ' + zone.color + '60' : ''
+          "
+          [class]="
+            activeZoneId() === zone.id
+              ? 'font-semibold text-white border border-white/[0.1]'
+              : 'text-white/55 hover:text-white/80 border border-transparent hover:bg-white/[0.04]'
+          "
         >
-          <span class="w-[7px] h-[7px] rounded-full flex-shrink-0"
-                [style.background-color]="zone.color"
-                [style.box-shadow]="activeZoneId() === zone.id ? '0 0 6px 1px ' + zone.color : 'none'"></span>
+          <span
+            class="w-[7px] h-[7px] rounded-full flex-shrink-0"
+            [style.background-color]="zone.color"
+            [style.box-shadow]="activeZoneId() === zone.id ? '0 0 6px 1px ' + zone.color : 'none'"
+          ></span>
           <span class="flex-1 text-left truncate">{{ zone.name }}</span>
-          <span class="font-mono text-[10px]"
-                [class]="activeZoneId() === zone.id ? 'text-white/55' : 'text-white/34 bg-white/[0.04] px-1.5 py-0.5 rounded'">
+          <span
+            class="font-mono text-[10px]"
+            [class]="
+              activeZoneId() === zone.id
+                ? 'text-white/55'
+                : 'text-white/34 bg-white/[0.04] px-1.5 py-0.5 rounded'
+            "
+          >
             {{ zone.screenCount }}
           </span>
         </button>
@@ -30,10 +41,10 @@
 
   <!-- ══════════ MAIN ══════════ -->
   <div class="flex-1 flex flex-col overflow-hidden min-w-0">
-
     <!-- TOPBAR -->
-    <header class="flex-shrink-0 px-[22px] py-3 border-b border-white/[0.06] flex items-center gap-[18px] bg-[#0a0a0e]">
-
+    <header
+      class="flex-shrink-0 px-[22px] py-3 border-b border-white/[0.06] flex items-center gap-[18px] bg-[#0a0a0e]"
+    >
       <!-- Sidebar toggle + title -->
       <div class="flex items-center gap-3">
         <button
@@ -43,15 +54,24 @@
           title="Toggle sidebar"
         >
           <svg class="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
-            <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+            <path
+              fill-rule="evenodd"
+              d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"
+            />
           </svg>
         </button>
         <div>
           <div class="flex items-baseline gap-2">
-            <span class="text-[17px] font-semibold text-white/94 tracking-tight" style="letter-spacing:-0.02em">Centro de Monitoreo</span>
+            <span
+              class="text-[17px] font-semibold text-white/94 tracking-tight"
+              style="letter-spacing: -0.02em"
+              >Centro de Monitoreo</span
+            >
             <span class="font-mono text-[11px] text-white/34">· CABA · {{ breadcrumb() }}</span>
           </div>
-          <div class="font-mono text-[10px] text-white/34 tracking-[0.04em]">~ / Dashboard / Monitor</div>
+          <div class="font-mono text-[10px] text-white/34 tracking-[0.04em]">
+            ~ / Dashboard / Monitor
+          </div>
         </div>
       </div>
 
@@ -80,21 +100,27 @@
       <div class="h-[18px] w-px bg-white/[0.06]"></div>
 
       <!-- LIVE badge -->
-      <div class="flex items-center gap-2 px-[10px] py-[5px] rounded-lg border flex-shrink-0"
-           style="background: rgba(34,197,94,0.08); border-color: rgba(34,197,94,0.22)">
-        <span class="w-1.5 h-1.5 rounded-full bg-[#4ade80] animate-pulse"
-              style="box-shadow: 0 0 8px #4ade80"></span>
-        <span class="font-mono text-[11px] text-[#4ade80] tracking-[0.06em]">LIVE · {{ liveTime() }}</span>
+      <div
+        class="flex items-center gap-2 px-[10px] py-[5px] rounded-lg border flex-shrink-0"
+        style="background: rgba(34, 197, 94, 0.08); border-color: rgba(34, 197, 94, 0.22)"
+      >
+        <span
+          class="w-1.5 h-1.5 rounded-full bg-[#4ade80] animate-pulse"
+          style="box-shadow: 0 0 8px #4ade80"
+        ></span>
+        <span class="font-mono text-[11px] text-[#4ade80] tracking-[0.06em]"
+          >LIVE · {{ liveTime() }}</span
+        >
       </div>
     </header>
 
     <!-- ── MAIN CONTENT + RIGHT RAIL ── -->
     <div class="flex-1 flex min-h-0">
-
       <!-- Scrollable content -->
-      <main class="flex-1 overflow-y-auto min-w-0 flex flex-col gap-[14px]"
-            style="padding: 18px 22px 30px; background: #0a0a0e">
-
+      <main
+        class="flex-1 overflow-y-auto min-w-0 flex flex-col gap-[14px]"
+        style="padding: 18px 22px 30px; background: #0a0a0e"
+      >
         <!-- Map card -->
         <app-monitor-map
           [zones]="zones"
@@ -104,22 +130,40 @@
         />
 
         <!-- Timeline 24h -->
-        <div style="background: #13131a; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 14px">
+        <div
+          style="
+            background: #13131a;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 14px;
+          "
+        >
           <div class="flex items-start justify-between" style="margin-bottom: 12px">
             <div>
-              <div class="font-mono uppercase tracking-[0.14em]"
-                   style="font-size: 9px; color: rgba(255,255,255,0.30)">
+              <div
+                class="font-mono uppercase tracking-[0.14em]"
+                style="font-size: 9px; color: rgba(255, 255, 255, 0.3)"
+              >
                 Plays · últimas 24h
               </div>
-              <div style="font-family: Geist, system-ui, sans-serif; font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.94); margin-top: 3px; letter-spacing: -0.01em">
+              <div
+                style="
+                  font-family: Geist, system-ui, sans-serif;
+                  font-size: 14px;
+                  font-weight: 600;
+                  color: rgba(255, 255, 255, 0.94);
+                  margin-top: 3px;
+                  letter-spacing: -0.01em;
+                "
+              >
                 728 reproducciones · pico 19:00
               </div>
             </div>
             <div class="flex gap-[14px] font-mono text-[10px]">
-              <span style="color: rgba(255,255,255,0.30)">
+              <span style="color: rgba(255, 255, 255, 0.3)">
                 ● <span style="color: #a78bfa">plays</span>
               </span>
-              <span style="color: rgba(255,255,255,0.30)">
+              <span style="color: rgba(255, 255, 255, 0.3)">
                 ● <span style="color: #fbbf24">triggers</span>
               </span>
             </div>
@@ -128,15 +172,18 @@
             @for (bar of timeline24h(); track bar.h) {
               <div class="flex-1 flex flex-col items-center gap-[2px] justify-end h-full">
                 @if (bar.trigPct > 0) {
-                  <div class="w-full rounded-t-[2px]"
-                       [style.height.%]="bar.trigPct"
-                       style="background: rgba(251,191,36,0.5)"></div>
+                  <div
+                    class="w-full rounded-t-[2px]"
+                    [style.height.%]="bar.trigPct"
+                    style="background: rgba(251, 191, 36, 0.5)"
+                  ></div>
                 }
-                <div class="w-full rounded-t-[2px] transition-all duration-300"
-                     [style.height.%]="bar.pct"
-                     [style.background]="bar.isNow ? '#a78bfa' : 'rgba(167,139,250,0.5)'"
-                     [style.box-shadow]="bar.isNow ? '0 0 12px rgba(167,139,250,0.7)' : 'none'">
-                </div>
+                <div
+                  class="w-full rounded-t-[2px] transition-all duration-300"
+                  [style.height.%]="bar.pct"
+                  [style.background]="bar.isNow ? '#a78bfa' : 'rgba(167,139,250,0.5)'"
+                  [style.box-shadow]="bar.isNow ? '0 0 12px rgba(167,139,250,0.7)' : 'none'"
+                ></div>
               </div>
             }
           </div>
@@ -154,13 +201,17 @@
         <!-- Inventario en rotación -->
         <div>
           <div class="flex items-center justify-between" style="margin-bottom: 10px">
-            <div class="font-mono uppercase tracking-[0.14em]"
-                 style="font-size: 9px; color: rgba(255,255,255,0.30)">
+            <div
+              class="font-mono uppercase tracking-[0.14em]"
+              style="font-size: 9px; color: rgba(255, 255, 255, 0.3)"
+            >
               Inventario en rotación
             </div>
             <span class="font-mono text-[10px] text-white/30">
               {{ filteredContents().length }} contenidos
-              @if (activeZoneId()) {· {{ activeZoneName() }}}
+              @if (activeZoneId()) {
+                · {{ activeZoneName() }}
+              }
             </span>
           </div>
           <app-monitor-grid
@@ -172,77 +223,8 @@
         </div>
       </main>
 
-      <!-- ── RIGHT RAIL ── -->
-      <aside class="flex-shrink-0 flex flex-col min-h-0"
-             style="width: 280px; background: #13131a; border-left: 1px solid rgba(255,255,255,0.06)">
-
-        <!-- Smart Triggers -->
-        <div style="padding: 13px 15px; border-bottom: 1px solid rgba(255,255,255,0.06)">
-          <div class="flex items-center justify-between" style="margin-bottom: 10px">
-            <span style="font-family: Geist, system-ui, sans-serif; font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.94)">Smart Triggers</span>
-            <span class="font-mono text-[10px] text-white/30">3/4 activos</span>
-          </div>
-          @for (t of smartTriggers; track t.name) {
-            <div class="flex items-center gap-[9px] py-[7px]" [style.opacity]="t.on ? '1' : '0.45'">
-              <div class="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 text-[13px]"
-                   [style]="'background:' + t.color + '18; border: 1px solid ' + t.color + '30'">
-                {{ t.icon }}
-              </div>
-              <div class="flex-1 min-w-0">
-                <div style="font-family: Geist, system-ui, sans-serif; font-size: 11.5px; color: rgba(255,255,255,0.94); font-weight: 500">{{ t.name }}</div>
-                <div class="font-mono truncate" style="font-size: 9.5px; color: rgba(255,255,255,0.30)">{{ t.sub }}</div>
-              </div>
-              <span class="font-mono font-semibold flex-shrink-0"
-                    style="font-size: 11px"
-                    [style.color]="t.on ? 'rgba(255,255,255,0.94)' : 'rgba(255,255,255,0.30)'">{{ t.hits }}</span>
-              <!-- Toggle pill -->
-              <div class="relative flex-shrink-0"
-                   style="width:24px; height:14px; border-radius:99px; transition:background .2s"
-                   [style.background]="t.on ? '#4ade80' : 'rgba(255,255,255,0.09)'">
-                <div class="absolute rounded-full bg-white transition-all"
-                     style="top:2px; width:10px; height:10px; box-shadow:0 1px 3px rgba(0,0,0,0.4)"
-                     [style.left]="t.on ? '12px' : '2px'"></div>
-              </div>
-            </div>
-          }
-        </div>
-
-        <!-- Proof of Play header -->
-        <div style="padding: 11px 15px 10px; border-bottom: 1px solid rgba(255,255,255,0.06)">
-          <div class="flex items-center justify-between">
-            <span style="font-family: Geist, system-ui, sans-serif; font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.94)">
-              Proof of Play
-            </span>
-            <span class="font-mono text-[9.5px] text-[#4ade80] flex items-center gap-[5px]">
-              <span class="w-[5px] h-[5px] rounded-full bg-[#4ade80] animate-pulse"
-                    style="box-shadow: 0 0 6px #4ade80"></span>
-              STREAM
-            </span>
-          </div>
-          <div class="font-mono text-[9px] text-white/30 mt-0.5">auditoría en vivo · 327 eventos hoy</div>
-        </div>
-
-        <!-- PoP activity feed -->
-        <div class="flex-1 overflow-y-auto">
-          @for (a of popActivity; track a.t) {
-            <div class="grid gap-[9px] items-center"
-                 style="grid-template-columns: auto 1fr auto; padding: 8px 15px; border-bottom: 1px solid rgba(255,255,255,0.04)">
-              <span class="font-mono text-[9.5px] text-white/30 flex-shrink-0">{{ a.t }}</span>
-              <div class="min-w-0">
-                <div class="text-[11px] text-white/94 truncate"
-                     style="font-family: Geist, system-ui, sans-serif">{{ a.content }}</div>
-                <div class="font-mono text-[9px] text-white/30">{{ a.screen }} · {{ a.dur }}s · {{ a.zone }}</div>
-              </div>
-              <div class="w-[18px] h-[18px] rounded-full flex items-center justify-center flex-shrink-0 font-mono text-[10px] font-bold"
-                   [style]="a.status === 'ok'
-                     ? 'background: rgba(74,222,128,0.12); border: 1px solid rgba(74,222,128,0.35); color: #4ade80'
-                     : 'background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.35); color: #fbbf24'">
-                {{ a.status === 'ok' ? '✓' : '!' }}
-              </div>
-            </div>
-          }
-        </div>
-      </aside>
+      <!-- ── RIGHT RAIL: Smart Triggers + Proof of Play ── -->
+      <app-right-rail />
     </div>
   </div>
 </div>
