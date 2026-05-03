@@ -1,17 +1,24 @@
 <aside
-  class="flex flex-col bg-[#13131a] border-r border-white/[0.06] transition-all duration-200 ease-in-out flex-shrink-0"
+  class="flex flex-col bg-[#13131a] border-r border-white/[0.06] transition-all duration-200 ease-in-out flex-shrink-0 h-full"
   [class.w-56]="!collapsed()"
   [class.w-0]="collapsed()"
   [class.overflow-hidden]="collapsed()"
 >
   <!-- Brand -->
   <div class="flex items-center gap-2.5 px-[18px] py-[18px] flex-shrink-0">
-    <div class="w-[30px] h-[30px] rounded-lg flex-shrink-0 flex items-center justify-center font-bold text-sm text-[#0a0a0d]"
-         style="background: linear-gradient(135deg, #a78bfa 0%, #7c3aed 100%)">
+    <div
+      class="w-[30px] h-[30px] rounded-lg flex-shrink-0 flex items-center justify-center font-bold text-sm text-[#0a0a0d]"
+      style="background: linear-gradient(135deg, #a78bfa 0%, #7c3aed 100%)"
+    >
       L
     </div>
     <div>
-      <div class="font-semibold text-sm text-white/94 tracking-tight" style="letter-spacing:-0.015em">LatinAd</div>
+      <div
+        class="font-semibold text-sm text-white/94 tracking-tight"
+        style="letter-spacing: -0.015em"
+      >
+        AdTech
+      </div>
       <div class="font-mono text-[9px] text-white/34 tracking-[0.12em] uppercase">CMS · DOOH</div>
     </div>
   </div>
@@ -20,78 +27,109 @@
   <div class="px-2.5 space-y-0.5">
     <a
       routerLink="/dashboard"
-      routerLinkActive #rlaDash="routerLinkActive"
+      routerLinkActive
+      #rlaDash="routerLinkActive"
       class="flex items-center gap-2.5 px-3 py-[9px] rounded-lg text-[13px] transition-all duration-150 cursor-pointer"
-      [class]="rlaDash.isActive
-        ? 'text-white/94 font-medium border border-[#a78bfa33]'
-        : 'text-white/55 hover:text-white/80 border border-transparent hover:bg-white/[0.04]'"
-      [style]="rlaDash.isActive ? 'background: linear-gradient(90deg, rgba(167,139,250,0.1) 0%, transparent 100%)' : ''"
+      [class]="
+        rlaDash.isActive
+          ? 'text-white/94 font-medium border border-[#a78bfa33]'
+          : 'text-white/55 hover:text-white/80 border border-transparent hover:bg-white/[0.04]'
+      "
+      [style]="
+        rlaDash.isActive
+          ? 'background: linear-gradient(90deg, rgba(167,139,250,0.1) 0%, transparent 100%)'
+          : ''
+      "
     >
-      <svg class="w-[15px] h-[15px] flex-shrink-0" viewBox="0 0 24 24" fill="none"
-           [attr.stroke]="rlaDash.isActive ? '#a78bfa' : 'rgba(255,255,255,0.55)'" stroke-width="1.7">
-        <rect x="3" y="3" width="7" height="7" rx="1.5"/>
-        <rect x="14" y="3" width="7" height="7" rx="1.5"/>
-        <rect x="3" y="14" width="7" height="7" rx="1.5"/>
-        <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+      <svg
+        class="w-[15px] h-[15px] flex-shrink-0"
+        viewBox="0 0 24 24"
+        fill="none"
+        [attr.stroke]="rlaDash.isActive ? '#a78bfa' : 'rgba(255,255,255,0.55)'"
+        stroke-width="1.7"
+      >
+        <rect x="3" y="3" width="7" height="7" rx="1.5" />
+        <rect x="14" y="3" width="7" height="7" rx="1.5" />
+        <rect x="3" y="14" width="7" height="7" rx="1.5" />
+        <rect x="14" y="14" width="7" height="7" rx="1.5" />
       </svg>
       <span class="flex-1">Contenidos</span>
-      <span class="font-mono text-[10px]"
-            [class]="rlaDash.isActive ? 'text-[#a78bfa] bg-[#a78bfa1a] px-1.5 py-0.5 rounded' : 'text-white/34 bg-white/[0.04] px-1.5 py-0.5 rounded'">
+      <span
+        class="font-mono text-[10px]"
+        [class]="
+          rlaDash.isActive
+            ? 'text-[#a78bfa] bg-[#a78bfa1a] px-1.5 py-0.5 rounded'
+            : 'text-white/34 bg-white/[0.04] px-1.5 py-0.5 rounded'
+        "
+      >
         {{ contentService.kpiTotal() }}
       </span>
     </a>
 
     <a
       routerLink="/monitor"
-      routerLinkActive #rlaMonitor="routerLinkActive"
+      routerLinkActive
+      #rlaMonitor="routerLinkActive"
       class="flex items-center gap-2.5 px-3 py-[9px] rounded-lg text-[13px] transition-all duration-150 cursor-pointer"
-      [class]="rlaMonitor.isActive
-        ? 'text-white/94 font-medium border border-[#a78bfa33]'
-        : 'text-white/55 hover:text-white/80 border border-transparent hover:bg-white/[0.04]'"
-      [style]="rlaMonitor.isActive ? 'background: linear-gradient(90deg, rgba(167,139,250,0.1) 0%, transparent 100%)' : ''"
+      [class]="
+        rlaMonitor.isActive
+          ? 'text-white/94 font-medium border border-[#a78bfa33]'
+          : 'text-white/55 hover:text-white/80 border border-transparent hover:bg-white/[0.04]'
+      "
+      [style]="
+        rlaMonitor.isActive
+          ? 'background: linear-gradient(90deg, rgba(167,139,250,0.1) 0%, transparent 100%)'
+          : ''
+      "
     >
-      <svg class="w-[15px] h-[15px] flex-shrink-0" viewBox="0 0 24 24" fill="none"
-           [attr.stroke]="rlaMonitor.isActive ? '#a78bfa' : 'rgba(255,255,255,0.55)'" stroke-width="1.7">
-        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="12" cy="10" r="3"/>
+      <svg
+        class="w-[15px] h-[15px] flex-shrink-0"
+        viewBox="0 0 24 24"
+        fill="none"
+        [attr.stroke]="rlaMonitor.isActive ? '#a78bfa' : 'rgba(255,255,255,0.55)'"
+        stroke-width="1.7"
+      >
+        <path
+          d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <circle cx="12" cy="10" r="3" />
       </svg>
       <span class="flex-1">Centro de Monitoreo</span>
       @if (screenService.alertCount() > 0) {
-        <span class="w-4 h-4 rounded-full bg-[#4ade80] text-[#0a0a0e] text-[9px] font-bold flex items-center justify-center"
-              style="box-shadow: 0 0 8px #4ade80">
+        <span
+          class="w-4 h-4 rounded-full bg-[#4ade80] text-[#0a0a0e] text-[9px] font-bold flex items-center justify-center"
+          style="box-shadow: 0 0 8px #4ade80"
+        >
           {{ screenService.alertCount() }}
         </span>
       } @else {
-        <span class="font-mono text-[10px]"
-              [class]="rlaMonitor.isActive ? 'text-[#a78bfa] bg-[#a78bfa1a] px-1.5 py-0.5 rounded' : 'text-white/34 bg-white/[0.04] px-1.5 py-0.5 rounded'">22</span>
+        <span
+          class="font-mono text-[10px]"
+          [class]="
+            rlaMonitor.isActive
+              ? 'text-[#a78bfa] bg-[#a78bfa1a] px-1.5 py-0.5 rounded'
+              : 'text-white/34 bg-white/[0.04] px-1.5 py-0.5 rounded'
+          "
+          >22</span
+        >
       }
     </a>
-
-    <!-- Disabled nav items -->
-    <div class="flex items-center gap-2.5 px-3 py-[9px] rounded-lg text-[13px] text-white/25 cursor-not-allowed opacity-50">
-      <svg class="w-[15px] h-[15px] flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.34)" stroke-width="1.7">
-        <path d="M3 11 L21 3 L17 21 L11 13 Z" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      <span class="flex-1">Campañas</span>
-    </div>
-    <div class="flex items-center gap-2.5 px-3 py-[9px] rounded-lg text-[13px] text-white/25 cursor-not-allowed opacity-50">
-      <svg class="w-[15px] h-[15px] flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.34)" stroke-width="1.7">
-        <path d="M4 20V10 M10 20V4 M16 20V14 M22 20H2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      <span class="flex-1">Reportes</span>
-    </div>
   </div>
 
   <!-- Middle section — projected (folders / zones / etc.) -->
   <div class="mt-[18px] pt-2.5 border-t border-white/[0.06] flex-1 overflow-y-auto">
-    <ng-content/>
+    <ng-content />
   </div>
 
   <!-- User footer -->
   <div class="flex-shrink-0 border-t border-white/[0.06] px-[14px] py-[14px]">
     <div class="flex items-center gap-2.5">
-      <div class="w-7 h-7 rounded-full flex items-center justify-center font-mono text-[11px] font-semibold text-white/94 flex-shrink-0"
-           style="background: linear-gradient(135deg, #3b3b4a, #1f1f28)">
+      <div
+        class="w-7 h-7 rounded-full flex items-center justify-center font-mono text-[11px] font-semibold text-white/94 flex-shrink-0"
+        style="background: linear-gradient(135deg, #3b3b4a, #1f1f28)"
+      >
         {{ userInitial }}
       </div>
       <div class="flex-1 min-w-0">
@@ -104,9 +142,15 @@
         title="Cerrar sesión"
         class="flex-shrink-0 p-1.5 rounded-md text-white/34 hover:text-white/80 hover:bg-white/[0.06] transition-colors"
       >
-        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <circle cx="12" cy="12" r="3"/>
-          <path d="M12 1v3M12 20v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M1 12h3M20 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/>
+        <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="currentColor">
+          <path
+            fill-rule="evenodd"
+            d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"
+          />
+          <path
+            fill-rule="evenodd"
+            d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"
+          />
         </svg>
       </button>
     </div>
