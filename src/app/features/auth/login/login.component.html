@@ -263,16 +263,24 @@
 
       <!-- Remember me + 2FA -->
       <div class="flex items-center gap-[10px] mt-[6px] mb-6">
-        <label class="flex items-center gap-2 cursor-pointer">
+        <label class="flex items-center gap-2 cursor-pointer" (click)="rememberMe.set(!rememberMe())">
           <span
-            class="w-4 h-4 rounded flex items-center justify-center flex-shrink-0"
-            style="border: 1px solid rgba(255,255,255,0.1); background: #13131a"
+            class="w-4 h-4 rounded flex items-center justify-center flex-shrink-0 transition-colors"
+            [style]="rememberMe()
+              ? 'border: 1px solid rgba(167,139,250,0.5); background: rgba(167,139,250,0.15)'
+              : 'border: 1px solid rgba(255,255,255,0.1); background: #13131a'"
           >
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="20 6 9 17 4 12" />
-            </svg>
+            @if (rememberMe()) {
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            }
           </span>
-          <span class="text-[12.5px] text-[rgba(255,255,255,0.55)]" style="font-family: Geist, system-ui, sans-serif">
+          <span
+            class="text-[12.5px] transition-colors"
+            [style.color]="rememberMe() ? 'rgba(255,255,255,0.94)' : 'rgba(255,255,255,0.55)'"
+            style="font-family: Geist, system-ui, sans-serif"
+          >
             Mantener sesión iniciada
           </span>
         </label>

@@ -25,6 +25,7 @@ export class LoginComponent {
   readonly showPassword = signal(false);
   readonly currentYear = new Date().getFullYear();
   readonly liveTime = signal(new Date().toTimeString().slice(0, 8));
+  readonly rememberMe = signal(false);
 
   readonly miniMapLines = Array.from({ length: 14 }, (_, i) => i);
   readonly miniZones = [
