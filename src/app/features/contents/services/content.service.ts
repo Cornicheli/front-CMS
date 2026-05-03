@@ -60,14 +60,8 @@ export class ContentService {
     return this.contents().filter((c) => c.folder_id === folder_id);
   });
 
-  readonly kpiTotal    = computed(() => this.folderScopedContents().length);
-  readonly kpiActive   = computed(() => this.folderScopedContents().filter(c => !c.archived).length);
-  readonly kpiArchived = computed(() => this.folderScopedContents().filter(c => c.archived).length);
-  readonly kpiViews    = computed(() =>
-    this.folderScopedContents().reduce((sum, c) => sum + this.simulatedViews(c.id), 0)
-  );
-
-  private simulatedViews(id: number): number { return ((id * 1337) % 9000) + 1000; }
+  readonly kpiTotal  = computed(() => this.folderScopedContents().length);
+  readonly kpiActive = computed(() => this.folderScopedContents().filter(c => !c.archived).length);
 
   // ─── HTTP Methods ─────────────────────────────────────
 
@@ -141,9 +135,5 @@ export class ContentService {
 
   updateFilters(partial: Partial<ContentFilters>): void {
     this.filters.update((current) => ({ ...current, ...partial }));
-  }
-
-  resetFilters(): void {
-    this.filters.set({});
   }
 }

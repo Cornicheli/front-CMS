@@ -9,7 +9,6 @@ import { ContentFilters } from '@models/filters.model';
 import { ContentFormComponent } from '@features/contents/content-form/content-form.component';
 import { Content } from '@models/content.model';
 import { MonitorScreenService } from '@features/monitor/monitor-screen.service';
-import { ThemeService } from '@core/services/theme.service';
 import { getMetrics } from '@models/zone.model';
 import { AppSidebarComponent } from '@shared/app-sidebar/app-sidebar.component';
 import { AppRightRailComponent } from '@shared/app-right-rail/app-right-rail.component';
@@ -31,7 +30,6 @@ export class LayoutComponent {
   protected readonly auth = inject(AuthService);
   protected readonly contentService = inject(ContentService);
   protected readonly screenService = inject(MonitorScreenService);
-  protected readonly themeService = inject(ThemeService);
   readonly isFormOpen = signal(false);
   readonly editingContent = signal<Content | null>(null);
   readonly liveTime = signal(new Date().toTimeString().slice(0, 8));
