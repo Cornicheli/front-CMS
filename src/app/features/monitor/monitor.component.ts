@@ -22,15 +22,11 @@ export class MonitorComponent {
 
   readonly zones = ZONES;
   readonly activeZoneId = signal<string | null>(null);
-  readonly activeFolderId = signal<number | null>(null);
-  readonly viewMode = signal<'grid' | 'list'>('grid');
 
   readonly filteredContents = computed(() => {
     let items = this.contentService.contents().filter((c) => !c.archived);
     const zoneId = this.activeZoneId();
     if (zoneId) items = items.filter((c) => getZoneForContent(c.id) === zoneId);
-    const folderId = this.activeFolderId();
-    if (folderId) items = items.filter((c) => c.folder_id === folderId);
     return items;
   });
 
@@ -38,14 +34,9 @@ export class MonitorComponent {
 
   readonly breadcrumb = computed(() => {
     const zoneId = this.activeZoneId();
-    const folderId = this.activeFolderId();
     if (zoneId) {
       const zone = this.zones.find((z) => z.id === zoneId);
       return zone ? `/ ${zone.name}` : '';
-    }
-    if (folderId) {
-      const folder = this.contentService.folders().find((f) => f.id === folderId);
-      return folder ? `/ ${folder.name}` : '';
     }
     return '/ Todas las zonas';
   });
@@ -92,16 +83,6 @@ export class MonitorComponent {
 
   onZoneSelected(id: string | null): void {
     this.activeZoneId.set(id);
-    this.activeFolderId.set(null);
-  }
-
-  onFolderSelected(id: number | null): void {
-    this.activeFolderId.set(id);
-    this.activeZoneId.set(null);
-  }
-
-  onViewModeChange(mode: 'grid' | 'list'): void {
-    this.viewMode.set(mode);
   }
 
   activeZoneName(): string {
