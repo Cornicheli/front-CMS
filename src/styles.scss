@@ -13,3 +13,31 @@ body {
   from { transform: translateX(-50%) translateY(20px); opacity: 0; }
   to   { transform: translateX(-50%) translateY(0);    opacity: 1; }
 }
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.23) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 6px;  
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.23); 
+  border-radius: 20px;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(167, 139, 250, 0.4); 
+}
+
+.custom-scroll-strong::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+}

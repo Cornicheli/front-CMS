@@ -7,12 +7,16 @@ import { API_BASE_URL } from '@core/constants/api.constants';
 
 const TOKEN_KEY = 'cms_token';
 
+function readToken(): string | null {
+  return localStorage.getItem(TOKEN_KEY) ?? sessionStorage.getItem(TOKEN_KEY);
+}
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
 
-  private readonly _token = signal<string | null>(localStorage.getItem(TOKEN_KEY));
+  private readonly _token = signal<string | null>(readToken());
 
   readonly token = this._token.asReadonly();
 
@@ -29,13 +33,19 @@ export class AuthService {
     }
   });
 
-  login(credentials: LoginRequest) {
+  login(credentials: LoginRequest, remember = false) {
     return this.http
       .post<LoginResponse>(`${API_BASE_URL}/auth/login`, credentials)
       .pipe(
         tap((response) => {
           this._token.set(response.token);
-          localStorage.setItem(TOKEN_KEY, response.token);
+          if (remember) {
+            localStorage.setItem(TOKEN_KEY, response.token);
+            sessionStorage.removeItem(TOKEN_KEY);
+          } else {
+            sessionStorage.setItem(TOKEN_KEY, response.token);
+            localStorage.removeItem(TOKEN_KEY);
+          }
         }),
       );
   }
@@ -43,6 +53,7 @@ export class AuthService {
   logout(): void {
     this._token.set(null);
     localStorage.removeItem(TOKEN_KEY);
+    sessionStorage.removeItem(TOKEN_KEY);
     this.router.navigate(['/login']);
   }
 }

@@ -1,255 +1,230 @@
-<div class="flex h-screen overflow-hidden bg-slate-50 dark:bg-[#0a0f1c]">
-  <!-- ══════════════════ SIDEBAR — always dark ══════════════════ -->
-  <app-monitor-sidebar
-    [zones]="zones"
-    [folders]="contentService.folders()"
-    [activeZoneId]="activeZoneId()"
-    [activeFolderId]="activeFolderId()"
-    (zoneSelected)="onZoneSelected($event)"
-    (folderSelected)="onFolderSelected($event)"
-  />
+<div class="flex h-screen overflow-hidden bg-[#0a0a0e]">
+  <!-- ══════════ SIDEBAR ══════════ -->
+  <app-shared-sidebar #sidebar>
+    <p class="px-3 pb-2 font-mono text-[9px] text-white/34 tracking-[0.16em] uppercase">Zonas</p>
+    <div class="px-2.5 space-y-0.5">
+      @for (zone of zones; track zone.id) {
+        <button
+          type="button"
+          (click)="activeZoneId() === zone.id ? onZoneSelected(null) : onZoneSelected(zone.id)"
+          class="w-full flex items-center gap-2.5 px-3 py-[9px] rounded-lg text-[13px] transition-all duration-150"
+          [style.background-color]="activeZoneId() === zone.id ? zone.color + '18' : ''"
+          [style.box-shadow]="
+            activeZoneId() === zone.id ? '0 0 14px -4px ' + zone.color + '60' : ''
+          "
+          [class]="
+            activeZoneId() === zone.id
+              ? 'font-semibold text-white border border-white/[0.1]'
+              : 'text-white/55 hover:text-white/80 border border-transparent hover:bg-white/[0.04]'
+          "
+        >
+          <span
+            class="w-[7px] h-[7px] rounded-full flex-shrink-0"
+            [style.background-color]="zone.color"
+            [style.box-shadow]="activeZoneId() === zone.id ? '0 0 6px 1px ' + zone.color : 'none'"
+          ></span>
+          <span class="flex-1 text-left truncate">{{ zone.name }}</span>
+          <span
+            class="font-mono text-[10px]"
+            [class]="
+              activeZoneId() === zone.id
+                ? 'text-white/55'
+                : 'text-white/34 bg-white/[0.04] px-1.5 py-0.5 rounded'
+            "
+          >
+            {{ zone.screenCount }}
+          </span>
+        </button>
+      }
+    </div>
+  </app-shared-sidebar>
 
-  <!-- ══════════════════ MAIN ══════════════════ -->
+  <!-- ══════════ MAIN ══════════ -->
   <div class="flex-1 flex flex-col overflow-hidden min-w-0">
     <!-- TOPBAR -->
     <header
-      class="h-14 flex-shrink-0 flex items-center gap-3 px-5
-             bg-white dark:bg-[#0d1424]
-             border-b border-slate-200 dark:border-slate-800/60"
+      class="flex-shrink-0 px-[22px] py-3 border-b border-white/[0.06] flex items-center gap-[18px] bg-[#0a0a0e]"
     >
-      <!-- Back to Dashboard -->
-      <a
-        routerLink="/dashboard"
-        class="flex-shrink-0 flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs transition-all
-               text-slate-500 dark:text-slate-400
-               hover:text-slate-700 dark:hover:text-slate-200
-               hover:bg-slate-100 dark:hover:bg-slate-800/60
-               border border-slate-200 dark:border-slate-800/60
-               hover:border-slate-300 dark:hover:border-slate-700"
-      >
-        <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="currentColor">
-          <path
-            fill-rule="evenodd"
-            d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
-          />
-        </svg>
-        Dashboard
-      </a>
-      <div class="flex-1 min-w-0">
-        <h1 class="text-sm font-semibold text-slate-800 dark:text-slate-100 truncate">
-          Centro de Monitoreo
-          <span class="ml-2 text-slate-400 dark:text-slate-500 font-normal text-xs">{{ breadcrumb() }}</span>
-        </h1>
+      <!-- Sidebar toggle + title -->
+      <div class="flex items-center gap-3">
+        <button
+          type="button"
+          (click)="sidebar.toggle()"
+          class="p-1.5 rounded-md text-white/34 hover:text-white/80 hover:bg-white/[0.06] transition-colors"
+          title="Toggle sidebar"
+        >
+          <svg class="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
+            <path
+              fill-rule="evenodd"
+              d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"
+            />
+          </svg>
+        </button>
+        <div>
+          <div class="flex items-baseline gap-2">
+            <span
+              class="text-[17px] font-semibold text-white/94 tracking-tight"
+              style="letter-spacing: -0.02em"
+              >Centro de Monitoreo</span
+            >
+            <span class="font-mono text-[11px] text-white/34">· CABA · {{ breadcrumb() }}</span>
+          </div>
+          <div class="font-mono text-[10px] text-white/34 tracking-[0.04em]">
+            ~ / Dashboard / Monitor
+          </div>
+        </div>
       </div>
 
-      <!-- Theme toggle -->
-      <button
-        type="button"
-        (click)="themeService.toggle()"
-        class="flex-shrink-0 p-1.5 rounded-md transition-colors
-               text-slate-400
-               hover:text-slate-600 dark:hover:text-slate-300
-               hover:bg-slate-100 dark:hover:bg-slate-800"
-        [title]="themeService.isDark() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'"
-      >
-        @if (themeService.isDark()) {
-          <!-- Sun -->
-          <svg class="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
-          </svg>
-        } @else {
-          <!-- Moon -->
-          <svg class="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
-          </svg>
-        }
-      </button>
+      <div class="flex-1"></div>
 
-      <!-- Grid / List toggle -->
+      <!-- Live ticker -->
+      <div class="flex gap-[20px] font-mono text-[11px]">
+        <div class="flex items-center gap-[5px]">
+          <span class="text-white/34 tracking-[0.1em]" style="font-size: 9.5px">NET</span>
+          <span class="text-[#4ade80] font-semibold">{{ kpiNetworkHealth() }}</span>
+        </div>
+        <div class="flex items-center gap-[5px]">
+          <span class="text-white/34 tracking-[0.1em]" style="font-size: 9.5px">PLAYS</span>
+          <span class="text-[#a78bfa] font-semibold">{{ kpiActivePlays() }}</span>
+        </div>
+        <div class="flex items-center gap-[5px]">
+          <span class="text-white/34 tracking-[0.1em]" style="font-size: 9.5px">REV/h</span>
+          <span class="text-[#fbbf24] font-semibold">{{ kpiRevenue() }}</span>
+        </div>
+        <div class="flex items-center gap-[5px]">
+          <span class="text-white/34 tracking-[0.1em]" style="font-size: 9.5px">ERR</span>
+          <span class="text-white/55 font-semibold">{{ kpiErrors() }}</span>
+        </div>
+      </div>
+
+      <div class="h-[18px] w-px bg-white/[0.06]"></div>
+
+      <!-- LIVE badge -->
       <div
-        class="flex bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800/60 rounded-lg p-0.5 gap-0.5 flex-shrink-0"
+        class="flex items-center gap-2 px-[10px] py-[5px] rounded-lg border flex-shrink-0"
+        style="background: rgba(34, 197, 94, 0.08); border-color: rgba(34, 197, 94, 0.22)"
       >
-        <button
-          type="button"
-          (click)="onViewModeChange('grid')"
-          class="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all"
-          [class]="
-            viewMode() === 'grid'
-              ? 'bg-brand-500/20 text-brand-400 dark:text-brand-300'
-              : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
-          "
+        <span
+          class="w-1.5 h-1.5 rounded-full bg-[#4ade80] animate-pulse"
+          style="box-shadow: 0 0 8px #4ade80"
+        ></span>
+        <span class="font-mono text-[11px] text-[#4ade80] tracking-[0.06em]"
+          >LIVE · {{ liveTime() }}</span
         >
-          <svg class="w-3.5 h-3.5 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
-            <rect x="3" y="3" width="7" height="7" rx="1.5" />
-            <rect x="14" y="3" width="7" height="7" rx="1.5" />
-            <rect x="3" y="14" width="7" height="7" rx="1.5" />
-            <rect x="14" y="14" width="7" height="7" rx="1.5" />
-          </svg>
-          Grilla
-        </button>
-        <button
-          type="button"
-          (click)="onViewModeChange('list')"
-          class="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all"
-          [class]="
-            viewMode() === 'list'
-              ? 'bg-brand-500/20 text-brand-400 dark:text-brand-300'
-              : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
-          "
-        >
-          <svg
-            class="w-3.5 h-3.5 flex-shrink-0"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2.5"
-          >
-            <line x1="3" y1="6" x2="21" y2="6" />
-            <line x1="3" y1="12" x2="21" y2="12" />
-            <line x1="3" y1="18" x2="21" y2="18" />
-          </svg>
-          Lista
-        </button>
       </div>
     </header>
 
-    <!-- ── KPI ROW ── -->
-    <div class="flex-shrink-0 grid grid-cols-4 gap-3 px-5 py-3 bg-slate-50 dark:bg-[#0a0f1c]">
-      <!-- Network Status -->
-      <div
-        class="relative bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-slate-800/60 rounded-xl px-4 py-3.5 flex items-center gap-3 overflow-hidden"
+    <!-- ── MAIN CONTENT + RIGHT RAIL ── -->
+    <div class="flex-1 flex min-h-0">
+      <!-- Scrollable content -->
+      <main
+        class="flex-1 overflow-y-auto min-w-0 flex flex-col gap-[14px]"
+        style="padding: 18px 22px 30px; background: #0a0a0e"
       >
-        <div
-          class="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl bg-gradient-to-r from-emerald-500 to-emerald-400"
-        ></div>
-        <div
-          class="w-9 h-9 rounded-lg bg-emerald-500/10 flex items-center justify-center flex-shrink-0"
-        >
-          <svg
-            class="w-4 h-4 text-emerald-400"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <circle cx="12" cy="12" r="10" />
-            <path
-              d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
-            />
-          </svg>
-        </div>
-        <div class="flex-1 min-w-0">
-          <div class="text-xl font-bold text-slate-700 dark:text-slate-100 leading-none">{{ kpiNetworkHealth() }}</div>
-          <div class="text-[10px] text-slate-500 mt-1">Network Online</div>
-        </div>
-        <span
-          class="flex-shrink-0 text-[10px] font-bold px-2 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center gap-1"
-        >
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse inline-block"></span>
-          LIVE
-        </span>
-      </div>
+        <!-- Map card -->
+        <app-monitor-map
+          [zones]="zones"
+          [activeZoneId]="activeZoneId()"
+          [contents]="contentService.contents()"
+          (zoneClicked)="onZoneSelected($event)"
+        />
 
-      <!-- Active Plays -->
-      <div
-        class="relative bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-slate-800/60 rounded-xl px-4 py-3.5 flex items-center gap-3 overflow-hidden"
-      >
+        <!-- Timeline 24h -->
         <div
-          class="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl bg-gradient-to-r from-brand-500 to-brand-400"
-        ></div>
-        <div
-          class="w-9 h-9 rounded-lg bg-brand-500/10 flex items-center justify-center flex-shrink-0"
+          style="
+            background: #13131a;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 14px;
+          "
         >
-          <svg class="w-4 h-4 text-brand-400" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M8 5v14l11-7z" />
-          </svg>
+          <div class="flex items-start justify-between" style="margin-bottom: 12px">
+            <div>
+              <div
+                class="font-mono uppercase tracking-[0.14em]"
+                style="font-size: 9px; color: rgba(255, 255, 255, 0.3)"
+              >
+                Plays · últimas 24h
+              </div>
+              <div
+                style="
+                  font-family: Geist, system-ui, sans-serif;
+                  font-size: 14px;
+                  font-weight: 600;
+                  color: rgba(255, 255, 255, 0.94);
+                  margin-top: 3px;
+                  letter-spacing: -0.01em;
+                "
+              >
+                728 reproducciones · pico 19:00
+              </div>
+            </div>
+            <div class="flex gap-[14px] font-mono text-[10px]">
+              <span style="color: rgba(255, 255, 255, 0.3)">
+                ● <span style="color: #a78bfa">plays</span>
+              </span>
+              <span style="color: rgba(255, 255, 255, 0.3)">
+                ● <span style="color: #fbbf24">triggers</span>
+              </span>
+            </div>
+          </div>
+          <div class="flex items-end gap-[3px]" style="height: 72px">
+            @for (bar of timeline24h(); track bar.h) {
+              <div class="flex-1 flex flex-col items-center gap-[2px] justify-end h-full">
+                @if (bar.trigPct > 0) {
+                  <div
+                    class="w-full rounded-t-[2px]"
+                    [style.height.%]="bar.trigPct"
+                    style="background: rgba(251, 191, 36, 0.5)"
+                  ></div>
+                }
+                <div
+                  class="w-full rounded-t-[2px] transition-all duration-300"
+                  [style.height.%]="bar.pct"
+                  [style.background]="bar.isNow ? '#a78bfa' : 'rgba(167,139,250,0.5)'"
+                  [style.box-shadow]="bar.isNow ? '0 0 12px rgba(167,139,250,0.7)' : 'none'"
+                ></div>
+              </div>
+            }
+          </div>
+          <div class="flex font-mono text-[8.5px] text-white/30 mt-[5px]">
+            <div class="flex-1">00:00</div>
+            <div class="flex-1">04:00</div>
+            <div class="flex-1">08:00</div>
+            <div class="flex-1">12:00</div>
+            <div class="flex-1">16:00</div>
+            <div class="flex-1">20:00</div>
+            <span>23:59</span>
+          </div>
         </div>
-        <div class="flex-1 min-w-0">
-          <div class="text-xl font-bold text-slate-700 dark:text-slate-100 leading-none">{{ kpiActivePlays() }}</div>
-          <div class="text-[10px] text-slate-500 mt-1">Active Plays</div>
-        </div>
-      </div>
 
-      <!-- Revenue -->
-      <div
-        class="relative bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-slate-800/60 rounded-xl px-4 py-3.5 flex items-center gap-3 overflow-hidden"
-      >
-        <div
-          class="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl bg-gradient-to-r from-amber-500 to-amber-400"
-        ></div>
-        <div
-          class="w-9 h-9 rounded-lg bg-amber-500/10 flex items-center justify-center flex-shrink-0"
-        >
-          <svg
-            class="w-4 h-4 text-amber-400"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <line x1="12" y1="1" x2="12" y2="23" />
-            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-          </svg>
+        <!-- Inventario en rotación -->
+        <div>
+          <div class="flex items-center justify-between" style="margin-bottom: 10px">
+            <div
+              class="font-mono uppercase tracking-[0.14em]"
+              style="font-size: 9px; color: rgba(255, 255, 255, 0.3)"
+            >
+              Inventario en rotación
+            </div>
+            <span class="font-mono text-[10px] text-white/30">
+              {{ filteredContents().length }} contenidos
+              @if (activeZoneId()) {
+                · {{ activeZoneName() }}
+              }
+            </span>
+          </div>
+          <app-monitor-grid
+            [contents]="filteredContents()"
+            [viewMode]="'grid'"
+            [categories]="contentService.categories()"
+            (viewModeChange)="onViewModeChange($event)"
+          />
         </div>
-        <div class="flex-1 min-w-0">
-          <div class="text-xl font-bold text-slate-700 dark:text-slate-100 leading-none">{{ kpiRevenue() }}</div>
-          <div class="text-[10px] text-slate-500 mt-1">Revenue / Mes</div>
-        </div>
-        <span
-          class="flex-shrink-0 text-[10px] font-bold px-2 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20"
-          >+12%</span
-        >
-      </div>
+      </main>
 
-      <!-- Total Reach -->
-      <div
-        class="relative bg-white dark:bg-[#0d1424] border border-slate-200 dark:border-slate-800/60 rounded-xl px-4 py-3.5 flex items-center gap-3 overflow-hidden"
-      >
-        <div
-          class="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl bg-gradient-to-r from-violet-500 to-violet-400"
-        ></div>
-        <div
-          class="w-9 h-9 rounded-lg bg-violet-500/10 flex items-center justify-center flex-shrink-0"
-        >
-          <svg
-            class="w-4 h-4 text-violet-400"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-            <circle cx="12" cy="12" r="3" />
-          </svg>
-        </div>
-        <div class="flex-1 min-w-0">
-          <div class="text-xl font-bold text-slate-700 dark:text-slate-100 leading-none">{{ kpiReach() }}</div>
-          <div class="text-[10px] text-slate-500 mt-1">Total Reach</div>
-        </div>
-        <span
-          class="flex-shrink-0 text-[10px] font-bold px-2 py-1 rounded-full bg-violet-500/10 text-violet-400 border border-violet-500/20"
-          >CPM 3.8</span
-        >
-      </div>
-    </div>
-
-    <!-- ── SCROLLABLE CONTENT ── -->
-    <div class="flex-1 overflow-y-auto px-5 pb-8 space-y-4 scrollbar-thin">
-      <!-- MAP -->
-      <app-monitor-map
-        [zones]="zones"
-        [activeZoneId]="activeZoneId()"
-        [contents]="contentService.contents()"
-        (zoneClicked)="onZoneSelected($event)"
-      />
-
-      <!-- GRID / LIST -->
-      <app-monitor-grid
-        [contents]="filteredContents()"
-        [viewMode]="viewMode()"
-        [categories]="contentService.categories()"
-        (viewModeChange)="onViewModeChange($event)"
-      />
+      <!-- ── RIGHT RAIL: Smart Triggers + Proof of Play ── -->
+      <app-right-rail />
     </div>
   </div>
 </div>

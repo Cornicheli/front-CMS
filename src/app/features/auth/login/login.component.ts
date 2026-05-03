@@ -24,9 +24,17 @@ export class LoginComponent {
   readonly errorMessage = signal<string | null>(null);
   readonly showPassword = signal(false);
   readonly currentYear = new Date().getFullYear();
+  readonly liveTime = signal(new Date().toTimeString().slice(0, 8));
+  readonly rememberMe = signal(false);
 
-  // 24 cells for the animated screen grid
-  readonly screenCells = Array.from({ length: 24 }, (_, i) => i);
+  readonly miniMapLines = Array.from({ length: 14 }, (_, i) => i);
+  readonly miniZones = [
+    { id: 'centro',  x: 40, y: 55, screens: 8, color: 'oklch(0.65 0.16 270)' },
+    { id: 'palermo', x: 30, y: 30, screens: 5, color: 'oklch(0.65 0.16 290)' },
+    { id: 'retiro',  x: 50, y: 42, screens: 3, color: 'oklch(0.65 0.16 305)' },
+    { id: 'pmadero', x: 70, y: 50, screens: 4, color: 'oklch(0.65 0.16 200)' },
+    { id: 'telmo',   x: 55, y: 72, screens: 2, color: 'oklch(0.65 0.16 225)' },
+  ];
 
   readonly model = signal({ username: '', password: '' });
 
@@ -42,13 +50,17 @@ export class LoginComponent {
     submit(this.loginForm, async () => {
       this.isLoading.set(true);
       try {
-        await firstValueFrom(this.authService.login(this.model()));
+        await firstValueFrom(this.authService.login(this.model(), this.rememberMe()));
         await this.router.navigate(['/dashboard']);
       } catch {
         this.errorMessage.set('Credenciales inválidas. Verificá usuario y contraseña.');
         this.isLoading.set(false);
       }
     });
+  }
+
+  constructor() {
+    setInterval(() => this.liveTime.set(new Date().toTimeString().slice(0, 8)), 1000);
   }
 
   togglePassword(): void {

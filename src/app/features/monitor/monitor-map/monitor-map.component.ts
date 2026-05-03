@@ -55,4 +55,14 @@ export class MonitorMapComponent {
   isZoneCritical(zoneId: string): boolean {
     return this.screenService.worstZoneStatus(zoneId) === 'disconnected';
   }
+
+  /** Arrays for SVG street lines */
+  readonly streetCols = Array.from({ length: 14 }, (_, i) => i);
+  readonly streetRows = Array.from({ length: 10 }, (_, i) => i);
+
+  /** Zone name lookup for hint text */
+  zoneName(zoneId: string | null): string {
+    if (!zoneId) return '';
+    return this.zones().find(z => z.id === zoneId)?.name ?? '';
+  }
 }
