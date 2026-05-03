@@ -1,126 +1,337 @@
-<div class="login-root">
+<div class="flex h-screen overflow-hidden bg-[#0a0a0e] text-[rgba(255,255,255,0.94)]">
 
-  <!-- ─── LEFT — BRANDED PANEL ─────────────────────── -->
-  <aside class="branded-panel">
+  <!-- ══════════════════════════════════════════════════════
+       LEFT — Brand panel
+  ══════════════════════════════════════════════════════ -->
+  <div
+    class="hidden md:flex flex-col relative overflow-hidden"
+    style="width: 53.3%; flex-shrink: 0; background: #0e0e14; border-right: 1px solid rgba(255,255,255,0.06); padding: 42px 48px"
+  >
+    <!-- Ambient glows -->
+    <div
+      class="absolute pointer-events-none"
+      style="top: -20%; left: -20%; width: 80%; height: 80%; background: radial-gradient(circle, rgba(167,139,250,0.1) 0%, transparent 60%)"
+    ></div>
+    <div
+      class="absolute pointer-events-none"
+      style="bottom: -10%; right: -10%; width: 60%; height: 60%; background: radial-gradient(circle, rgba(103,232,249,0.06) 0%, transparent 60%)"
+    ></div>
 
-    <!-- Animated DOOH screen grid -->
-    <div class="screen-grid">
-      @for (cell of screenCells; track cell) {
+    <!-- Logo + LIVE badge -->
+    <div class="relative flex items-center gap-3">
+      <div
+        class="w-[34px] h-[34px] rounded-[9px] flex items-center justify-center font-bold text-base flex-shrink-0"
+        style="background: linear-gradient(135deg, #a78bfa, #8b5cf6); color: #0a0a0d; font-family: Geist, system-ui, sans-serif"
+      >L</div>
+      <div>
         <div
-          class="screen-cell"
-          [style.animation-delay]="((cell * 0.17) % 2.6) + 's'"
-        ></div>
-      }
+          class="text-[15px] font-semibold text-[rgba(255,255,255,0.94)]"
+          style="font-family: Geist, system-ui, sans-serif; letter-spacing: -0.01em"
+        >AdTech</div>
+        <div class="font-mono text-[9.5px] text-[rgba(255,255,255,0.34)] tracking-[0.16em] uppercase">CMS · DOOH Platform</div>
+      </div>
+      <div class="flex-1"></div>
+      <div
+        class="flex items-center gap-[6px] px-[10px] py-[5px] rounded-lg border"
+        style="background: rgba(34,197,94,0.08); border-color: rgba(34,197,94,0.25)"
+      >
+        <span class="w-[6px] h-[6px] rounded-full bg-[#4ade80] animate-pulse" style="box-shadow: 0 0 8px #4ade80"></span>
+        <span class="font-mono text-[10.5px] text-[#4ade80] tracking-[0.06em]">LIVE · {{ liveTime() }}</span>
+      </div>
     </div>
 
-    <!-- Brand -->
-    <div class="brand-block">
-      <div class="brand-wordmark">
-        <span class="brand-name">LatinAd</span>
-        <span class="brand-accent">CMS</span>
+    <!-- Hero copy -->
+    <div class="relative mt-16 mb-auto">
+      <div class="font-mono text-[10px] text-[rgba(255,255,255,0.34)] tracking-[0.18em] uppercase mb-[14px]">
+        Buenos Aires · 22 pantallas activas
       </div>
-      <p class="brand-tagline">Digital Out-of-Home<br>Content Management System</p>
+      <h1
+        class="m-0 font-medium text-[rgba(255,255,255,0.94)]"
+        style="font-family: Geist, system-ui, sans-serif; font-size: 52px; letter-spacing: -0.045em; line-height: 1.0"
+      >
+        La red DOOH<br />de <span class="text-[#a78bfa]">CABA</span>,<br />en tiempo real.
+      </h1>
+      <p
+        class="mt-[18px] text-[15px] font-normal text-[rgba(255,255,255,0.55)]"
+        style="max-width: 440px; letter-spacing: -0.01em; line-height: 1.55; font-family: Geist, system-ui, sans-serif"
+      >
+        Inventario, monitoreo y AdTech intelligence. Una sola plataforma para gestionar tu network, ejecutar campañas programáticas y auditar cada play.
+      </p>
+    </div>
+
+    <!-- Network Signal mini card -->
+    <div
+      class="relative mt-9 rounded-[14px] p-[14px]"
+      style="background: #13131a; border: 1px solid rgba(255,255,255,0.06)"
+    >
+      <div class="flex items-center justify-between mb-[10px]">
+        <div>
+          <div class="font-mono text-[9.5px] text-[rgba(255,255,255,0.34)] tracking-[0.14em] uppercase">Network Signal</div>
+          <div
+            class="text-[13px] font-medium text-[rgba(255,255,255,0.94)] mt-0.5"
+            style="font-family: Geist, system-ui, sans-serif"
+          >5 zonas operativas — pico 19:00</div>
+        </div>
+        <div class="flex gap-[14px] font-mono text-[10px]">
+          <div class="flex items-center gap-[5px]">
+            <span class="text-[rgba(255,255,255,0.34)] tracking-[0.1em]">NET</span>
+            <span class="text-[#4ade80] font-medium">68%</span>
+          </div>
+          <div class="flex items-center gap-[5px]">
+            <span class="text-[rgba(255,255,255,0.34)] tracking-[0.1em]">PLAYS</span>
+            <span class="text-[#a78bfa] font-medium">10</span>
+          </div>
+          <div class="flex items-center gap-[5px]">
+            <span class="text-[rgba(255,255,255,0.34)] tracking-[0.1em]">REV/h</span>
+            <span class="text-[#fbbf24] font-medium">$125</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mini CABA map -->
+      <div
+        class="relative w-full rounded-[12px] overflow-hidden"
+        style="height: 164px; background: linear-gradient(180deg, #14141a 0%, #0f1015 100%); border: 1px solid rgba(255,255,255,0.06)"
+      >
+        <svg viewBox="0 0 800 400" preserveAspectRatio="xMidYMid slice" class="absolute inset-0 w-full h-full">
+          <defs>
+            <radialGradient id="loginMapGlow" cx="50%" cy="50%" r="60%">
+              <stop offset="0%" stop-color="rgba(167,139,250,0.06)" />
+              <stop offset="100%" stop-color="rgba(0,0,0,0)" />
+            </radialGradient>
+          </defs>
+          <rect width="800" height="400" fill="url(#loginMapGlow)" />
+          <g stroke="rgba(255,255,255,0.07)" stroke-width="1.5" fill="none">
+            <path d="M0 180 Q200 160 400 200 T800 220" />
+            <path d="M0 250 Q250 280 500 240 T800 260" />
+            <path d="M100 0 Q120 200 180 400" />
+            <path d="M350 0 Q380 200 410 400" />
+            <path d="M600 0 Q620 200 660 400" />
+            <path d="M0 320 Q400 340 800 310" />
+            <path d="M0 100 Q400 80 800 110" />
+          </g>
+          <g stroke="rgba(255,255,255,0.035)" stroke-width="0.7" fill="none">
+            @for (i of miniMapLines; track i) {
+              <line [attr.x1]="i * 60" y1="0" [attr.x2]="i * 60 + 20" y2="400" />
+            }
+          </g>
+        </svg>
+        <!-- Zone dots -->
+        @for (zone of miniZones; track zone.id) {
+          <div
+            class="absolute flex items-center justify-center font-mono font-bold text-[10px]"
+            [style]="'left:' + zone.x + '%;top:' + zone.y + '%;transform:translate(-50%,-50%);width:28px;height:28px;border-radius:50%;background:' + zone.color + ';color:#0a0a0d'"
+          >{{ zone.screens }}</div>
+        }
+        <!-- Active screens badge -->
+        <div
+          class="absolute top-3 right-3 flex items-center gap-[6px] px-[10px] py-[5px] rounded-full font-mono text-[11px] font-medium text-[#4ade80]"
+          style="background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.3)"
+        >
+          <span class="w-[6px] h-[6px] rounded-full bg-[#4ade80] animate-pulse" style="box-shadow: 0 0 8px #4ade80"></span>
+          22 pantallas activas
+        </div>
+      </div>
     </div>
 
     <!-- Footer -->
-    <p class="panel-footer">© {{ currentYear }} · DOOH Platform</p>
-  </aside>
+    <div class="relative mt-[22px] flex justify-between items-center font-mono text-[10px] text-[rgba(255,255,255,0.34)]">
+      <span>© {{ currentYear }} · DOOH PLATFORM</span>
+      <div class="flex gap-[18px]">
+        <span class="cursor-pointer hover:text-white/55 transition-colors">Documentación</span>
+        <span class="cursor-pointer hover:text-white/55 transition-colors">Soporte</span>
+        <span class="cursor-pointer hover:text-white/55 transition-colors">Status ●</span>
+      </div>
+    </div>
+  </div>
 
-  <!-- ─── RIGHT — FORM PANEL ───────────────────────── -->
-  <main class="form-panel">
-    <div class="form-container">
+  <!-- ══════════════════════════════════════════════════════
+       RIGHT — Form panel
+  ══════════════════════════════════════════════════════ -->
+  <div class="flex-1 flex items-center justify-center relative" style="padding: 42px 48px">
+    <!-- Subtle grid background -->
+    <div
+      class="absolute inset-0 opacity-40 pointer-events-none"
+      style="background-image: linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px); background-size: 60px 60px; mask-image: radial-gradient(circle at center, black 20%, transparent 70%); -webkit-mask-image: radial-gradient(circle at center, black 20%, transparent 70%)"
+    ></div>
 
-      <header class="form-header">
-        <span class="form-eyebrow">Bienvenido de vuelta</span>
-        <h1 class="form-title">Acceder al panel</h1>
-      </header>
+    <form
+      (submit)="onSubmit(); $event.preventDefault()"
+      class="relative w-full flex flex-col gap-[6px]"
+      style="max-width: 400px"
+      novalidate
+    >
+      <!-- Eyebrow -->
+      <div class="flex items-center gap-2 mb-[10px]">
+        <span class="h-px bg-[#a78bfa]" style="width: 24px"></span>
+        <span class="font-mono text-[10px] text-[#a78bfa] tracking-[0.18em] uppercase font-medium">
+          Bienvenido de vuelta
+        </span>
+      </div>
 
-      <form
-        (submit)="onSubmit(); $event.preventDefault()"
-        class="login-form"
-        novalidate
+      <h2
+        class="m-0 font-medium text-[rgba(255,255,255,0.94)]"
+        style="font-family: Geist, system-ui, sans-serif; font-size: 32px; letter-spacing: -0.035em; line-height: 1.1"
       >
+        Acceder al panel<span class="text-[#a78bfa]">.</span>
+      </h2>
+      <p
+        class="text-[14px] text-[rgba(255,255,255,0.55)] mt-[6px] mb-[30px]"
+        style="font-family: Geist, system-ui, sans-serif; letter-spacing: -0.01em; line-height: 1.5"
+      >
+        Operadores, ingresá tus credenciales para gestionar tu inventario y red.
+      </p>
 
-        <!-- Username -->
-        <div class="field-group">
-          <label class="field-label">Usuario</label>
+      <!-- Username -->
+      <div class="mb-4">
+        <label class="flex items-center justify-between font-mono text-[10px] text-[rgba(255,255,255,0.34)] tracking-[0.16em] uppercase mb-2 font-medium">
+          <span>Usuario</span>
+          <span class="normal-case tracking-normal text-[11px] text-[rgba(255,255,255,0.55)]">requerido</span>
+        </label>
+        <div
+          class="flex items-center gap-[10px] px-[14px] py-[12px] rounded-[10px] transition-colors"
+          [style]="loginForm.username().touched() && loginForm.username().errors().length
+            ? 'background: #13131a; border: 1px solid rgba(248,113,113,0.4)'
+            : 'background: #13131a; border: 1px solid rgba(255,255,255,0.06)'"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
+          </svg>
           <input
             type="text"
             [formField]="loginForm.username"
             autocomplete="username"
-            placeholder="admin"
-            class="field-input"
-            [class.is-error]="loginForm.username().touched() && loginForm.username().errors().length"
+            placeholder="usuario"
+            class="flex-1 bg-transparent border-none outline-none text-[14px] text-[rgba(255,255,255,0.94)] placeholder-[rgba(255,255,255,0.2)]"
+            style="font-family: Geist, system-ui, sans-serif; caret-color: #a78bfa"
           />
-          @if (loginForm.username().touched() && loginForm.username().errors().length) {
-            <p class="field-error-msg">{{ loginForm.username().errors()[0].message }}</p>
-          }
+          <span
+            class="font-mono text-[9.5px] text-[rgba(255,255,255,0.34)] px-[6px] py-[3px] rounded"
+            style="border: 1px solid rgba(255,255,255,0.06)"
+          >@latinad</span>
         </div>
-
-        <!-- Password -->
-        <div class="field-group">
-          <label class="field-label">Contraseña</label>
-          <div class="password-wrapper">
-            <input
-              [type]="showPassword() ? 'text' : 'password'"
-              [formField]="loginForm.password"
-              autocomplete="current-password"
-              placeholder="••••••••"
-              class="field-input"
-              [class.is-error]="loginForm.password().touched() && loginForm.password().errors().length"
-            />
-            <button type="button" class="toggle-pass" (click)="togglePassword()" [attr.aria-label]="showPassword() ? 'Ocultar contraseña' : 'Mostrar contraseña'">
-              @if (showPassword()) {
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
-                  <line x1="1" y1="1" x2="23" y2="23"/>
-                </svg>
-              } @else {
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                  <circle cx="12" cy="12" r="3"/>
-                </svg>
-              }
-            </button>
-          </div>
-          @if (loginForm.password().touched() && loginForm.password().errors().length) {
-            <p class="field-error-msg">{{ loginForm.password().errors()[0].message }}</p>
-          }
-        </div>
-
-        <!-- API Error -->
-        @if (errorMessage()) {
-          <div class="api-error" role="alert">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><circle cx="12" cy="16" r="0.5" fill="currentColor"/>
-            </svg>
-            {{ errorMessage() }}
-          </div>
+        @if (loginForm.username().touched() && loginForm.username().errors().length) {
+          <p class="text-[#f87171] text-[11px] mt-1.5 font-mono">{{ loginForm.username().errors()[0].message }}</p>
         }
+      </div>
 
-        <!-- Submit -->
-        <button type="submit" class="submit-btn" [disabled]="isLoading()">
-          @if (isLoading()) {
-            <svg class="spinner" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+      <!-- Password -->
+      <div class="mb-2">
+        <label class="block font-mono text-[10px] text-[rgba(255,255,255,0.34)] tracking-[0.16em] uppercase mb-2 font-medium">
+          Contraseña
+        </label>
+        <div
+          class="flex items-center gap-[10px] px-[14px] py-[12px] rounded-[10px] transition-colors"
+          [style]="loginForm.password().touched() && loginForm.password().errors().length
+            ? 'background: #13131a; border: 1px solid rgba(248,113,113,0.4)'
+            : 'background: #13131a; border: 1px solid rgba(255,255,255,0.06)'"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0">
+            <rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" />
+          </svg>
+          <input
+            [type]="showPassword() ? 'text' : 'password'"
+            [formField]="loginForm.password"
+            autocomplete="current-password"
+            placeholder="••••••••"
+            class="flex-1 bg-transparent border-none outline-none text-[14px] tracking-[0.04em] text-[rgba(255,255,255,0.94)] placeholder-[rgba(255,255,255,0.2)]"
+            style="font-family: 'Geist Mono', monospace; caret-color: #a78bfa"
+          />
+          <button
+            type="button"
+            (click)="togglePassword()"
+            [attr.aria-label]="showPassword() ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+            class="flex items-center p-1 transition-colors"
+            [style.color]="showPassword() ? '#a78bfa' : 'rgba(255,255,255,0.55)'"
+          >
+            @if (showPassword()) {
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z" /><circle cx="12" cy="12" r="3" />
+              </svg>
+            } @else {
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17.94 17.94A10 10 0 0 1 12 19c-7 0-10-7-10-7a18.5 18.5 0 0 1 5.06-5.94M9.9 4.24A10 9 0 0 1 12 4c7 0 10 7 10 7a18.5 18.5 0 0 1-2.16 3.19M14.12 14.12a3 3 0 1 1-4.24-4.24" />
+                <line x1="2" y1="2" x2="22" y2="22" />
+              </svg>
+            }
+          </button>
+        </div>
+        @if (loginForm.password().touched() && loginForm.password().errors().length) {
+          <p class="text-[#f87171] text-[11px] mt-1.5 font-mono">{{ loginForm.password().errors()[0].message }}</p>
+        }
+      </div>
+
+      <!-- Remember me + 2FA -->
+      <div class="flex items-center gap-[10px] mt-[6px] mb-6">
+        <label class="flex items-center gap-2 cursor-pointer">
+          <span
+            class="w-4 h-4 rounded flex items-center justify-center flex-shrink-0"
+            style="border: 1px solid rgba(255,255,255,0.1); background: #13131a"
+          >
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12" />
             </svg>
-            Verificando...
-          } @else {
-            Ingresar
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <line x1="5" y1="12" x2="19" y2="12"/>
-              <polyline points="12 5 19 12 12 19"/>
-            </svg>
-          }
-        </button>
+          </span>
+          <span class="text-[12.5px] text-[rgba(255,255,255,0.55)]" style="font-family: Geist, system-ui, sans-serif">
+            Mantener sesión iniciada
+          </span>
+        </label>
+        <div class="flex-1"></div>
+        <span class="font-mono text-[10px] text-[rgba(255,255,255,0.34)] flex items-center gap-[5px]">
+          <span class="w-[5px] h-[5px] rounded-full bg-[#4ade80]" style="box-shadow: 0 0 6px #4ade80"></span>
+          2FA disponible
+        </span>
+      </div>
 
-      </form>
+      <!-- API error -->
+      @if (errorMessage()) {
+        <div
+          class="flex items-center gap-2 px-[14px] py-[10px] rounded-lg text-[#f87171] text-[13px] mb-2"
+          style="background: rgba(248,113,113,0.07); border: 1px solid rgba(248,113,113,0.2)"
+          role="alert"
+        >
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><circle cx="12" cy="16" r="0.5" fill="currentColor" />
+          </svg>
+          {{ errorMessage() }}
+        </div>
+      }
 
-      <footer class="form-footer">
-        LatinAd &copy; {{ currentYear }}
-      </footer>
+      <!-- Submit -->
+      <button
+        type="submit"
+        [disabled]="isLoading()"
+        class="flex items-center justify-center gap-2 w-full px-[18px] py-[14px] rounded-[10px] text-[14px] font-semibold transition-opacity"
+        style="background: #a78bfa; color: #0a0a0d; font-family: Geist, system-ui, sans-serif; letter-spacing: -0.01em; box-shadow: 0 8px 24px rgba(167,139,250,0.4), inset 0 1px 0 rgba(255,255,255,0.18)"
+        [style.opacity]="isLoading() ? '0.55' : '1'"
+        onmouseenter="if(!this.disabled) this.style.opacity='.88'"
+        onmouseleave="if(!this.disabled) this.style.opacity='1'"
+      >
+        @if (isLoading()) {
+          <svg class="animate-spin" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+          </svg>
+          Verificando...
+        } @else {
+          Ingresar al panel
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 12h14M13 5l7 7-7 7" />
+          </svg>
+        }
+      </button>
 
-    </div>
-  </main>
+      <!-- Form footer -->
+      <div
+        class="mt-8 pt-[18px] flex justify-between items-center font-mono text-[10px] text-[rgba(255,255,255,0.34)]"
+        style="border-top: 1px solid rgba(255,255,255,0.06)"
+      >
+        <span>v2.6.0 · build a8f4</span>
+        <span class="flex items-center gap-[6px]">
+          <span class="w-[5px] h-[5px] rounded-full bg-[#4ade80]" style="box-shadow: 0 0 6px #4ade80"></span>
+          Todos los sistemas operando
+        </span>
+      </div>
+    </form>
+  </div>
 
 </div>
