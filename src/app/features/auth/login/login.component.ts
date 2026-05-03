@@ -50,7 +50,7 @@ export class LoginComponent {
     submit(this.loginForm, async () => {
       this.isLoading.set(true);
       try {
-        await firstValueFrom(this.authService.login(this.model()));
+        await firstValueFrom(this.authService.login(this.model(), this.rememberMe()));
         await this.router.navigate(['/dashboard']);
       } catch {
         this.errorMessage.set('Credenciales inválidas. Verificá usuario y contraseña.');
