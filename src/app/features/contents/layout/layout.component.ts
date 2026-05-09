@@ -1,5 +1,6 @@
 import { Component, inject, signal, computed } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@features/auth/services/auth.service';
 import { ContentService } from '@features/contents/services/content.service';
 import { SidebarComponent } from '@features/contents/sidebar/sidebar.component';
@@ -7,7 +8,7 @@ import { FilterBarComponent } from '@features/contents/filter-bar/filter-bar.com
 import { ContentGridComponent } from '@features/contents/content-grid/content-grid.component';
 import { ContentFilters } from '@models/filters.model';
 import { ContentFormComponent } from '@features/contents/content-form/content-form.component';
-import { Content } from '@models/content.model';
+import { Content, ContentType } from '@models/content.model';
 import { MonitorScreenService } from '@features/monitor/monitor-screen.service';
 import { getMetrics } from '@models/zone.model';
 import { AppSidebarComponent } from '@shared/app-sidebar/app-sidebar.component';
@@ -30,6 +31,8 @@ export class LayoutComponent {
   protected readonly auth = inject(AuthService);
   protected readonly contentService = inject(ContentService);
   protected readonly screenService = inject(MonitorScreenService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   readonly isFormOpen = signal(false);
   readonly editingContent = signal<Content | null>(null);
   readonly liveTime = signal(new Date().toTimeString().slice(0, 8));
@@ -53,6 +56,16 @@ export class LayoutComponent {
   constructor() {
     this.contentService.loadMockData().pipe(takeUntilDestroyed()).subscribe();
     setInterval(() => this.liveTime.set(new Date().toTimeString().slice(0, 8)), 1000);
+
+    // Restore filters from URL query params on load
+    const params = this.route.snapshot.queryParams;
+    const initial: ContentFilters = {};
+    if (params['search']) initial.search = params['search'] as string;
+    if (params['type'])   initial.type   = params['type'] as ContentType;
+    if (params['archived'] === '1') initial.showArchived = true;
+    if (Object.keys(initial).length) {
+      this.contentService.updateFilters(initial);
+    }
   }
 
   onFolderSelected(id: number | null): void {
@@ -65,6 +78,15 @@ export class LayoutComponent {
 
   onFiltersChanged(filters: ContentFilters): void {
     this.contentService.updateFilters(filters);
+    this.router.navigate([], {
+      queryParams: {
+        search: filters.search || null,
+        type:   filters.type   || null,
+        archived: filters.showArchived ? '1' : null,
+      },
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
+    });
   }
 
   openForm(): void { this.openNewForm(); }

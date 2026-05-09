@@ -22,6 +22,12 @@ export class AuthService {
 
   readonly isAuthenticated = computed(() => this._token() !== null);
 
+  readonly isTokenExpired = computed(() => {
+    const user = this.currentUser();
+    if (!user) return true;
+    return Date.now() / 1000 > user.exp;
+  });
+
   readonly currentUser = computed<JwtPayload | null>(() => {
     const token = this._token();
     if (!token) return null;
